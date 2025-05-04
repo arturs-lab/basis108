@@ -1,0 +1,562 @@
+8048 Assembler           Version 1.19   09/11/96 23:19:01    Page 1
+D:\CAD\8048\KBD5.ASM
+
+
+
+    1 0000              ; Keyboard converter XT -> Apple IIe
+    2 0000              ; send lower/uppercase chars and ctrl chars
+    3 0000              
+    4 0000              ; register usage:
+    5 0000              ; r0  pointer to user memory
+    6 0000              ; r1  
+    7 0000              ; r2  counter of chars in buffer
+    8 0000              ; r3  output buffer pointer
+    9 0000              ; r4  status register
+   10 0000              ;    0 shift
+   11 0000              ;     1 caps lock
+   12 0000              ;     2 ctrl
+   13 0000              ;     3 alt
+   14 0000              ;     4 prefix e0
+   15 0000              ;     5 break code
+   16 0000              ; r5  temporary scancode storage
+   17 0000              ; r6  general purpose, scratch
+   18 0000              ; r7  general purpose, scratch
+   19 0000              ; r0' pointer to user memory
+   20 0000              ; r1' interrupt handler
+   21 0000              ; r2' interrupt handler stores A here
+   22 0000              ; r3' input buffer pointer
+   23 0000              ; r4' 
+   24 0000              ; r5' 
+   25 0000              ; r6' 
+   26 0000              ; r7' 
+   27 0000              
+   28 0000              bootd  equ     80h             ; delay after boot
+   29 0000              delch  equ     80h             ; delay between chars
+   30 0000              delck  equ     05h             ; delay between clock pulses
+   31 0000              deltim equ     40h             ; inner loop length for delay procedure
+   32 0000              
+   33 0000              ; bitmasks for status register
+   34 0000              shift  equ    01h
+   35 0000              caps   equ    02h
+   36 0000              ctrl   equ    04h
+   37 0000              alt    equ    08h
+   38 0000              ext    equ    10h
+   39 0000              break  equ    20h
+   40 0000              
+   41 0000              red    equ    0efh            ; red led
+   42 0000              green  equ    0dfh            ; green led
+   43 0000              
+   44 0000                     org     0
+   45 0000 0409                jmp     start
+   46 0002              
+   47 0003                     ORG     3
+   48 0003 2431         int:   jmp     inth            ; go to INT handler
+   49 0005              
+   50 0007                     org     7
+   51 0007 2451         timr:  jmp     timrh           ; go to timer interrupt handler
+   52 0009              
+   53 0009 14F4         start: call    init             ; initialize system
+   54 000B FC           st1:   mov     a,r4             ; get status register
+   55 000C 521C                jb2     lred             ; if ctrl flag on, turn on red led
+   56 000E 5303                anl     a,#(shift+caps)  ; see if shift or caps is on
+   57 0010 9617                jnz     lgreen           ; turn on green led if yes
+
+
+
+
+8048 Assembler           Version 1.19   09/11/96 23:19:01    Page 2
+D:\CAD\8048\KBD5.ASM
+
+
+
+   58 0012 23FF                mov     a,#0ffh          ; turn off LEDs
+   59 0014 3A                  outl    p2,a
+   60 0015 041F                jmp     stmain
+   61 0017              
+   62 0017 23DF         lgreen:mov     a,#green         ; turn green led on
+   63 0019 3A                  outl    p2,a
+   64 001A 041F                jmp     stmain
+   65 001C              
+   66 001C 23EF         lred:  mov     a,#red           ; turn red led on
+   67 001E 3A                  outl    p2,a
+   68 001F                     
+   69 001F FA           stmain:mov     a,r2             ; check if data present in input buffer
+   70 0020 C61F                jz      stmain           ; if not, wait in an infinite loop
+   71 0022              
+   72 0022              
+   73 0022              ; send data received from kbd
+   74 0022              
+   75 0022 CA           st2:   dec     r2               ; decrement counter of codes in buffer
+   76 0023 FC                  mov     a,r4             ; get flags
+   77 0024              
+   78 0024 53DF                anl     a,#0dfh          ; reset break flag
+   79 0026 AC                  mov     r4,a
+   80 0027              
+   81 0027 FB                  mov     a,r3             ; get the buffer pointer
+   82 0028 530F                anl     a,#0fh           ; limit buffer to 16 bytes
+   83 002A 1B                  inc     r3               ; point to next byte in buffer
+   84 002B 0320                add     a,#20h           ; add offset to RAM
+   85 002D A8                  mov     r0,a             ; store it in index register
+   86 002E F0                  mov     a,@r0            ; retreive scancode
+   87 002F              
+   88 002F AD                  mov     r5,a             ; store scancode for later
+   89 0030              
+   90 0030 D3E0         pfix:  xrl     a,#0e0h         ; is it a prefix?
+   91 0032 963A                jnz     brkc            ; no, see if it is left Shift
+   92 0034 2310                mov     a,#ext
+   93 0036 4C                  orl     a,r4             ; set prefix flag on
+   94 0037 AC           st0:   mov     r4,a
+   95 0038 040B                jmp     st1              ; go back to main loop
+   96 003A              
+   97 003A F244         brkc:  jb7     shft1           ; this is not a break code
+   98 003C FD           brkc1: mov     a,r5
+   99 003D 537F                anl     a,#7fh          ; yes, it is, strip MSB
+  100 003F AD                  mov     r5,a            ; save scancode for later
+  101 0040 2320                mov     a,#break        ; set break code flag
+  102 0042 4C                  orl     a,r4
+  103 0043 AC                  mov     r4,a
+  104 0044              
+  105 0044 FD           shft1: mov     a,r5            ; restore scancode
+  106 0045 D32A                xrl     a,#2ah          ; is it left Shift?
+  107 0047 9654                jnz     shft3           ; no, see if it is right Shift
+  108 0049 FC                  mov     a,r4
+  109 004A B250                jb5     shft2           ; is it a break code?
+  110 004C 4301                orl     a,#shift        ; no, turn on shift flag
+  111 004E 0437                jmp     st0             ; save flags and go back to main loop
+  112 0050 53FE         shft2: anl     a,#(0ffh-shift) ; turn off shift flag
+  113 0052 0437                jmp     st0             ; save flags and go back to main loop
+  114 0054              
+
+
+
+
+8048 Assembler           Version 1.19   09/11/96 23:19:01    Page 3
+D:\CAD\8048\KBD5.ASM
+
+
+
+  115 0054 FD           shft3: mov     a,r5            ; restore scancode
+  116 0055 D336                xrl     a,#36h          ; is it left Shift?
+  117 0057 9664                jnz     cps             ; no, see if it is Caps Lock
+  118 0059 FC                  mov     a,r4
+  119 005A B260                jb5     shft4           ; is it a break code?
+  120 005C 4301                orl     a,#shift        ; no, turn on shift flag
+  121 005E 0437                jmp     st0             ; save flags and go back to main loop
+  122 0060 53FE         shft4: anl     a,#(0ffh-shift) ; turn off shift flag
+  123 0062 0437                jmp     st0             ; save flags and go back to main loop
+  124 0064              
+  125 0064 FD           cps:   mov     a,r5            ; restore scancode
+  126 0065 D33A                xrl     a,#3ah          ; is it Caps Lock?
+  127 0067 9671                jnz     ktrl            ; no, see if it is Control
+  128 0069 FC                  mov     a,r4            ; yes, now see if it is a break code
+  129 006A B26F                jb5     cps1            ; yes, return
+  130 006C 2302                mov     a,#caps
+  131 006E DC                  xrl     a,r4             ; toggle caps flag
+  132 006F 0437         cps1:  jmp     st0             ; save flags and go back to main loop
+  133 0071              
+  134 0071 FD           ktrl:  mov     a,r5            ; restore scancode
+  135 0072 D31D                xrl     a,#1dh          ; is it Control?
+  136 0074 9681                jnz     kalt            ; no, see if it is Alt
+  137 0076 FC                  mov     a,r4
+  138 0077 B27D                jb5     ctrl1           ; is it a break code?
+  139 0079 4304                orl     a,#ctrl         ; no, turn on control flag
+  140 007B 0437                jmp     st0             ; save flags and go back to main loop
+  141 007D 53FB         ctrl1: anl     a,#(0ffh-ctrl)  ; turn off control flag
+  142 007F 0437                jmp     st0             ; save flags and go back to main loop
+  143 0081              
+  144 0081 FD           kalt:  mov     a,r5            ; restore scancode
+  145 0082 D338                xrl     a,#38h          ; is it Alt?
+  146 0084 9691                jnz     brk             ; no, check if this was a break code
+  147 0086 FC                  mov     a,r4
+  148 0087 B28D                jb5     kalt1           ; is it a break code?
+  149 0089 4308                orl     a,#alt          ; no, turn on alt flag
+  150 008B 0437                jmp     st0             ; save flags and go back to main loop
+  151 008D 53F7         kalt1: anl     a,#(0ffh-alt)   ; turn off alt flag
+  152 008F 0437                jmp     st0             ; save flags and go back to main loop
+  153 0091              
+  154 0091 FC           brk:   mov     a,r4            ; was it a break code?
+  155 0092 B20B                jb5     st1             ; yes, go back to main loop
+  156 0094              
+  157 0094 5303                anl     a,#(shift+caps)  ; is shift or caps flag on?
+  158 0096 C69A                jz      st4              ; no, keep going...
+  159 0098 235A                mov     a,#(scan1 - 300h); put address of table for shifted codes in A
+  160 009A 6D           st4:   add     a,r5             ; add scancode
+  161 009B E3                  movp3   a,@a             ; get ascii code from table
+  162 009C F2B8                jb7     special          ; this is not a normal letter
+  163 009E AD                  mov     r5,a            ; store ascii for later
+  164 009F              
+  165 009F 2304                mov     a,#ctrl         ; is Ctrl flag on?
+  166 00A1 5C                  anl     a,r4
+  167 00A2 C6A9                jz      altf            ; no, check alt flag
+  168 00A4 231F                mov     a,#1fh          ; convert ascii to Ctrl code
+  169 00A6 5D                  anl     a,r5
+  170 00A7 04B4                jmp     send0
+  171 00A9              
+
+
+
+
+8048 Assembler           Version 1.19   09/11/96 23:19:01    Page 4
+D:\CAD\8048\KBD5.ASM
+
+
+
+  172 00A9 2308         altf:  mov     a,#alt          ; is alt flag on?
+  173 00AB 5C                  anl     a,r4
+  174 00AC C6B3                jz      send1           ; no output char
+  175 00AE 231F                mov     a,#1fh          ; for now alt = ctrl
+  176 00B0 5D                  anl     a,r5
+  177 00B1 04B4                jmp     send0
+  178 00B3              
+  179 00B3 FD           send1: mov     a,r5
+  180 00B4 3408         send0: call    send
+  181 00B6 040B                jmp     st1
+  182 00B8              
+  183 00B8              ; special char handler
+  184 00B8              ; special chars are: 
+  185 00B8              ; code make   name    result
+  186 00B8              ; 80   47     Home    
+  187 00B8              ; 81   48     up      05h
+  188 00B8              ; 82   49     PG UP   12h
+  189 00B8              ; 83   4b     left    13h
+  190 00B8              ; 84   4d     right   04h
+  191 00B8              ; 85   4f     End     
+  192 00B8              ; 86   50     down    18h
+  193 00B8              ; 87   51     PG DN   03h
+  194 00B8              ; 88   52     Insert  
+  195 00B8              ; 89   53     Delete  
+  196 00B8              ;
+  197 00B8              special:
+  198 00B8 537F                anl     a,#7fh           ; strip 7-th bit
+  199 00BA D2D7                jb6     func             ; if bit 6 is set, send text for function key
+  200 00BC AD                  mov     r5,a
+  201 00BD 6D                  add     a,r5             ; multiply a by 3
+  202 00BE 6D                  add     a,r5
+  203 00BF AD                  mov     r5,a             ; store a for later
+  204 00C0 2310                mov     a,#ext           ; check if this is prefixed code
+  205 00C2 5C                  anl     a,r4
+  206 00C3 C6C7                jz      sp1              ; go on if not
+  207 00C5 FD                  mov     a,r5             ; adjust table pointer if yes
+  208 00C6 17                  inc     a
+  209 00C7 AD           sp1:   mov     r5,a             ; store a for later
+  210 00C8 2304                mov     a,#ctrl          ; check if Ctrl key is down
+  211 00CA 5C                  anl     a,r4
+  212 00CB C6D1                jz      sp2              ; go on if not
+  213 00CD FD                  mov     a,r5             ; adjust table pointer if yes
+  214 00CE 17                  inc     a
+  215 00CF 04D2                jmp     sp3
+  216 00D1 FD           sp2:   mov     a,r5
+  217 00D2 03B4         sp3:   add     a,#(sptab-300h)  ; calculate table address
+  218 00D4 E3                  movp3   a,@a             ; get special code from table
+  219 00D5 04B4                jmp     send0            ; and send it
+  220 00D7              
+  221 00D7 533F         func:  anl     a,#3fh           ; strip 6th bit
+  222 00D9 AD                  mov     r5,a             ; setup counter
+  223 00DA B8D2                mov     r0,#strings      ; setup pointer to begining of table
+  224 00DC 04E6                jmp     f1
+  225 00DE F8           f2:    mov     a,r0
+  226 00DF E3                  movp3   a,@a             ; fetch data from table on page 3
+  227 00E0 18                  inc     r0               ; increment pointer
+  228 00E1 F2E5                jb7     f3               ; end of current string found
+
+
+
+
+8048 Assembler           Version 1.19   09/11/96 23:19:01    Page 5
+D:\CAD\8048\KBD5.ASM
+
+
+
+  229 00E3 04DE                jmp     f2               ; continue inner loop
+  230 00E5 CD           f3:    dec     r5
+  231 00E6 FD           f1:    mov     a,r5             ; check counter
+  232 00E7 96DE                jnz     f2               ; continue outer loop
+  233 00E9 F8           f4:    mov     a,r0
+  234 00EA E3                  movp3   a,@a             ; fetch code
+  235 00EB 18                  inc     r0               ; point to next char in string
+  236 00EC F2F2                jb7     f5
+  237 00EE 3408                call    send
+  238 00F0 04E9                jmp     f4
+  239 00F2 040B         f5:    jmp     st1
+  240 00F4              
+  241 00F4              
+  242 00F4              ;       org     100h
+  243 00F4              
+  244 00F4 15           init:  dis     i                ; disable interrupts
+  245 00F5 27                  clr     a
+  246 00F6 D5                  sel     rb1
+  247 00F7 AB                  mov     r3,a             ; reset input buffer pointer
+  248 00F8 C5                  sel     rb0
+  249 00F9 AC                  mov     r4,a             ; reset status register
+  250 00FA AB                  mov     r3,a             ; reset output buffer pointer
+  251 00FB AA                  mov     r2,a             ; reset buffer size counter
+  252 00FC 07                  dec     a   
+  253 00FD 39                  outl    p1,a             ; initialize kbd port
+  254 00FE 3A                  outl    p2,a             ; make sure that keyboard output is high
+  255 00FF 23CF                mov     a,#0cfh          ; turn on both LEDs
+  256 0101 3A                  outl    p2,a
+  257 0102 2380                mov     a,#bootd
+  258 0104 3426                call    delay            ; wait a little before doing anything
+  259 0106 05                  en      i                ; enable interrupts
+  260 0107 83                  ret
+  261 0108              
+  262 0108              ; send data in register a to Apple's Keyboard port
+  263 0108 AD           send:  mov     r5,a
+  264 0109 4380                orl     a,#80h           ; set clk high
+  265 010B 39                  outl    p1,a             ; send to keyboard port
+  266 010C 3424                call    ckdel
+  267 010E FD                  mov     a,r5             ; get char
+  268 010F 537F                anl     a,#7fh           ; clk low
+  269 0111 39                  outl    p1,a
+  270 0112 3424                call    ckdel
+  271 0114 FD                  mov     a,r5             ; get char
+  272 0115 4380                orl     a,#80h           ; clk high
+  273 0117 39                  outl    p1,a
+  274 0118 23FF                mov     a,#0ffh          ; set kbd port to all high again
+  275 011A 39                  outl    p1,a
+  276 011B FC                  mov     a,r4             ; reset prefix flag for good-bye
+  277 011C 53EF                anl     a,#(0ffh-ext)
+  278 011E AC                  mov     r4,a
+  279 011F 83                  ret                      ; return to main loop
+  280 0120              
+  281 0120              ; delay between characters
+  282 0120 2380         chdel: mov     a,#delch
+  283 0122 2426                jmp     delay
+  284 0124              
+  285 0124              ; delay between clock pulses
+
+
+
+
+8048 Assembler           Version 1.19   09/11/96 23:19:01    Page 6
+D:\CAD\8048\KBD5.ASM
+
+
+
+  286 0124 2305         ckdel: mov     a,#delck        ; delay between clock pulses
+  287 0126              
+  288 0126              ; main delay procedure
+  289 0126 AF           delay: mov     r7,a            ; store delay time in counter
+  290 0127 2340         del2:  mov     a,#deltim       ; load inner loop delay time
+  291 0129 07           del1:  dec     a               ; decrement inner delay counter
+  292 012A 9629                jnz     del1            ; loop until zero
+  293 012C CF                  dec     r7
+  294 012D FF                  mov     a,r7
+  295 012E 9627                jnz     del2            ; same here
+  296 0130 83                  ret
+  297 0131              
+  298 0131              ; interrupt handler procedure
+  299 0131 D5           inth:  sel     rb1
+  300 0132 AA                  mov     r2,a             ; store contents of A
+  301 0133 27                  clr     a                ; clear input
+  302 0134 243A                jmp     ih2              ; you are here cause clk is low, so wait for it to go high
+  303 0136 863A         ih1:   jni     ih2
+  304 0138 2436                jmp     ih1              ; wait for clock to go low
+  305 013A 863A         ih2:   jni     ih2              ; wait in loop for clock to go high
+  306 013C 97                  clr     c                ; clear carry bit
+  307 013D 2640                jnt0    ih3              ; jump if T0 (kbddata) = 0
+  308 013F A7                  cpl     c                ; otherwise set CY=1
+  309 0140 67           ih3:   rrc     a                ; rotate CY into A(7) and A(0) into CY
+  310 0141 E636                jnc     ih1              ; if CY=0 more bits need to be received
+  311 0143 A9                  mov     r1,a             ; store scancode
+  312 0144 FB                  mov     a,r3
+  313 0145 530F                anl     a,#0fh           ; limit buffer to 16 bytes
+  314 0147 1B                  inc     r3               ; point to next byte in buffer
+  315 0148 0320                add     a,#20h           ; add offset to RAM
+  316 014A A8                  mov     r0,a             ; store it in index register
+  317 014B F9                  mov     a,r1             ; retrieve scancode
+  318 014C A0                  mov     @r0,a            ; store it in RAM
+  319 014D FA                  mov     a,r2             ; restore A
+  320 014E C5                  sel     rb0
+  321 014F 1A                  inc     r2               ; increase counter of chars to be processed
+  322 0150 93                  retr
+  323 0151              
+  324 0151 93           timrh: retr
+  325 0152              
+  326 0300                     org     0300h
+  327 0300              
+  328 0300 7F 1B 31     scan:  db      '',27,'123456',       '7890-=',8,9                    ;00-0f
+      0303 32 33 34
+      0306 35 36 37
+      0309 38 39 30
+      030C 2D 3D 08
+      030F 09
+  329 0310 71 77 65            db      'qwertyui',            'op[]',13,'as'                 ;10-1f
+      0313 72 74 79
+      0316 75 69 6F
+      0319 70 5B 5D
+ 0D 7F 61
+      031F 73
+  330 0320 64 66 67            db      'dfghjkl;',            39,'`\zxcv'                    ;20-2f
+      0323 68 6A 6B
+      0326 6C 3B 27
+
+
+
+
+8048 Assembler           Version 1.19   09/11/96 23:19:01    Page 7
+D:\CAD\8048\KBD5.ASM
+
+
+
+      0329 60 7F 5C
+      032C 7A 78 63
+      032F 76
+  331 0330 62 6E 6D            db      'bnm,./*',            ' ',0c0h,0c1h,0c2h,0c3h,0c4h  ;30-3f
+      0333 2C 2E 2F
+      0336 7F 2A 7F
+      0339 20 7F C0
+      033C C1 C2 C3
+      033F C4
+  332 0340 66 66 66            db      'fffff',80h,         81h,82h,'-',83h,'5',84h,'+',85h ;40-4f
+      0343 66 66 7F
+      0346 7F 80 81
+      0349 82 2D 83
+      034C 35 84 2B
+      034F 85
+  333 0350 86 87 88            db      86h,87h,88h,89h,'mf' 'f '                            ;50-58
+      0353 89 7F 7F
+      0356 6D 66 66
+      0359 20
+  334 035A              
+  335 035A              ; scancodes after shift
+  336 035A 7F 1B 21     scan1: db      '',27,'!@#$%^'        '&*()_+',8,9                    ;00-0f
+      035D 40 23 24
+      0360 25 5E 26
+      0363 2A 28 29
+      0366 5F 2B 08
+      0369 09
+  337 036A 51 57 45            db      'QWERTYUI'             'OP{}',13,'AS'                 ;10-1f
+      036D 52 54 59
+      0370 55 49 4F
+      0373 50 7B 7D
+ 0D 7F 41
+      0379 53
+  338 037A 44 46 47            db      'DFGHJKL:'             '"~|ZXCV'                      ;20-2f
+      037D 48 4A 4B
+      0380 4C 3A 22
+      0383 7E 7F 7C
+      0386 5A 58 43
+      0389 56
+  339 038A 42 4E 4D            db      'BNM<>?*'             ' fffff'                      ;30-3f
+      038D 3C 3E 3F
+      0390 7F 2A 7F
+      0393 20 7F 66
+      0396 66 66 66
+      0399 66
+  340 039A 66 66 66            db      'fffff',80h,         81h,82h,'-',83h,'5',84h,'+',85h ;40-4f
+      039D 66 66 7F
+      03A0 7F 80 81
+      03A3 82 2D 83
+      03A6 35 84 2B
+      03A9 85
+  341 03AA 86 87 88            db      86h,87h,88h,89h,'mf' 'f '                            ;50-58
+      03AD 89 7F 7F
+      03B0 6D 66 66
+      03B3 20
+  342 03B4              
+  343 03B4              sptab:                     ; code make   name    result
+
+
+
+
+8048 Assembler           Version 1.19   09/11/96 23:19:01    Page 8
+D:\CAD\8048\KBD5.ASM
+
+
+
+  344 03B4 37 37 37            db      '7','7','7' ; 80   47     Home    '7','7','7'
+  345 03B7 38 05 12            db      '8',05h,12h ; 81   48     up      '8',^E ,^R
+  346 03BA 39 12 12            db      '9',12h,12h ; 82   49     PG UP   '9',^R ,^R
+  347 03BD 34 13 01            db      '4',13h,01h ; 83   4b     left    '4',^S ,^A
+  348 03C0 36 04 06            db      '6',04h,06h ; 84   4d     right   '6',^D ,^F
+  349 03C3 31 31 31            db      '1','1','1' ; 85   4f     End     '1','1','1'
+  350 03C6 32 18 03            db      '2',18h,03h ; 86   50     down    '2',^X ,^C
+  351 03C9 33 03 03            db      '3',03h,03h ; 87   51     PG DN   '3',^C ,^C
+  352 03CC 30 30 30            db      '0','0','0' ; 88   52     Insert  '0','0','0'
+  353 03CF 2E 08 08            db      '.',08h,08h ; 89   53     Delete  '.',^H ,^H
+  354 03D2                                                             ; |   |   ctrl
+  355 03D2                                                             ; |   prefixed
+  356 03D2                                                             ; no modifiers
+  357 03D2              strings:
+  358 03D2 64 69 72            db      'dir'0a0h
+      03D5 A0
+  359 03D6 70 69 70            db      'pip'0a0h
+      03D9 A0
+  360 03DA 74 75 72            db      'turbo'0a0h
+      03DD 62 6F A0
+  361 03E0 6D 61 73            db      'masm'0a0h
+      03E3 6D A0
+  362 03E5 73 74 61            db      'stat'0a0h
+      03E8 74 A0
+  363 03EA              
+  364 03EA                     end
+
+Defined Symbols:
+  ALT              000008  8
+  BOOTD            000080  128
+  BREAK            000020  32
+  CAPS             000002  2
+  CTRL             000004  4
+  DELCH            000080  128
+  DELCK            000005  5
+  DELTIM           000040  64
+  EXT              000010  16
+  GREEN            0000DF  223
+  RED              0000EF  239
+  SHIFT            000001  1
+
+Defined Labels:
+  ALTF             0000A9  169
+  BRK              000091  145
+  BRKC             00003A  58
+  BRKC1            00003C  60
+  CHDEL            000120  288
+  CKDEL            000124  292
+  CPS              000064  100
+  CPS1             00006F  111
+  CTRL1            00007D  125
+  DEL1             000129  297
+  DEL2             000127  295
+  DELAY            000126  294
+  F1               0000E6  230
+  F2               0000DE  222
+  F3               0000E5  229
+  F4               0000E9  233
+  F5               0000F2  242
+  FUNC             0000D7  215
+  IH1              000136  310
+  IH2              00013A  314
+  IH3              000140  320
+  INIT             0000F4  244
+  INT              000003  3
+  INTH             000131  305
+  KALT             000081  129
+  KALT1            00008D  141
+  KTRL             000071  113
+  LGREEN           000017  23
+  LRED             00001C  28
+  PFIX             000030  48
+  SCAN             000300  768
+  SCAN1            00035A  858
+  SEND             000108  264
+  SEND0            0000B4  180
+  SEND1            0000B3  179
+  SHFT1            000044  68
+  SHFT2            000050  80
+  SHFT3            000054  84
+  SHFT4            000060  96
+  SP1              0000C7  199
+  SP2              0000D1  209
+  SP3              0000D2  210
+  SPECIAL          0000B8  184
+  SPTAB            0003B4  948
+  ST0              000037  55
+  ST1              00000B  11
+  ST2              000022  34
+  ST4              00009A  154
+  START            000009  9
+  STMAIN           00001F  31
+  STRINGS          0003D2  978
+  TIMR             000007  7
+  TIMRH            000151  337

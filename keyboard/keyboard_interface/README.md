@@ -1,0 +1,3 @@
+Since original keyboard that came with my Basis108 was lost, I had to create an interface to connect another keyboard to it. 
+At the time XT style keyboards were still popular and in use and were much easier to interface than the new PS2 style keyboards.
+This is the original version of the keyboard interface that I built. It has some problems with autorepeat and fast keystrokes. This is perhaps due to serial interface being bit-banged since the microcontroller that I used did not have a serial port.

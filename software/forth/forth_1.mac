@@ -1,0 +1,101 @@
+
+         subttl opis programu
+
+         .comment %
+
+Mapa pamieci :
+
+                              DOL PAMIECI ( 0000 )
+
+         ORIGIN -------> --------------------------------
+                         | Dane interpretatora          |
+         DPO ----------> |------------------------------|
+                         |                              |
+                         | Czesc predefiniowana         |
+                         |                              |
+         Fence --------> |--------- SLOWNIK ------------|
+                         |                              |
+                         | Czesc zdefiniowana przez     |
+                         | uzytkownika                  |
+                         |                              |
+         DP ( HERE ) --> --------------------------------
+
+         PAD ----------> --------------------------------
+
+         SP -----------> --------------------------------
+                         | Stos glowny                  |
+         S0 -----------> |------------------------------| <-- TIB
+                         | Bufor terminalu              |
+                         --------------------------------
+
+         RP -----------> --------------------------------
+                         | Stos powrotow                |
+         R0 -----------> |------------------------------| <-- UP
+                         |                              |
+                         | Zmienne uzytkownika          |
+                         |                              |
+         FIRST --------> |------------------------------|
+                         |                              |
+                         |                              |
+                         | Bufor wejscia - wyjscia      |
+                         |                              |
+                         |                              |
+         LIMIT --------> --------------------------------
+
+                             GORA PAMIECI ( FFFF )
+;        %
+
+         page
+         subttl Definicje Macro
+
+header    macro  b1,nazwa,etykie,lfaŠn&etykie:    db     b1        ; nfa
+          dc     nazwa   ; nazwa
+          dw     n&lfa     ; lfa
+c&etykie:    dw     p&etykie  ; cfa
+          endm
+
+head1     macro  b1,nazwa,etykie,lfa
+n&etykie:    db    b1
+          dc    nazwa
+          dw    n&lfa
+c&etykie:    dw    pf50   ; do definicji dwukropkowej
+          endm
+
+stala     macro  b1,nazwa,etykie,lfa,wart
+n&etykie:    db    b1
+          dc    nazwa
+          dw    n&lfa
+c&etykie:    dw    pf53
+          dw    wart
+          endm
+
+user1     macro  b1,nazwa,etykie,lfa,wart
+n&etykie:    db    b1
+          dc    nazwa
+          dw    n&lfa
+c&etykie:    dw    pf55
+          db    wart
+          endm
+
+user      macro  b1,nazwa,etykie,lfa,wart
+n&etykie:    db    b1
+          dc    nazwa
+          dw    n&lfa
+c&etykie:    dw    pf55
+          dw    wart
+          endm
+
+var       macro b1,nazwa,etykie,lfa,wart
+n&etykie:    db    b1
+          dc    nazwa
+          dw    n&lfa
+c&etykie:    dw    pf54
+          dw    wart
+          endm
+
+lista     macro  x
+          irp    y,<x>
+          dw     y
+          endm
+          endm
+

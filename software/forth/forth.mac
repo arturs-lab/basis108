@@ -1,0 +1,590 @@
+         .xlist
+         page 55
+
+         title Jezyk Fig Forth
+
+         include FORTH_1.MAC
+
+         page
+
+         .radix 16
+         .z80
+         aseg
+         org    100
+
+bdos     equ    0005
+
+FIRST    equ    7000
+LIMIT    equ    8000
+
+RP0      equ    6c00
+
+cold:    jp     l6db0
+
+S0:      dw     6000
+R0:      dw     6c00
+TIB:     dw     5000
+WIDTH:   dw     001f
+WARNG:   dw     0000
+FENCE:   dw     ostatn
+DP:      dw     ostatn
+VOC_LI:  dw     ostatn
+BLK:     dw     0000
+IN:      dw     0000
+OUT:     dw     0000
+SCR:     dw     0000
+OFFSET:  dw     0000
+CONTXT:  dw     aktual
+CURNT:   dw     aktual
+STATE:   dw     0000
+BASE:    dw     000a
+DPL:     dw     0000
+FLD:     dw     0000
+CSP:     dw     0000
+RHUSH:   dw     0000
+HLD:     dw     0000
+
+         page
+
+RP:      dw     RP0
+l5e4c:   dw     8149
+lastk:   db     00
+aktual:  dw     nf227
+ 
+pg1:     push   de
+pg2:     push   hlŠpg3:     ld     a,(bc)
+         inc    bc
+         ld     l,a
+         ld     a,(bc)
+         inc    bc
+         ld     h,a
+l5e72:   ld     e,(hl)
+         inc    hl
+         ld     d,(hl)
+         ex     de,hl
+         jp     (hl)
+
+         include FORTH_3.MAC
+
+         header 83,'ROT',f100,f99
+pf100:   pop    de
+         pop    hl
+         ex     (sp),hl
+         jp     pg1
+
+         head1  85,'SPACE',f101,f100
+         lista  <cf60,cf12,cf26>
+
+         head1  84,'-DUP',f102,f101
+         lista  <cf40,cf4,0004,cf40,cf26>
+
+         head1  88,'TRAVERSE',f103,f102
+         lista  <cf39,cf37,cf33,cf1,007f,cf37,cf45,cf97,cf4,0fff0>
+         lista  <cf39,cf38,cf26>
+
+         head1  86,'LATEST',f104,f103
+         lista  <cf81,cf44,cf44,cf26>
+
+         head1  83,'LFA',f105,f104
+         lista  <cf1,0004,cf95,cf26>
+
+         head1  83,'CFA',f106,f105
+         lista  <cf58,cf95,cf26>
+
+         head1  83,'NFA',f107,f106
+         lista  <cf1,0005,cf95,cf1,0ffff,cf103,cf26>
+
+         head1  83,'PFA',f108,f107
+         lista  <cf57,cf103,cf1,0005,cf33,cf26>
+
+         head1  84,'!CSP',f109,f108
+         lista  <cf22,cf86,cf47,cf26>
+
+         head1  86,'?ERROR',f110,f109
+         lista  <cf39,cf4,0008,cf144,cf3,0004,cf38,cf26>
+
+         head1  85,'?COMP',f111,f110
+         lista  <cf82,cf44,cf31,cf1,0011,cf110,cf26>
+
+         head1  85,'?EXEC',f112,f111Š         lista  <cf82,cf44,cf1,0012,cf110,cf26>
+
+         head1  86,'?PAIRS',f113,f112
+         lista  <cf95,cf1,0013,cf110,cf26>
+
+         head1  84,'?CSP',f114,f113
+         lista  <cf22,cf86,cf44,cf95,cf1,0014,cf110,cf26>
+
+         head1  88,'?LOADING',f115,f114
+         lista  <cf75,cf44,cf31,cf1,0016,cf110,cf26>
+
+         head1  87,'COMPILE',f116,f115
+         lista  <cf111,cf29,cf40,cf90,cf28,cf44,cf93,cf26>
+
+         head1  0c1,'[',f117,f116
+         lista  <cf56,cf82,cf47,cf26>
+
+         head1  81,']',f118,f117
+         lista  <cf1,00c0,cf82,cf47,cf26>
+
+         head1  86,'SMUDGE',f119,f118
+         lista  <cf104,cf1,0020,cf43,cf26>
+
+         head1  83,'HEX',f120,f119
+         lista  <cf1,0010,cf83,cf47,cf26>
+
+         head1  87,'DECIMAL',f121,f120
+         lista  <cf1,000a,cf83,cf47,cf26>
+
+         head1  87,'(;CODE)',f122,f121
+         lista  <cf29,cf104,cf108,cf106,cf47,cf400,cf26>
+
+         head1  0c5,';CODE',f123,f122
+         lista  <cf109,cf116,cf122,cf117,cf119,cf26>
+
+         head1  87,'<BUILDS',f124,f123
+         lista  <cf56,cf53,cf26>
+
+         head1  85,'DOES>',f125,f124
+         lista  <cf29,cf104,cf108,cf47,cf122>
+pf125:   ld     hl,(RP)
+         dec    hl
+         ld     (hl),b
+         dec    hl
+         ld     (hl),c
+         ld     (RP),hl
+         inc    de
+         ex     de,hl
+         ld     c,(hl)
+         inc    hl
+         ld     b,(hl)
+         inc    hl
+         jp     pg2
+
+         head1  85,'COUNT',f126,f125Š         lista  <cf40,cf89,cf39,cf45,cf26>
+
+         head1  84,'TYPE',f127,f126
+         listá  <cf102,cf4,0018,cf37,cf33>
+         lista  <cf39,cf7,cf8,cf45,cf12,cf5,0fff8>
+         lista  <cf3,0004,cf38,cf26>
+
+         head1  89,'-TRAILING',f128,f127
+         lista  <cf40,cf56,cf7,cf37,cf37,cf33,cf57,cf95,cf45,cf60>
+         lista  <cf95,cf4,0008,cf27,cf3,0006,cf57,cf95,cf5,0ffe0,cf26>
+
+         head1  84,'(.")',f129,f128
+         lista  <cf30,cf126,cf40,cf89,cf29,cf33,cf28,cf127,cf26>
+
+         head1  0c2,'."',f130,f129
+         lista  <cf1,0022,cf82,cf44,cf4,0014,cf116,cf129,cf139,cf91,cf45>
+         lista  <cf89,cf92,cf3,000a,cf139,cf91,cf126,cf127,cf26>
+
+         head1  86,'EXPECT',f131,f130
+         lista  <cf37,cf33,cf37,cf7,cf13,cf40,cf1,000e,cf66,cf44,cf96>
+         lista  <cf4,002a,cf38,cf40,cf8,cf96,cf40,cf29,cf58,cf95,cf33>
+         lista  <cf28,cf4,000a,cf52,cf52,cf3,0032,cf1,000d,cf96,cf4,000e>
+         lista  <cf27,cf38,cf60,cf56,cf3,0004,cf40,cf8,cf48,cf56,cf8,cf89>
+         lista  <cf47,cf12,cf5,0ff9c,cf38,cf26>
+
+         head1  85,'QUERY',f132,f131
+         lista  <cf69,cf44,cf1,0050,cf131,cf56,cf76,cf47,cf26>
+
+nf133:   db     0c1
+         db     80
+         dw     nf132
+cf133:   dw     pf50
+         lista  <cf75,cf44,cf4,002a,cf57,cf75,cf42,cf56,cf76,cf47,cf75>
+         lista  <cf44,cf65,cf57,cf95,cf19,cf31,cf4,0008,cf112,cf29,cf38>
+         lista  <cf3,0006,cf29,cf38,cf26>
+
+         header 84,'FILL',f134,f133
+pf134:   ld     l,c
+         ld     h,b
+         pop    de
+         pop    bc
+         ex     (sp),hl
+         ex     de,hl
+l696e:   ld     a,b
+         or     c
+         jr     z,l6978
+         ld     a,l
+         ld     (de),a
+         inc    de
+         dec    bc
+         jr     l696e
+l6978:   pop    bc
+         jp     pg3
+
+         head1  85,'ERASE',f135,f134Š         lista  <cf56,cf134,cf26>
+
+         head1  86,'BLANKS',f136,f135
+         lista  <cf60,cf134,cf26>
+
+         head1  84,'HOLD',f137,f136
+         lista  <cf1,0ffff,cf88,cf42,cf88,cf44,cf48,cf26>
+
+         head1  83,'PAD',f138,f137
+         lista  <cf91,cf1,0044,cf33,cf26>
+
+         head1  84,'WORD',f139,f138
+         lista  <cf75,cf44,cf4,000c,cf75,cf44,cf189,cf3,0006,cf69,cf44,cf76>
+         lista  <cf44,cf33,cf39,cf11,cf91,cf1,0022,cf136,cf76,cf42,cf37,cf95>
+         lista  <cf28,cf30,cf91,cf48,cf33,cf91,cf89,cf29,cf16,cf26>
+
+         head1  88,'(NUMBER)',f140,f139
+         lista  <cf89,cf40,cf28,cf45,cf83,cf44,cf9,cf4,002c,cf39,cf83,cf44>
+         lista  <cf17,cf38,cf100,cf83,cf44,cf17,cf34,cf84,cf44,cf89,cf4,0008>
+         lista  <cf57,cf84,cf42,cf29,cf3,0ffc6,cf29,cf26>
+
+         head1  86,'NUMBER',f141,f140
+         lista  <cf56,cf56,cf100,cf40,cf89,cf45,cf1,002d,cf96,cf40,cf28,cf33>
+         lista  <cf1,0ffff,cf84,cf47,cf140,cf40,cf45,cf60,cf95,cf4,0016,cf40>
+         lista  <cf45,cf1,002e,cf95,cf56,cf110,cf56,cf3,0ffdc,cf38,cf29>
+         lista  <cf4,0004,cf36,cf26>
+
+         head1  84,'FIND',f142,f141
+         lista  <cf60,cf139,cf91,cf80,cf44,cf44,cf10,cf40,cf31,cf4,00a0,cf38>
+         lista  <cf91,cf104,cf10,cf26>
+
+         head1  87,'(ABORT)',f143,f142
+         lista  <cf159,cf26>
+
+         head1  85,'ERROR',f144,f143
+         lista  <cf71,cf44,cf32,cf4,0004,cf143,cf91,cf126,cf127>
+         lista  <cf129,3f02,8d20,cf180,cf23,cf75,cf44,cf102,cf4,0008,cf76>
+         lista  <cf44,cf39,cf158>
+
+         head1  83,'ID.',f145,f144
+         lista  <cf138,cf1,0020,cf1,005f,cf134,cf40,cf108,cf105,cf37,cf95>
+         lista  <cf138,cf39,cf16,cf138,cf126,cf1,001f,cf19,cf41,cf33,cf57>
+         lista  <cf95,cf40,cf44,cf1,0ff7f,cf19,cf39,cf47,cf127,cf101,cf26>
+
+         head1  86,'CREATE',f146,f145
+         lista  <cf142,cf4,0010,cf38,cf107,cf145,cf1,0004,cf180,cf101,cf91>
+         lista  <cf40,cf45,cf70,cf44,cf167,cf89,cf92,cf40,cf1,00a0,cf43,cf91>
+         lista  <cf57,cf95,cf1,0080,cf43,cf104,cf93,cf81,cf44,cf47,cf91>
+         lista  <cf90,cf93,cf26>
+
+         head1  89,'[COMPILE]',f147,f146
+         lista  <cf141,cf31,cf56,cf110,cf38,cf106,cf93,cf26>
+
+         head1  87,'LITERAL',f148,f147
+         lista  <cf82,cf44,cf4,0008,cf116,cf1,cf93,cf26>Š
+         head1  88,'DLITERAL',f149,f148
+         lista  <cf82,cf44,cf4,0008,cf39,cf148,cf148,cf26>
+
+         head1  85,'?STACK',f150,f149
+         lista  <cf22,cf67,cf44,cf39,cf98,cf57,cf110,cf22,cf91,cf1,0080>
+         lista  <cf33,cf98,cf1,0007,cf110,cf26>
+
+         head1  89,'INTERPRET',f151,f150
+         lista  <cf142,cf4,001e,cf82,cf44,cf97,cf4,000a,cf106,cf93,cf3,0006>
+         lista  <cf106,cf2,cf150,cf3,001c,cf91,cf141,cf84,cf44,cf89,cf4,0008>
+         lista  <cf149,cf3,0006,cf38,cf148,cf150,cf3,0ffc2>
+
+         head1  89,'IMMEDIATE',f152,f151
+         lista  <cf104,cf1,0040,cf43,cf26>
+
+         head1  8a,'VOCABULARY',f153,f152
+         lista  <cf124,cf1,0a081,cf93,cf81,cf44,cf106,cf93,cf91,cf74,cf44>
+         lista  <cf93,cf74,cf47>
+l6ce2:   lista  <cf125,cf90,cf80,cf47,cf26>
+
+nf154:   db     0c5
+         dc     'FORTH'
+         dw     nf153
+cf154:   dw     pf125
+         dw     l6ce2
+
+nf155:   db     81
+         db     0a0
+l6cf8:   dw     WUDG
+l6cfa:   dw     0000
+
+         head1  8b,'DEFINITIONS',f156,f154
+         lista  <cf80,cf44,cf81,cf47,cf26>
+
+         head1  0c1,'(',f157,f156
+         lista  <cf1,0029,cf139,cf26>
+
+         head1  84,'QUIT',f158,f157
+         lista  <cf56,cf75,cf47,cf117,cf25,cf15,cf132,cf151,cf82,cf44,cf31>
+         lista  <cf4,0007,cf129>
+         db     02,6f,6b
+         lista  <cf3,0ffe7>
+
+         head1  85,'ABORT',f159,f158
+         lista  <cf23,cf121,cf150,cf15,cf227,cf129> ; usuniete cls
+         db     0e,'fig-FORTH 1.1A'
+         dw     cf15,cf129
+         db     11,'(C) Abersoft 1983'
+         dw     cf15,cf129
+         db     2c,'Wersja dla Apple ][ (C) Artur Jasowicz 1991 '
+         lista  <cf15,cf154,cf156,cf158>
+
+l6d93:   ld     bc,warmve
+         ld     ix,(R0)Š         ld     sp,(S0)
+         jp     pg3
+
+warmve:  dw     cf160
+
+nf160:   db     84
+         dc     'WARM'
+         dw     nf159
+cf160:   dw     pf50
+         lista  <cf186,cf159>
+
+l6db0:   ld     bc,coldve
+         ld     ix,(R0)
+         ld     sp,(S0)
+         jp     pg3
+
+coldve:  dw     cf161
+
+nf161:   db     84
+         dc     'COLD'
+         dw     nf160
+cf161:   dw     pf50
+         lista  <cf186,cf1,FIRST,cf181,cf47,cf1,FIRST,cf182,cf47>
+         lista  <cf1,S0,cf1,R0,cf44,cf1,0006,cf33,cf1,002c,cf16>
+         lista  <cf187,cf1,l5e4c,cf44,cf1,l6cf8,cf47,cf159>
+
+         header 84,'S->D',f162,f161
+pf162:   pop    de
+         ld     hl,0000
+         ld     a,d
+         and    80
+         jr     z,lp162
+         dec    hl
+lp162:   jp     pg1
+
+         head1  82,'+-',f163,f162
+         lista  <cf32,cf4,0004,cf35,cf26>
+
+         head1  83,'D+-',f164,f163
+         lista  <cf32,cf4,0004,cf36,cf26>
+
+         head1  83,'ABS',f165,f164
+         lista  <cf40,cf163,cf26>
+
+         head1  84,'DABS',f166,f165
+         lista  <cf40,cf164,cf26>
+
+         head1  83,'MIN',f167,f166
+         lista  <cf41,cf99,cf4,0004,cf39,cf38,cf26>
+
+         head1  83,'MAX',f168,f167
+         lista  <cf41,cf97,cf4,0004,cf39,cf38,cf26>
+
+         head1  82,'M*',f169,f168
+         lista  <cf41,cf21,cf28,cf165,cf39,cf165,cf17,cf29,cf164,cf26>Š
+         head1  82,'M/',f170,f169
+         lista  <cf37,cf28,cf28,cf166,cf30,cf65,cf18,cf29,cf30,cf21,cf163,cf39>
+         lista  <cf29,cf163,cf39,cf26>
+
+         head1  81,'*',f171,f170
+         lista  <cf169,cf38,cf26>
+
+
+
+         header 87,'MESSAGE',f180,f171
+pf180:   ex     (sp),hl
+         push   de
+         push   bc
+         push   hl
+         ld     e,0d   ; cr
+         call   sbr
+         ld     e,0a           ; lf
+         call   sbr
+         ld     de,tekst       ; MSG #
+         ld     c,09
+         call   0005
+         pop    hl
+         ld     a,l
+         add    a,41
+         ld     e,a            ; kod bledu
+         call   sbr
+         pop    bc
+         pop    de
+         pop    hl
+         jp     pg3
+sbr:     ld     c,02
+         call   0005
+         ret
+tekst:   db     'MSG # $'
+
+l6fc0:   push   bc
+         push   hl
+         ld     c,0b      ; constate
+         call   bdos
+         or     a
+         ld     hl,0000
+         jr     nz,lc01
+         inc    l
+         jr     lc0wy
+lc01:    ld     c,01      ; conin
+         call   bdos
+         cp     1b
+         jr     nz,lc0wy
+         inc    hl
+lc0wy:   rst    28
+         pop    de
+         pop    bc
+         jp     pg2
+Šl6fda:   db     43            ; 'C'
+l6fdb:   push   bc
+         push   de
+         xor    a             ; wyzeruj
+         ld     (lastk),a     ; lastk
+l6feb:   ld     a,(l6fda)
+         ld     e,a 
+l6fee:   ld     c,02          ; wypisz kod kursora
+         call   bdos
+         ld     e,08
+         ld     c,02          ; cofnij kursor
+         call   bdos
+         ld     c,01          ; wczytaj znak
+         call   bdos          ; z konsoli
+         ld     (lastk),a     ; i zapamietaj go w lastk
+         ld     l,a           
+         ld     h,0           ; przygotuj znak do wpisania na stos
+         push   hl
+         ld     e,20          ; kod spacji
+         ld     c,02          ; puch
+         call   bdos
+         pop    hl
+         pop    de
+         pop    bc
+         jp     pg2
+
+l706d:   db     00
+
+l706e:   dw     l7070
+l7070:   pop    hl
+         push   bc
+         push   hl
+         ld     e,l
+         ld     c,02
+         call   bdos
+         ld     a,(l706d)
+         and    a
+         jr     z,l7089
+         pop    hl
+         push   hl
+         ld     e,l
+         ld     c,05
+         call   bdos
+l7089:   pop    hl
+         pop    bc
+         ld     a,l
+         cp     '~'
+         jp     nz,pg3
+         rst    28
+         jp     pg3
+
+l7093:   push   bc
+         push   hl
+         push   de
+         ld     e,0d       ; crŠ         ld     c,02
+         call   bdos
+         ld     e,0a       ; lf
+         ld     c,02
+         call   bdos
+         ld     a,(l706d)
+         and    a
+         jr     z,l70a8
+         ld     e,0d       ;cr
+         ld     c,05
+         call   bdos
+         ld     d,0a       ; lf
+         ld     c,05
+         call   bdos
+l70a8:   pop    de
+         pop    hl
+         pop    bc
+         jp     pg3
+
+         var    83,'USE',f181,f180,FIRST
+
+         var    84,'PREV',f182,f181,FIRST
+
+         stala  85,'#BUFF',f183,f182,0008
+
+         head1  85,'+BUFF',f184,f183
+         lista  <cf1,0084,cf33,cf40,cf63,cf96,cf4,0006,cf38,cf62>
+         lista  <cf40,cf182,cf44,cf95,cf26>
+
+         head1  86,'UPDATE',f185,f184
+         lista  <cf182,cf44,cf44,cf1,0080,cf20,cf182,cf44,cf47,cf26>
+
+         head1  8d,'EMPTY-BUFFERS',f186,f185
+         lista  <cf62,cf63,cf37,cf95,cf135,cf63,cf62,cf7,cf1,7fff,cf8,cf47>
+         lista  <cf1,0084,cf6,0fff2,cf26>
+
+         head1  83,'DR0',f187,f186
+         lista  <cf56,cf79,cf47,cf26>
+
+         head1  86,'BUFFER',f188,f187
+         lista  <cf181,cf44,cf40,cf28,cf184,cf4,0fffc,cf181,cf47,cf30,cf44>
+         lista  <cf32,cf4,0014,cf30,cf90,cf30,cf44,cf1,7fff,cf19,cf56,cf192>
+         lista  <cf30,cf47,cf30,cf182,cf47,cf29,cf90,cf26>
+
+         head1  85,'BLOCK',f189,f188
+         lista  <cf79,cf44,cf33,cf28,cf182,cf44,cf40,cf44,cf30,cf95,cf40>
+         lista  <cf33,cf4,0034,cf184,cf31,cf4,0014,cf38,cf30,cf188,cf40>
+         lista  <cf30,cf57,cf192,cf58,cf95,cf40,cf44,cf30,cf95,cf40,cf33,cf31>
+         lista  <cf4,0ffd6,cf40,cf182,cf47,cf29,cf38,cf90,cf26>
+
+         stala  82,'LO',f190,f180,0d000
+
+         stala  82,'HI',f191,f190,0fbff
+
+         head1  83,'R/W',f192,f191Š         lista  <cf28,cf64,cf171,cf190,cf33,cf40,cf191,cf99,cf1,0006,cf110>
+         lista  <cf29,cf4,0004,cf39,cf64,cf16,cf26>
+
+
+
+         header 83,'CLS',f226,f192
+pf226:   push   bc
+         push   hl
+         push   de
+         ld     a,(0c00c)
+         call   zeruj
+         ld     a,(0c00d)
+         call   zeruj
+         pop    de
+         pop    hl
+         pop    bc
+         jp     pg3
+
+zeruj:   ld     hl,0f400
+         ld     de,0f401
+         ld     bc,03ff
+         ld     a,80
+         ld     (hl),a
+         ldir
+         ret
+
+         head1  84,'.CPU',f227,f226
+         dw     cf129
+         db     10,' 56K Apple CP/M '
+         dw     cf26
+
+         header 84,'ZBUG',f400,f227
+pf400:   rst    28
+         jp     pg3
+
+         DEFS   20
+
+OSTATN:
+WUDG:    DW     0000
+
+l77ac:   dw     6cfa
+
+l8159:
+
+koniec   equ    $
+
+         .list
+         end
+
+

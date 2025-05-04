@@ -1,0 +1,316 @@
+8048 Assembler           Version 1.19   05/01/96 01:10:48    Page 1
+D:\CAD\8048\KBD4.ASM
+
+
+
+    1 0000              ; Keyboard converter XT -> Apple IIe
+    2 0000              
+    3 0000              ; register usage:
+    4 0000              ; r0  pointer to user memory
+    5 0000              ; r1  
+    6 0000              ; r2  counter of chars in buffer
+    7 0000              ; r3  output buffer pointer
+    8 0000              ; r4  status register
+    9 0000              ;    0 shift
+   10 0000              ;     1 caps lock
+   11 0000              ;     2 ctrl
+   12 0000              ;     3 alt
+   13 0000              ;     4 prefix e0
+   14 0000              ; r5  temporary scancode storage
+   15 0000              ; r6  general purpose, scratch
+   16 0000              ; r7  general purpose, scratch
+   17 0000              ; r0' pointer to user memory
+   18 0000              ; r1' interrupt handler
+   19 0000              ; r2' interrupt handler stores A here
+   20 0000              ; r3' input buffer pointer
+   21 0000              ; r4' 
+   22 0000              ; r5' 
+   23 0000              ; r6' 
+   24 0000              ; r7' 
+   25 0000              
+   26 0000              bootd  equ     00h             ; delay after boot
+   27 0000              delch  equ     80h             ; delay between chars
+   28 0000              delck  equ     05h             ; delay between clock pulses
+   29 0000              deltim equ     40h             ; inner loop length for delay procedure
+   30 0000              
+   31 0000              shift  equ    01h
+   32 0000              caps   equ    02h
+   33 0000              ctrl   equ    04h
+   34 0000              alt    equ    08h
+   35 0000              e0     equ    10h
+   36 0000              
+   37 0000                     org     0
+   38 0000 0409                jmp     start
+   39 0002              
+   40 0003                     ORG     3
+   41 0003 0497         int:   jmp     inth            ; go to INT handler
+   42 0005              
+   43 0007                     org     7
+   44 0007 04B7         timr:  jmp     timrh           ; go to timer interrupt handler
+   45 0009              
+   46 0009 15           start: dis     i                ; disable interrupts
+   47 000A 27                  clr     a
+   48 000B D5                  sel     rb1
+   49 000C AB                  mov     r3,a             ; reset input buffer pointer
+   50 000D C5                  sel     rb0
+   51 000E AC                  mov     r4,a             ; reset status register
+   52 000F AB                  mov     r3,a             ; reset output buffer pointer
+   53 0010 AA                  mov     r2,a             ; reset buffer size counter
+   54 0011 07                  dec     a   
+   55 0012 39                  outl    p1,a             ; initialize kbd port
+   56 0013 3A                  outl    p2,a             ; make sure that keyboard output is high
+   57 0014 23CF                mov     a,#0cfh          ; turn on both LEDs
+
+
+
+
+8048 Assembler           Version 1.19   05/01/96 01:10:48    Page 2
+D:\CAD\8048\KBD4.ASM
+
+
+
+   58 0016 3A                  outl    p2,a
+   59 0017 2300                mov     a,#bootd
+   60 0019 148C                call    delay            ; wait a little before doing anything
+   61 001B 23FF                mov     a,#0ffh          ; turn off LEDs
+   62 001D 3A                  outl    p2,a
+   63 001E 05                  en      i                ; enable interrupts
+   64 001F FA           st1:   mov     a,r2             ; check if data present in input buffer
+   65 0020 C61F                jz      st1
+   66 0022              
+   67 0022              
+   68 0022              ; send data received from kbd
+   69 0022              
+   70 0022 CA           st2:   dec     r2
+   71 0023 FB                  mov     a,r3
+   72 0024 530F                anl     a,#0fh           ; limit buffer to 16 bytes
+   73 0026 1B                  inc     r3               ; point to next byte in buffer
+   74 0027 0320                add     a,#20h           ; add offset to RAM
+   75 0029 A8                  mov     r0,a             ; store it in index register
+   76 002A F0                  mov     a,@r0            ; retreive scancode
+   77 002B AD                  mov     r5,a             ; store scancode
+   78 002C D3E0                xrl     a,#0e0h          ; is it a prefix?
+   79 002E 9636                jnz     st3              ; no, keep crunching
+   80 0030 2310                mov     a,#10h
+   81 0032 4C                  orl     a,r4             ; set prefix flag on
+   82 0033 AC                  mov     r4,a
+   83 0034 041F                jmp     st1              ; and work on next byte
+   84 0036 FD           st3:   mov     a,r5
+   85 0037 F23E                jb7     exit             ; ignore break codes for now
+   86 0039 E3                  movp3   a,@a             ; get ascii code from table
+   87 003A F244                jb7     special          ; this is not a normal letter
+   88 003C 1469                call    sendch           ; send the code
+   89 003E              exit:
+   90 003E              ;       mov     a,#0efh                ; clear prefix flag, it is a "one time only" thing
+   91 003E 23E0                mov     a,#0e0h         ; clear all flags for now
+   92 0040 5C                  anl     a,r4
+   93 0041 AC                  mov     r4,a
+   94 0042 041F                jmp     st1              ; return to main loop
+   95 0044              
+   96 0044              special:
+   97 0044 1448                call    s0
+   98 0046 041F                jmp     st1
+   99 0048              
+  100 0048 537F         s0:    anl     a,#7fh             ; strip 7-th bit
+  101 004A 9651                jnz     s1               ; not CTRL ( code 80 )
+  102 004C 2304                mov     a,#ctrl          ; set CTRL flag on
+  103 004E 4C                  orl     a,r4             ; get status register
+  104 004F AC                  mov     r4,a
+  105 0050 83                  ret
+  106 0051 07           s1:    dec     a
+  107 0052 9654                jnz     s2
+  108 0054 07           s2:    dec     a
+  109 0055 9657                jnz     s3
+  110 0057 07           s3:    dec     a
+  111 0058 965A                jnz     s4
+  112 005A 07           s4:    dec     a
+  113 005B 965D                jnz     s5
+  114 005D 07           s5:    dec     a
+
+
+
+
+8048 Assembler           Version 1.19   05/01/96 01:10:48    Page 3
+D:\CAD\8048\KBD4.ASM
+
+
+
+  115 005E 9660                jnz     s6
+  116 0060 07           s6:    dec     a
+  117 0061 9663                jnz     s7
+  118 0063 07           s7:    dec     a
+  119 0064 9666                jnz     s8
+  120 0066 07           s8:    dec     a
+  121 0067 9669                jnz     s9
+  122 0069              s9:    
+  123 0069              
+  124 0069              
+  125 0069 AE           sendch:mov     r6,a             ; store char for later
+  126 006A 2304                mov     a,#ctrl          ; is ctrl flag on?
+  127 006C 5C                  anl     a,r4
+  128 006D C673                jz      sc1              ; no, just send the char
+  129 006F FE                  mov     a,r6             ; yes, get the ascii code again
+  130 0070 533F                anl     a,#3fh           ; and convert to ctrl code
+  131 0072 AE                  mov     r6,a
+  132 0073 4380         sc1:   orl     a,#80h           ; set clk high
+  133 0075 39                  outl    p1,a             ; send to keyboard port
+  134 0076 148A                call    ckdel
+  135 0078 FE                  mov     a,r6             ; get char
+  136 0079 537F                anl     a,#7fh           ; clk low
+  137 007B 39                  outl    p1,a
+  138 007C 148A                call    ckdel
+  139 007E FE                  mov     a,r6             ; get char
+  140 007F 4380                orl     a,#80h           ; clk high
+  141 0081 39                  outl    p1,a
+  142 0082 23FF                mov     a,#0ffh          ; set kbd port to all high again
+  143 0084 39                  outl    p1,a
+  144 0085              ;       mov     a,#0e0h         ; clear all flags for now
+  145 0085              ;       anl     a,r4
+  146 0085              ;       mov     r4,a
+  147 0085 83                  ret
+  148 0086              
+  149 0086              ; delay between characters
+  150 0086 2380         chdel: mov     a,#delch
+  151 0088 048C                jmp     delay
+  152 008A              
+  153 008A              ; delay between clock pulses
+  154 008A 2305         ckdel: mov     a,#delck        ; delay between clock pulses
+  155 008C              
+  156 008C              ; main delay procedure
+  157 008C AF           delay: mov     r7,a            ; store delay time in counter
+  158 008D 2340         del2:  mov     a,#deltim       ; load inner loop delay time
+  159 008F 07           del1:  dec     a               ; decrement inner delay counter
+  160 0090 968F                jnz     del1            ; loop until zero
+  161 0092 CF                  dec     r7
+  162 0093 FF                  mov     a,r7
+  163 0094 968D                jnz     del2            ; same here
+  164 0096 83                  ret
+  165 0097              
+  166 0097              ; interrupt handler procedure
+  167 0097 D5           inth:  sel     rb1
+  168 0098 AA                  mov     r2,a             ; store contents of A
+  169 0099 27                  clr     a                ; clear input
+  170 009A 04A0                jmp     ih2              ; you are here cause clk is low, so wait for it to go high
+  171 009C 86A0         ih1:   jni     ih2
+
+
+
+
+8048 Assembler           Version 1.19   05/01/96 01:10:48    Page 4
+D:\CAD\8048\KBD4.ASM
+
+
+
+  172 009E 049C                jmp     ih1              ; wait for clock to go low
+  173 00A0 86A0         ih2:   jni     ih2              ; wait in loop for clock to go high
+  174 00A2 97                  clr     c                ; clear carry bit
+  175 00A3 26A6                jnt0    ih3              ; jump if T0 (kbddata) = 0
+  176 00A5 A7                  cpl     c                ; otherwise set CY=1
+  177 00A6 67           ih3:   rrc     a                ; rotate CY into A(7) and A(0) into CY
+  178 00A7 E69C                jnc     ih1              ; if CY=0 more bits need to be received
+  179 00A9 A9                  mov     r1,a             ; store scancode
+  180 00AA FB                  mov     a,r3
+  181 00AB 530F                anl     a,#0fh           ; limit buffer to 16 bytes
+  182 00AD 1B                  inc     r3               ; point to next byte in buffer
+  183 00AE 0320                add     a,#20h           ; add offset to RAM
+  184 00B0 A8                  mov     r0,a             ; store it in index register
+  185 00B1 F9                  mov     a,r1             ; retrieve scancode
+  186 00B2 A0                  mov     @r0,a            ; store it in RAM
+  187 00B3 FA                  mov     a,r2             ; restore A
+  188 00B4 C5                  sel     rb0
+  189 00B5 1A                  inc     r2               ; increase counter of chars to be processed
+  190 00B6 93                  retr
+  191 00B7              
+  192 00B7 93           timrh: retr
+  193 00B8              
+  194 0300                     org     0300h
+  195 0300              
+  196 0300 7F 1B 31     scan:  db      '',27,'123456',  '7890-=',8,9       ; 00 - 0f
+      0303 32 33 34
+      0306 35 36 37
+      0309 38 39 30
+      030C 2D 3D 08
+      030F 09
+  197 0310 51 57 45            db      'QWERTYUI',       'OP[]',13,80h,'AS'  ; 10 - 1f
+      0313 52 54 59
+      0316 55 49 4F
+      0319 50 5B 5D
+ 0D 80 41
+      031F 53
+  198 0320 44 46 47            db      'DFGHJKL:',       39,'~s\ZXCV'       ; 20 - 2f
+      0323 48 4A 4B
+      0326 4C 3A 27
+      0329 7E 73 5C
+      032C 5A 58 43
+      032F 56
+  199 0330 42 4E 4D            db      'BNM,./s*',       'a kfffff'         ; 30 - 3f
+      0333 2C 2E 2F
+      0336 73 2A 61
+      0339 20 6B 66
+      033C 66 66 66
+      033F 66
+  200 0340 66 66 66            db      'fffffnl7',       '89-456+1'         ; 40 - 4f
+      0343 66 66 6E
+      0346 6C 37 38
+      0349 39 2D 34
+      034C 35 36 2B
+      034F 31
+  201 0350 32 33 30            db      '230',8,'mf'    'f '               ; 50 - 58
+      0353 08 7F 7F
+      0356 6D 66 66
+
+
+
+
+8048 Assembler           Version 1.19   05/01/96 01:10:48    Page 5
+D:\CAD\8048\KBD4.ASM
+
+
+
+      0359 20
+  202 035A              
+  203 035A                     end
+
+Defined Symbols:
+  ALT              000008  8
+  BOOTD            000000  0
+  CAPS             000002  2
+  CTRL             000004  4
+  DELCH            000080  128
+  DELCK            000005  5
+  DELTIM           000040  64
+  E0               000010  16
+  SHIFT            000001  1
+
+Defined Labels:
+  CHDEL            000086  134
+  CKDEL            00008A  138
+  DEL1             00008F  143
+  DEL2             00008D  141
+  DELAY            00008C  140
+  EXIT             00003E  62
+  IH1              00009C  156
+  IH2              0000A0  160
+  IH3              0000A6  166
+  INT              000003  3
+  INTH             000097  151
+  S0               000048  72
+  S1               000051  81
+  S2               000054  84
+  S3               000057  87
+  S4               00005A  90
+  S5               00005D  93
+  S6               000060  96
+  S7               000063  99
+  S8               000066  102
+  S9               000069  105
+  SC1              000073  115
+  SCAN             000300  768
+  SENDCH           000069  105
+  SPECIAL          000044  68
+  ST1              00001F  31
+  ST2              000022  34
+  ST3              000036  54
+  START            000009  9
+  TIMR             000007  7
+  TIMRH            0000B7  183

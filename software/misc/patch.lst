@@ -1,0 +1,552 @@
+VASM macro assembler 1.20          5/27/96        2:55:5            Page 1
+
+
+   1                                      select  8085
+   2                      
+   3                      ; I2A2-3.ASM - Apple //e overlay file for IMP - 06/01/87
+   4                      ;
+   5                      ;               6551 with built-in baudrate generator
+   6                      ;
+   7                      ; This overlay file adapts Apple //e computers with various CP/M cards
+   8                      ; and external 300/1200 or 300/1200/2400 bps modems to IMP.COM.  It sup-
+   9                      ; ports the following configurations
+  10                      ;
+  11                      ; CP/M adapter cards
+  12                      ; ------------------
+  13                      ;       ALS CP/M 3.0 adapter card
+  14                      ;       Applied Engineering Z80+ or Z80C
+  15                      ;       Microsoft Softcard Z80 equivalent
+  16                      ;       PCPI Applicard
+  17                      ;
+  18                      ;-----------------------------------------------------------------------
+  19                      ;
+  20                      ; You will want to look this file over carefully.  There are a number of
+  21                      ; options that you can use to configure the program to suit your taste.
+  22                      ;
+  23                      ; Edit this file for your preferences then follow the "TO USE" example
+  24                      ; shown below.
+  25                      ;
+  26                      ; Many terminals will clear the screen with a CTL-Z.  If yours does, put
+  27                      ; a 1AH at CLEAR (010AH).  Many terminals use two characters, the first
+  28                      ; normally an ESC.  For example, ESC *.  In this case put '*' at CLEAR
+  29                      ; (The ESC will automatically be typed with no CTL-character present.)
+  30                      ; If you don't know what your terminal uses, put a 0 at CLEAR and IMP
+  31                      ; will scroll up 24 blank lines to clear the CRT for things like MENU,
+  32                      ; looking at the function key table, typing CTL-Z in command mode, etc.
+  33                      ;
+  34                      ; Use the "SET" command to change the baudrate when desired.  The value
+  35                      ; at MSPEED controls the baudrate when the program is first called up.
+  36                      ;
+  37                      ;       TO USE First edit this file filling in answers for your own
+  38                      ;               equipment.  Then assemble with ASM.COM or equivalent
+  39                      ;               assembler.  Then use MLOAD to merge into the main file
+  40                      ;
+  41                      ;               MLOAD IMP.COM=IMP.COM,I2A2-x.HEX
+  42                      ;
+  43                      ;                                       - Notes by Irv Hoff W6FFC
+  44                      ;
+  45                      ; =   =  =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =
+  46                      ;
+  47                      ; 06/01/87  Improved the GOODBYE routine, added BREAK routine, needs
+  48                      ;           IMP245 to use it.           - Irv Hoff
+  49                      ;
+  50                      ; 06/06/86  Added SNDCTL2 and SNDCLT3 routines for the Applicard.
+  51                      ;                                       - Irv Hoff
+  52                      ;
+  53                      ; 03/22/86  Written for the Apple //e   - Irv Hoff
+  54                      ;
+  55                      ; =   =  =   =   =   =   =   =   =   =   =   =   =   =   =   =   =   =
+  56                      ;
+  57         =00FF        YES     EQU     0FFH
+VASM macro assembler 1.20          5/27/96        2:55:5            Page 2
+
+
+  58         =0000        NO      EQU     0
+  59                      ;
+  60                      ;
+  61                      ;====================== CUSTOMIZATION EQUATES ==========================
+  62                      ;
+  63                      ; CP/M adapter cards for Apple //e
+  64                      ;
+  65         =0000        ALSCARD    EQU  NO             ; Yes if using ALS CP/M card
+  66         =0000        APPLIED    EQU  NO             ; Yes if using Applied Engineering Z80
+  67         =0000        APPLICARD  EQU  NO             ; Yes if using PCPI Applicard CP/M card
+  68         =00FF        MICROSOFT  EQU  YES            ; Yes if Microsoft Softcard CP/M card
+  69                      ;
+  70                      ;-----------------------------------------------------------------------
+  71                      ;
+  72         =E098        PORT    EQU     0E098H
+  73         =E098        MDDATP  EQU     PORT            ; Data port
+  74         =E099        MDCTL1  EQU     PORT+1          ; Status port
+  75         =E09A        MDCTL2  EQU     PORT+2          ; Command port
+  76         =E09B        MDCTL3  EQU     PORT+3          ; Control port
+  77         =0008        MDRCV   EQU     08H             ; Modem receive bit
+  78         =0010        MDSND   EQU     10H             ; Modem send bit
+  79         =0010        MDTXE   EQU     10H             ; Modem send buffer empty bit
+  80                      ;
+  81                      ;
+  82                      ;-----------------------------------------------------------------------
+  83                      ;
+  84                      ; General equates
+  85                      ;
+  86         =001B        ESC     EQU     '['-40H         ; ^[ = Escape
+  87         =0007        BELL    EQU     'G'-40H         ; ^G = Bell character
+  88         =000A        LF      EQU     'J'-40H         ; ^J = Linefeed
+  89         =000B        NEXTRY  EQU     'K'-40H         ; ^K = Try next phone number now
+  90         =000D        CR      EQU     'M'-40H         ; ^M = Carriage return
+  91         =001A        CLRSC EQU     'Z'-40H         ; ^Z = Clear screen, command mode only
+  92         =001A        EOFCHAR EQU     'Z'-40H         ; ^Z = End of file
+  93                      ;
+  94                      ;
+  95                      ;-----------------------------------------------------------------------
+  96                      ;
+  97                      ;
+  98                              ORG     0100H
+  99                      ;
+ 100                              DS      3       ; Skip the data area below
+ 101                      ;
+ 102                      ;
+ 103                      ; These routines and equates are at the beginning of the program so
+ 104                      ; they can be patched by a monitor or overlay file without re-assembling
+ 105                      ; the program.
+ 106                      ;
+ 107  0103 : 08           MSPEED  DB     8       ; 0=110 1=300 2=450 3=600 4=710 5=1200          103H
+ 108                                              ; 6=2400 7=4800 8=9600 9=19200 default
+ 109  0104 : 00           HS2400  DB     NO      ; Yes=2400 bps highest speed                    104H
+ 110  0105 : 00           HS1200  DB     NO      ; Yes=1200 bps highest speed                    105H
+ 111  0106 : 00           RACAL   DB     NO      ; Yes=Racal-Vadic 1200V or 2400V or 2400PA      106H
+ 112  0107 : 00           PROMODM DB     NO      ; Yes=Prometheus ProModem 1200 bps              107H
+ 113  0108 : 00           RESVD1  DB     NO      ; Reserved for special modems                   108H
+ 114  0109 : 00           RESVD2  DB     NO      ; Reserved for special modems                   109H
+VASM macro assembler 1.20          5/27/96        2:55:5            Page 3
+
+
+ 115                      ;
+ 116  010A : 2A           CLEAR   DB     '*'     ; Clear screen character (ESC not needed)       10AH
+ 117                      ;
+ 118  010B : 14           CLOCK   DB     20      ; Clock speed in MHz x10, 25.5 MHz max.         10BH
+ 119                      ;
+ 120                                              ; 20=2 MHh, 37=3.68 MHz, 40=4 MHz, etc.
+ 121  010C : 05           BYTDLY  DB     5       ; 0=0 delay  1=10ms  5=50 ms - 9=90 ms          10CH
+ 122                                              ;   default time to send character in ter-
+ 123                                              ;   minal mode file transfer for slow BBS
+ 124  010D : 05           CRDLY   DB     5       ; 0=0 delay 1=100 ms 5=500 ms - 9=900 ms        10DH
+ 125                                              ;   default time for extra wait after CRLF
+ 126                                              ;   in terminal mode file transfer
+ 127  010E : 05           NOFCOL  DB     5       ; Number of directory columns shown             10EH
+ 128  010F : 50           TCHPUL  DB     'P'     ; T=tone, P=Pulse (Hayes 2400 modems)           10FH
+ 129                      ;.....
+ 130                      ;
+ 131                      ;
+ 132  0110 : 00           ADDLFD  DB     NO      ; Yes=add LF after CR to send file in terminal  110H
+ 133                                              ;   mode (normally added by remote echo)
+ 134  0111 : FF           CONVRUB DB     YES     ; Yes=convert rub to backspace                  111H
+ 135  0112 : FF           CRCDFLT DB     YES     ; Yes=default to CRC checking                   112H
+ 136  0113 : FF           IGNRCTL DB     YES     ; Yes=CTL-chars above ^M not displayed          113H
+ 137                      ;.....
+ 138                      ;
+ 139                      ;
+ 140  0114 : 1B           EXTCHR  DB     '['-40H ; ESC = preceeds local control character        114H
+ 141  0115 : 45           EXITCHR DB     'E'     ; Exit character                                115H
+ 142  0116 : 46           FILESND DB     'F'     ; Send file when in terminal mode               116H
+ 143  0117 : 4E           NOCONCT DB     'N'     ; Disconnect from phone line                    117H
+ 144  0118 : 4C           LOGCHR  DB     'L'     ; Send logon                                    118H
+ 145  0119 : 50           LSTCHR  DB     'P'     ; Toggle printer                                119H
+ 146  011A : 52           UNSAVCH DB     'R'     ; Close input text buffer                       11AH
+ 147  011B : 59           SAVECHR DB     'Y'     ; Open input text buffer                        11BH
+ 148  011C : 5A           CLEARS  DB     'Z'     ; Clears screen, terminal mode                  11CH
+ 149  011D : 51           BRKCHR  DB     'Q'     ; Send a break tone                             11DH
+ 150  011E : 00           NODTR   DB     NO      ; YES if no DTR and need ATH0 to disconnect     11EH
+ 151                      ;.....
+ 152                      ;
+ 153                      ;
+ 154                      ; Handles in/out ports for data and status
+ 155                      ;
+ 156  011F : C3 4B 02     IMDCTL1 JMP   RCVCT1         ; In modem control port                 11FH
+ 157  0122 : 00 00 00 00            DB    0,0,0,0,0,0,0   ; Spares if needed                      122H
+   +         00 00 00     
+ 158                      ;
+ 159  0129 : C3 4B 02     IMDTXE  JMP   RCVCT1         ;                                       129H
+ 160  012C : 00 00 00 00            DB    0,0,0,0,0,0,0   ;                                       12CH
+   +         00 00 00     
+ 161                      ;
+ 162  0133 : C3 4F 02     IMDDATP JMP   RCVDATP         ;in modem data port                     133H
+ 163  0136 : 00 00 00 00            DB    0,0,0,0,0,0,0   ;                                       146H
+   +         00 00 00     
+ 164                      ;
+ 165  013D : C3 47 02     OMDDATP JMP   SNDDATP         ; Out modem data port                   13DH
+ 166  0140 : 00 00 00 00            DB    0,0,0,0,0,0,0   ; Spares if needed                      140H
+   +         00 00 00     
+ 167                      ;.....
+VASM macro assembler 1.20          5/27/96        2:55:5            Page 4
+
+
+ 168                      ;
+ 169                      ;
+ 170  0147 : E6 08        AMDRCV  ANI   MDRCV           ;                                       147H
+ 171  0149 : C9                     RET                   ;                                       149H
+ 172                      ;
+ 173  014A : FE 08        CMDRCV  CPI   MDRCV           ;                                       14AH
+ 174  014C : C9                     RET                   ;                                       14CH
+ 175                      ;
+ 176  014D : E6 10        AMDSND  ANI   MDSND           ;                                       14DH
+ 177  014F : C9                     RET                   ;                                       14FH
+ 178                      ;
+ 179  0150 : FE 10        CMDSND  CPI   MDSND           ;                                       150H
+ 180  0152 : C9                     RET                   ;                                       152H
+ 181                      ;
+ 182  0153 : E6 10        AMDTXE  ANI   MDTXE           ;                                       153H
+ 183  0155 : C9                     RET                   ;                                       155H
+ 184                      ;
+ 185  0156 : FE 10        CMDTXE  CPI   MDTXE           ;                                       156H
+ 186  0158 : C9                     RET                   ;                                       158H
+ 187                      ;.....
+ 188                      ;
+ 189                      ;
+ 190                      ; Special exit vector, used by some computers to reset interrupt vectors
+ 191                      ;
+ 192  0159 : C9           JEXITVEC  RET                   ;                                       159H
+ 193  015A : 00 00                  DB    0,0             ;                                       15AH
+ 194                      ;.....
+ 195                      ;
+ 196                      ;
+ 197                      ; Jump vectors needed by each overlay
+ 198                      ;
+ 199  015C : C3 07 02     JGOODBYE JMP   GOODBYE         ; Disconnects modem by dropping DTR     15CH
+ 200  015F : C3 19 02     JINITMOD JMP   INITMD         ; Initializes modem, autosets baudrate  15FH
+ 201  0162 : C3 5F 02     JSTUPR   JMP   STUPR           ; SET routine to change baudrate        162H
+ 202  0165 : C3 A7 01     JSYSVR   JMP   SYSVR           ; Signon message                        165H
+ 203                      ;.....
+ 204                      ;
+ 205                      ;
+ 206                      ; "AT" command strings, can be replaced in individual overlay if needed
+ 207                      ;
+ 208                      JSTRA    DS    3               ; 1200 bps "AT" string                  168H
+ 209                      JSTR1    DS    3               ; 2400 bps "AT" string                  16BH
+ 210                      ;
+ 211                      ;
+ 212                      ; Next fourteen lines should not be changed by user overlay as these go
+ 213                      ; to specific locations in the main program, not in the overlay.
+ 214                      ;
+ 215                      JCMDSPL DS    3               ; Allows entry of baudrate on CMD line  16EH
+ 216                      JCRLF   DS    3               ; Turns up one new line on display      171H
+ 217                      JDIAL   DS    3               ; Start of dialing routine              174H
+ 218                      JDSCONT DS    3               ; Terminates modem use                  177H
+ 219                      JGOLST  DS    3               ; Printer routine, needed by Apple //e  17AH
+ 220                      JILPRT  DS    3               ; Prints an inline string, 0 to end     17DH
+ 221                      JINBUF  DS    3               ; Stores a keybd string for comparison  180H
+ 222                      JINLNCP DS    3               ; Inline "compare strings" routine      183H
+ 223                      JINMDM  DS    3               ; Max .1 sec wait for modem character   186H
+ 224                      JRCVRSP DS    3               ; For 3801 I/O use (TV-803)             189H
+VASM macro assembler 1.20          5/27/96        2:55:5            Page 5
+
+
+ 225                      JSNDCHR DS    3               ; Sends a character to the modem        18CH
+ 226                      JSNDSTR DS    3               ; Sends a string to the modem, $ to end 18FH
+ 227                      JTIMER  DS    3               ; .1 second timer (amount in 'B' reg.)  192H
+ 228  0195 : C3 02 02     JBREAK  JMP   SENDBRK         ; Break routine                         195H
+ 229  0198 : 00 00 00     JNEW2   DB    0,0,0           ; For future needs                      198H
+ 230                      ;.....
+ 231                      ;
+ 232                      ;
+ 233                      ; For 2400 bps auto-stepdown units
+ 234                      ;
+ 235  019B : 00           MANUAL   DB    0               ; For manual selection flag             19BH
+ 236  019C : C3 E9 02     J300    JMP   OK300           ; Sets baudrate to 300 baud             19CH
+ 237  019F : C3 F0 02     J1200   JMP   OK1200          ; Sets baudrate to 1200 bps             19FH
+ 238  01A2 : C3 F7 02     J2400   JMP   OK2400          ; Sets baudrate to 2400 bps             1A2H
+ 239                      ;.....
+ 240                      ;
+ 241                      ;
+ 242  01A5 : 01 DA        LOGPTR DW      LOGON           ; Pointer to display LOGON message      1A5H
+ 243                      ;
+ 244  01A7 : CD 7D 01     SYSVR  CALL    JILPRT         ; Display the following line            1A7H
+ 245                      ;
+ 246  01AA : 41 70 70 6C          DB      "Apple ][ and " ;
+   +         65 20 5D 5B  
+   +         20 61 6E 64  
+   +         20           
+ 247                      ;
+ 248                               IF     ALSCARD
+ 249                              DB      "ALS CP/M Card"
+ 250                               ENDIF                  ; ALSCARD
+ 251                      ;
+ 252                               IF     APPLICARD
+ 253                              DB      "Applicard"
+ 254                               ENDIF                  ; APPLICARD
+ 255                      ;
+ 256                               IF     APPLIED
+ 257                              DB      "Applied Engineering"
+ 258                               ENDIF                  ; APPLIED
+ 259                      ;
+ 260                               IF     MICROSOFT
+ 261  01B7 : 4D 69 63 72          DB      "Microsoft CP/M 2.2 Card"
+   +         6F 73 6F 66  
+   +         74 20 43 50  
+   +         2F 4D 20 32  
+   +         2E 32 20 43  
+   +         61 72 64     
+ 262                               ENDIF                  ; MICROSOFT
+ 263                      ;
+ 264  01CE : 0D 0A                DB      CR,LF
+ 265                      ;
+ 266  01D0 : 20 5A 38 30          DB      " Z80C ",CR,LF
+   +         43 20 0D 0A  
+ 267  01D8 : 00                   DB      0
+ 268  01D9 : C9                   RET
+ 269                      ;.....
+ 270                      ;
+ 271                      ;
+ 272                      ;-----------------------------------------------------------------------
+VASM macro assembler 1.20          5/27/96        2:55:5            Page 6
+
+
+ 273                      ;
+ 274                      ; NOTE  You can change the SYSVER message to be longer or shorter.  The
+ 275                      ;        end of your last routine should terminate by 0400H (601 bytes
+ 276                      ;        available after start of SYSVER).
+ 277                      ;
+ 278                      ;-----------------------------------------------------------------------
+ 279                      ;
+ 280                      ; You can put in a message at this location which can be called up with
+ 281                      ; (special character-L).  You can put in several lines.  End with a 0.
+ 282                      ;
+ 283  01DA : 48 65 6C 6C  LOGON  DB      "Hello there from a happy computer user",CR,0
+   +         6F 20 74 68  
+   +         65 72 65 20  
+   +         66 72 6F 6D  
+   +         20 61 20 68  
+   +         61 70 70 79  
+   +         20 63 6F 6D  
+   +         70 75 74 65  
+   +         72 20 75 73  
+   +         65 72 0D 00  
+ 284                      ;
+ 285                      ;-----------------------------------------------------------------------
+ 286                      ;
+ 287                      ; This routine sets a 300 ms break tone
+ 288                      ;
+ 289  0202 : 3E 0F        SENDBRK MVI     A,0FH           ; DTR normal, send break tone
+ 290  0204 : C3 09 02             JMP     GOODBYE+2       ; Send the break tone
+ 291                      ;.....
+ 292                      ;
+ 293                      ;
+ 294                      ; This routine sets DTR low for 300 ms to disconnect the modem.
+ 295                      ;
+ 296  0207 : 3E 0E        GOODBYE MVI     A,0EH           ; Turn off DTR and send break
+ 297  0209 : CD 57 02             CALL    SNDCTL2
+ 298  020C : 06 03                MVI     B,3             ; Delay 300 ms to hang up phone
+ 299  020E : CD 92 01             CALL    JTIMER
+ 300  0211 : 3E 0B                MVI     A,0BH           ; Set DTR, Rx, Irq
+ 301  0213 : CD 57 02             CALL    SNDCTL2
+ 302  0216 : E3                   XTHL                    ; Short delay to complete command
+ 303  0217 : E3                   XTHL
+ 304  0218 : C9                   RET
+ 305                      ;.....
+ 306                      ;
+ 307                      ;
+ 308                      ;=========================== INITMD ===================================
+ 309                      ;
+ 310                      ;
+ 311  0219 : 3E 0B        INITMD  MVI     A,0BH           ; Set DTR, Rx, Irq
+ 312  021B : CD 57 02             CALL    SNDCTL2
+ 313  021E : E3                   XTHL                    ; Short delay to complete command
+ 314  021F : E3                   XTHL
+ 315                      ;
+ 316  0220 : 3A 03 01             LDA     MSPEED          ; Get the selected value
+ 317  0223 : FE 01                CPI     1               ; 300 bps
+ 318  0225 : CA E9 02             JZ      OK300
+ 319  0228 : FE 05                CPI     5               ; 1200 bps
+ 320  022A : CA F0 02             JZ      OK1200
+VASM macro assembler 1.20          5/27/96        2:55:5            Page 7
+
+
+ 321  022D : FE 06                CPI     6               ; 2400 bps
+ 322  022F : CA F7 02             JZ      OK2400
+ 323  0232 : FE 08                CPI     8               ; 9600 bps
+ 324  0234 : CA 02 03             JZ      OK9600
+ 325  0237 : C3 65 02             JMP     STUPR1          ; Else ask what is wanted
+ 326                      ;.....
+ 327                      ;
+ 328                      ;
+ 329  023A : 78           INITMOD1 MOV     A,B             ; Get the baudrate back
+ 330  023B : CD 5B 02             CALL    SNDCT3         ; Store default baudrate
+ 331  023E : E3                   XTHL                    ; Short delay to complete command
+ 332  023F : E3                   XTHL
+ 333  0240 : C9                   RET
+ 334                      ;.....
+ 335                      ;
+ 336                      ;
+ 337                      ; If none of the above cards
+ 338                      ;
+ 339  0241 : C9                   RET                     ; From 'CALL INITMD'
+ 340  0242 : C9                   RET
+ 341                      ;.....
+ 342                      ;
+ 343                      ;
+ 344                      ;========================== APPLE I/O ==================================
+ 345                      ;
+ 346  0243 : 32 99 E0     SNDCT1  STA     MDCTL1
+ 347  0246 : C9                   RET
+ 348                      ;
+ 349  0247 : 32 98 E0     SNDDATP STA     MDDATP
+ 350  024A : C9                   RET
+ 351                      ;
+ 352  024B : 3A 99 E0     RCVCT1  LDA     MDCTL1
+ 353  024E : C9                   RET
+ 354                      ;
+ 355  024F : 3A 98 E0     RCVDATP LDA     MDDATP
+ 356  0252 : C9                   RET
+ 357                      ;.....
+ 358                      ;
+ 359                      ;
+ 360  0253 : 3A 9B E0     RCVCTL3  LDA    MDCTL3
+ 361  0256 : C9                    RET
+ 362                      ;
+ 363  0257 : 32 9A E0     SNDCTL2  STA    MDCTL2
+ 364  025A : C9                    RET
+ 365                      ;
+ 366  025B : 32 9B E0     SNDCT3  STA    MDCTL3
+ 367  025E : C9                    RET
+ 368                      ;.....
+ 369                      ;
+ 370                      ;
+ 371                      ;-----------------------------------------------------------------------
+ 372                      ;
+ 373                      ; Use the 'SET' command to select a desired baud rate
+ 374                      ;
+ 375         =025F        STUPR   EQU     $
+ 376  025F : CD 6E 01             CALL    JCMDSPL        ; Gives us CMDBUF+6
+ 377  0262 : D2 9D 02             JNC     STUPR2
+VASM macro assembler 1.20          5/27/96        2:55:5            Page 8
+
+
+ 378                      ;
+ 379  0265 : CD 7D 01     STUPR1 CALL    JILPRT
+ 380  0268 : 49 6E 70 75          DB      "Input Baud Rate (300, 1200, 2400, 9600) ",0
+   +         74 20 42 61  
+   +         75 64 20 52  
+   +         61 74 65 20  
+   +         28 33 30 30  
+   +         2C 20 31 32  
+   +         30 30 2C 20  
+   +         32 34 30 30  
+   +         2C 20 39 36  
+   +         30 30 29 20  
+   +         00           
+ 381  0291 : 11 0C 03             LXI     D,BAUDBUF       ; Point to new input buffer
+ 382  0294 : CD 80 01             CALL    JINBUF
+ 383  0297 : CD 71 01             CALL    JCRLF
+ 384  029A : 11 0E 03             LXI     D,BAUDBUF+2
+ 385                      ;
+ 386  029D : CD 83 01     STUPR2 CALL    JINLNCP        ; Compare BAUDBUF+2 with chars. below
+ 387  02A0 : 33 30 30 00          DB      "300",0
+ 388  02A4 : D2 E9 02             JNC     OK300           ; Go if got match
+ 389  02A7 : CD 83 01             CALL    JINLNCP
+ 390  02AA : 31 32 30 30          DB      "1200",0
+   +         00           
+ 391  02AF : D2 F0 02             JNC     OK1200
+ 392  02B2 : CD 83 01             CALL    JINLNCP
+ 393  02B5 : 32 34 30 30          DB      "2400",0
+   +         00           
+ 394  02BA : D2 F7 02             JNC     OK2400
+ 395  02BD : CD 83 01             CALL    JINLNCP
+ 396  02C0 : 39 36 30 30          DB      "9600",0
+   +         00           
+ 397  02C5 : D2 02 03             JNC     OK9600
+ 398  02C8 : CD 7D 01             CALL    JILPRT         ; All matches failed, tell operator
+ 399  02CB : 2B 2B 20 49          DB      "++ Incorrect entry ++",CR,LF,BELL,CR,LF,0
+   +         6E 63 6F 72  
+   +         72 65 63 74  
+   +         20 65 6E 74  
+   +         72 79 20 2B  
+   +         2B 0D 0A 07  
+   +         0D 0A 00     
+ 400  02E6 : C3 65 02             JMP     STUPR1          ; Try again
+ 401                      ;
+ 402  02E9 : 3E 01        OK300  MVI     A,1             ; MSPEED 300 baud value
+ 403  02EB : 06 16                MVI     B,BD300         ; Get 300 baud value for 2651 in 'B'
+ 404  02ED : C3 06 03             JMP     LOADBD          ; Go load everything
+ 405                      ;
+ 406  02F0 : 3E 05        OK1200 MVI     A,5
+ 407  02F2 : 06 18                MVI     B,BD1200
+ 408  02F4 : C3 06 03             JMP     LOADBD
+ 409                      ;
+ 410  02F7 : AF           OK2400 XRA     A
+ 411  02F8 : 32 9B 01             STA     MANUAL
+ 412  02FB : 3E 06                MVI     A,6
+ 413  02FD : 06 1A                MVI     B,BD2400
+ 414  02FF : C3 06 03             JMP     LOADBD
+ 415                      ;
+VASM macro assembler 1.20          5/27/96        2:55:5            Page 9
+
+
+ 416  0302 : 3E 08        OK9600 MVI     A,8
+ 417  0304 : 06 1E                MVI     B,BD9600
+ 418                      ;
+ 419  0306 : 32 03 01     LOADBD STA     MSPEED          ; Change time-to-send to match baudrate
+ 420  0309 : C3 3A 02             JMP     INITMOD1        ; Reset to new baudrate
+ 421                      ;.....
+ 422                      ;
+ 423                      ;
+ 424                      ; Table of baud rate parameters
+ 425                      ;
+ 426         =0016        BD300   EQU     22
+ 427         =0018        BD1200  EQU     24
+ 428         =001A        BD2400  EQU     26
+ 429         =001E        BD9600  EQU     30
+ 430                      ;
+ 431  030C : 0A 00 00 00  BAUDBUF DB      10,0,0,0,0,0
+   +         00 00        
+ 432  0312 : 00 00 00 00          DB      0,0,0,0,0,0
+   +         00 00        
+ 433                      ;.....
+ 434                      ;
+ 435                      ;
+ 436                      ;-----------------------------------------------------------------------
+ 437                      ; NOTE Must terminate prior to 0400H
+ 438                      
+ 439                              end
+ 440                      
+VASM macro assembler 1.20          5/27/96        2:55:5            Page 10
+SYMBOL TABLE
+
+SYMBOL TABLE FOR PROCEDURE patch
+ADDLFD        0110  ALSCARD       0000  AMDRCV        0147  AMDSND        014D 
+AMDTXE        0153  APPLICARD     0000  APPLIED       0000  BAUDBUF       030C 
+BD1200        0018  BD2400        001A  BD300         0016  BD9600        001E 
+BELL          0007  BRKCHR        011D  BYTDLY        010C  CLEAR         010A 
+CLEARS        011C  CLOCK         010B  CLRSC         001A  CMDRCV        014A 
+CMDSND        0150  CMDTXE        0156  CONVRUB       0111  CR            000D 
+CRCDFLT       0112  CRDLY         010D  EOFCHAR       001A  ESC           001B 
+EXITCHR       0115  EXTCHR        0114  FILESND       0116  GOODBYE       0207 
+HS1200        0105  HS2400        0104  IGNRCTL       0113  IMDCTL1       011F 
+IMDDATP       0133  IMDTXE        0129  INITMD        0219  INITMOD1      023A 
+J1200         019F  J2400         01A2  J300          019C  JBREAK        0195 
+JCMDSPL       016E  JCRLF         0171  JDIAL         0174  JDSCONT       0177 
+JEXITVEC      0159  JGOLST        017A  JGOODBYE      015C  JILPRT        017D 
+JINBUF        0180  JINITMOD      015F  JINLNCP       0183  JINMDM        0186 
+JNEW2         0198  JRCVRSP       0189  JSNDCHR       018C  JSNDSTR       018F 
+JSTR1         016B  JSTRA         0168  JSTUPR        0162  JSYSVR        0165 
+JTIMER        0192  LF            000A  LOADBD        0306  LOGCHR        0118 
+LOGON         01DA  LOGPTR        01A5  LSTCHR        0119  MANUAL        019B 
+MDCTL1        E099  MDCTL2        E09A  MDCTL3        E09B  MDDATP        E098 
+MDRCV         0008  MDSND         0010  MDTXE         0010  MICROSOFT     00FF 
+MSPEED        0103  NEXTRY        000B  NO            0000  NOCONCT       0117 
+NODTR         011E  NOFCOL        010E  OK1200        02F0  OK2400        02F7 
+OK300         02E9  OK9600        0302  OMDDATP       013D  PORT          E098 
+PROMODM       0107  RACAL         0106  RCVCT1        024B  RCVCTL3       0253 
+RCVDATP       024F  RESVD1        0108  RESVD2        0109  SAVECHR       011B 
+SENDBRK       0202  SNDCT1        0243  SNDCT3        025B  SNDCTL2       0257 
+SNDDATP       0247  STUPR         025F  STUPR1        0265  STUPR2        029D 
+SYSVR         01A7  TCHPUL        010F  UNSAVCH       011A  YES           00FF 
+
+VASM macro assembler 1.20          5/27/96        2:55:5            Page 11
+MACROS
+
+
+MACROS DEFINED IN PROCEDURE patch
+
+
+
+assembly complete - 0 errors

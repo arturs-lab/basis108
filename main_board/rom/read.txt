@@ -1,0 +1,10 @@
+d4 - Starlight software d000-efff
+
+d5 - BASIC ROM
+
+g14- printer driver
+
+h4 - Character generator
+
+fdc- floppy drive controller ROM
+

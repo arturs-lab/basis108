@@ -1,0 +1,16 @@
+MACASM -- this is a macro assembler with characteristics similar
+	to the intel assembler.  When used under cp/m, it has
+	the following additional feature:  another option for the 
+	list file is the letter 'p' which sends the listing to the
+	list device directly; e.g., one might type
+  
+		MACASM LLLBASIC.AZP
+ 
+	This will send the listing directly to the list device.
+  
+	There is at least one known bug (the fix is unknown, however)
+	and that is that sometimes with nested macros, locations 5,6,
+	and 7 are clobbered; this of course, kills communication
+	with cp/m and all is dead.
+"Ië*KÍö
+)ë*=^#Vë"OIGÍÚÇ*G)
