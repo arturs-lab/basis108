@@ -2,9 +2,16 @@ Labels like 'd4' indicate location of the chip on Basis108 main board.
 
 d4 - Starlight software d000-efff - this memory area is used for Basic ROM in original Apple
 
-d5 - BASIC ROM - lower half of this EPROM is visible in Apple mode at $F000-$FFF. There is more code in the upper half of this EPROM. It seems to be similar to the lowewr half. Perhaps these are two copies of the same data but they got corrupted and now look slightly different. Or similar but different code that is bank-switched. The two halves can be compared using something like ```diff -W 40 --side-by-side -a <(xxd -ps -c 8 d5_label_2024.bin) <(dd if=d5.bin bs=1 skip=4096 | xxd -ps -c 8) | less```
+d5 - BASIC ROM - lower half of this EPROM is visible in Apple mode at $F000-$FFFF. There is more code in the upper half of this EPROM. It seems to be similar to the lowewr half. 
+Perhaps these are two copies of the same data but they got corrupted and now look slightly different. Or similar but different code that is bank-switched. 
+The two halves can be compared using something like ```diff -W 40 --side-by-side -a <(xxd -ps -c 8 d5_label_2024.bin) <(dd if=d5.bin bs=1 skip=4096 | xxd -ps -c 8) | less```
+code starting at $0E00 in d5.hex is similar to that provided on page 156 of commercial version's manual /commercial_version/documents/BASIS108_300pdi.pdf.
+So does code starting in second half at $1E00.
+Also code on page 133 and on is similar to that at EPROM offset $0800 and $1800
 
-g14 - printer driver According to the manual only 256 bytes of this chip is being used in address space of $C100-$C1FF (Apple addressing, $E100 in CP/M). But there is more code within this chip. Perhaps some trickery is done to use other parts of it to bank-switch code. Data visible to computer start at this location in EPROM: 0040: 00 20 62 C1 90
+g14 - printer driver According to the manual only 256 bytes of this chip is being used in address space of $C100-$C1FF (Apple addressing, $E100 in CP/M). 
+But there is more code within this chip. Perhaps some trickery is done to use other parts of it to bank-switch code. 
+Data visible to computer start at this location in EPROM: 0040: 00 20 62 C1 90. Driver listed on page 169 in commercial version's manual available at /commercial_version/documents/BASIS108_300pdi.pdf matches the code starting at that location.
 
 h4 - Character generator
 
@@ -14,7 +21,7 @@ c14_kbord_orig.bin - original translation rom for c14. This one has some excepti
 
 fdc - floppy drive controller ROM in floppy controller directory
 
-kbd_rom.bin - keyboard firmware pulled from original keyboard. I believe it had a 6800 CPU or something like HD6303. Code would have to be analyzed to determine whch is more likely. I'm leaning towards 6800 because at some point I wrote disassembler for it probably hoping to reverse-engineer the keyboard. Some day...
+kbd_rom.bin - keyboard firmware pulled from original keyboard. I believe it had a 6800 CPU or something like HD6303. The commercial version appears to have used Intel 8048. Code would have to be analyzed to determine whch is more likely. I'm leaning towards 6800 because at some point I wrote disassembler for it probably hoping to reverse-engineer the keyboard. Some day...
 
 Some of the MD5 sums for the bin files differ for the same file across its versions. It is possible that the EPROM chips are losing their data and getting corrupted. Or they were read incorrectly in the past using the primitive methods I had available at the time. For this reason I am keeping multiple versions of these files in case another version needs to be tried once corruption is detected.
 
