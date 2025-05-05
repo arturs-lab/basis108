@@ -23,6 +23,8 @@ fdc - floppy drive controller ROM in floppy controller directory
 
 kbd_rom.bin - keyboard firmware pulled from original keyboard. I believe it had a 6800 CPU or something like HD6303. The commercial version appears to have used Intel 8048. Code would have to be analyzed to determine whch is more likely. I'm leaning towards 6800 because at some point I wrote disassembler for it probably hoping to reverse-engineer the keyboard. Some day...
 
+TBP28L22.HEX - 256Bx8 PROM on FD controller. Datasheet available in /resources/datasheets. Appears to contain a state machine for floppy controller. Read first time in 2025.
+
 Some of the MD5 sums for the bin files differ for the same file across its versions. It is possible that the EPROM chips are losing their data and getting corrupted. Or they were read incorrectly in the past using the primitive methods I had available at the time. For this reason I am keeping multiple versions of these files in case another version needs to be tried once corruption is detected.
 
 Files mentioning 2025 were dumped in 2025 by pulling chips and reading them with Xgecu TL866II-Plus programmer.
