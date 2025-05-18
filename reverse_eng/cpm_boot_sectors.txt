@@ -32,19 +32,19 @@
 083c   a0 00                ldy #$00
 083e   48         l083e     pha
 083f   a9 00                lda #$00
-0841   99 70 00             sta $0070,y	; set $70-$7f to 0
+0841   99 70 00             sta $0070,y	; set $70-$7f to 0, this all gets set to $ff upon return from $b00
 0844   95 50                sta $50,x	; set $50,$52,$54...$6e to 0
 0846   68                   pla
 0847   18                   clc
 0848   69 01                adc #$01
-084a   95 51                sta $51,x	; set $51,$53,$55...$6f to $12,$13,$14...
+084a   95 51                sta $51,x	; set $51,$53,$55...$6f to $11,$12,$13,$14...
 084c   e8                   inx
 084d   e8                   inx
 084e   c8                   iny
 084f   c0 10                cpy #$10
 0851   d0 eb                bne l083e
 
-0853   84 83                sty $83	; put $10 in $83
+0853   84 83                sty $83	; put $10 in $83, this is 0 after call to $b00
 0855   a2 01                ldx #$01
 0857   86 82                stx $82	; $01 in $82
 0859   ca                   dex
@@ -52,7 +52,7 @@
 085c   ca                   dex
 085d   86 80                stx $80	; and $ff in $80
 085f   20 00 0b             jsr l0b00	; 
-0862   a6 84                ldx $84
+0862   a6 84                ldx $84 ; this is 0 on return
 0864   f0 03                beq l0869
 0866   4c 00 c6             jmp $c600	; jump to basic?
 
