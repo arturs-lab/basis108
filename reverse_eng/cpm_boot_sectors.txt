@@ -17,7 +17,7 @@
 
 0820   e6 27      l0820     inc $27	; $26-$27 - Address of Byte Containing X,Y
 0822   e6 3d                inc $3d	; General use by monitor; source pointer for memory move
-0824   4c 5c c6             jmp $c65c
+0824   4c 5c c6             jmp $c65c	; jump to FD interface EPROM?
 
 0827   a2 00      l0827     ldx #$00
 0829   bd 00 10   l0829     lda $1000,x	; copy from $1000-$11ff to $200-$3ff
@@ -330,8 +330,8 @@
 09c0   18         l09c0     clc
 09c1   48         l09c1     pha
 09c2   68                   pla
-09c3   9d 8d c0   l09c3     sta $c08d,x
-09c6   1d 8c c0             ora $c08c,x
+09c3   9d 8d c0   l09c3     sta $c08d,x	; Read ROM; write RAM bank 1 ( 2r needed )
+09c6   1d 8c c0             ora $c08c,x	; Read RAM bank 1; no write
 09c9   60                   rts
 09ca   ca                   dex
 09cb   6c cc 70             jmp ($70cc)
@@ -555,17 +555,17 @@
 ; ### 
 0b00   4c 7a 0d   l0b00     jmp l0d7a
 0b03   4c d4 0e             jmp l0ed4
-0b06   2c 83 c0             bit $c083
+0b06   2c 83 c0             bit $c083	; Read/write RAM bank 2 ( 2 reads needed )
 0b09   4c 7a 0d             jmp l0d7a
 0b0c   38         l0b0c     sec
-0b0d   bd 8d c0             lda $c08d,x
-0b10   bd 8e c0             lda $c08e,x
+0b0d   bd 8d c0             lda $c08d,x	; Read ROM; write RAM bank 1 ( 2r needed ) ; Read ROM; write RAM bank 1 ( i doubt this is correct, it requires 2 reads to activate)
+0b10   bd 8e c0             lda $c08e,x	; Read ROM; no write ; Read ROM; no write 
 0b13   30 7c                bmi l0b91
 0b15   ad 00 09             lda $0900
 0b18   85 93                sta $93
 0b1a   a9 ff                lda #$ff
-0b1c   9d 8f c0             sta $c08f,x
-0b1f   1d 8c c0             ora $c08c,x
+0b1c   9d 8f c0             sta $c08f,x	; Read/write RAM bank 1 ( 2 reads needed )
+0b1f   1d 8c c0             ora $c08c,x	; Read RAM bank 1; no write	; Read RAM bank 1; no write
 0b22   48                   pha
 0b23   68                   pla
 0b24   ea                   nop
@@ -589,8 +589,8 @@
 0b49   aa                   tax
 0b4a   bd 03 0a             lda $0a03,x
 0b4d   a6 8e                ldx $8e
-0b4f   9d 8d c0             sta $c08d,x
-0b52   bd 8c c0             lda $c08c,x
+0b4f   9d 8d c0             sta $c08d,x	; Read ROM; write RAM bank 1 ( 2r needed )	; Read ROM; write RAM bank 1 ( 2r needed )
+0b52   bd 8c c0             lda $c08c,x	; Read RAM bank 1; no write
 0b55   88                   dey
 0b56   d0 eb                bne l0b43
 0b58   a5 93                lda $93
@@ -599,8 +599,8 @@
 0b5e   aa                   tax
 0b5f   bd 03 0a             lda $0a03,x
 0b62   ae 57 09             ldx $0957
-0b65   9d 8d c0             sta $c08d,x
-0b68   bd 8c c0             lda $c08c,x
+0b65   9d 8d c0             sta $c08d,x	; Read ROM; write RAM bank 1 ( 2r needed )
+0b68   bd 8c c0             lda $c08c,x	; Read RAM bank 1; no write
 0b6b   b9 00 08             lda $0800,y
 0b6e   c8                   iny
 0b6f   d0 ea                bne l0b5b
@@ -616,8 +616,8 @@
 0b86   20 c0 09             jsr l09c0
 0b89   a9 ff                lda #$ff
 0b8b   20 c0 09             jsr l09c0
-0b8e   bd 8e c0             lda $c08e,x
-0b91   bd 8c c0   l0b91     lda $c08c,x
+0b8e   bd 8e c0             lda $c08e,x	; Read ROM; no write
+0b91   bd 8c c0   l0b91     lda $c08c,x	; Read RAM bank 1; no write
 0b94   60                   rts
 0b95   78         l0b95     sei
 0b96   a0 fc                ldy #$fc
@@ -626,27 +626,27 @@
 0b9b   d0 04                bne l0ba1
 0b9d   e6 93                inc $93
 0b9f   f0 51                beq l0bf2
-0ba1   bd 8c c0   l0ba1     lda $c08c,x
+0ba1   bd 8c c0   l0ba1     lda $c08c,x	; Read RAM bank 1; no write
 0ba4   10 fb                bpl l0ba1
 0ba6   c9 d5      l0ba6     cmp #$d5
 0ba8   d0 f0                bne l0b9a
 0baa   ea                   nop
-0bab   bd 8c c0   l0bab     lda $c08c,x
+0bab   bd 8c c0   l0bab     lda $c08c,x	; Read RAM bank 1; no write
 0bae   10 fb                bpl l0bab
 0bb0   c9 aa                cmp #$aa
 0bb2   d0 f2                bne l0ba6
 0bb4   a0 03                ldy #$03
-0bb6   bd 8c c0   l0bb6     lda $c08c,x
+0bb6   bd 8c c0   l0bb6     lda $c08c,x	; Read RAM bank 1; no write
 0bb9   10 fb                bpl l0bb6
 0bbb   c9 96                cmp #$96
 0bbd   d0 e7                bne l0ba6
 0bbf   a9 00                lda #$00
 0bc1   85 92      l0bc1     sta $92
-0bc3   bd 8c c0   l0bc3     lda $c08c,x
+0bc3   bd 8c c0   l0bc3     lda $c08c,x	; Read RAM bank 1; no write
 0bc6   10 fb                bpl l0bc3
 0bc8   2a                   rol a
 0bc9   85 93                sta $93
-0bcb   bd 8c c0   l0bcb     lda $c08c,x
+0bcb   bd 8c c0   l0bcb     lda $c08c,x	; Read RAM bank 1; no write
 0bce   10 fb                bpl l0bcb
 0bd0   25 93                and $93
 0bd2   99 8a 00             sta $008a,y
@@ -655,12 +655,12 @@
 0bd8   10 e7                bpl l0bc1
 0bda   a8                   tay
 0bdb   d0 15                bne l0bf2
-0bdd   bd 8c c0   l0bdd     lda $c08c,x
+0bdd   bd 8c c0   l0bdd     lda $c08c,x	; Read RAM bank 1; no write
 0be0   10 fb                bpl l0bdd
 0be2   c9 de                cmp #$de
 0be4   d0 0c                bne l0bf2
 0be6   ea                   nop
-0be7   bd 8c c0   l0be7     lda $c08c,x
+0be7   bd 8c c0   l0be7     lda $c08c,x	; Read RAM bank 1; no write
 0bea   10 fb                bpl l0be7
 0bec   c9 aa                cmp #$aa
 0bee   d0 02                bne l0bf2
@@ -674,7 +674,7 @@
 0bf6   bd 8c c0   l0bf6     lda $c08c,x	; Read RAM bank 1; no write or $c08c-8f Saturn RAM Card: Select banks 4-7
 0bf9   20 06 0c             jsr l0c06	; thats just rts. marker on stack?	; is this just a smal delay?
 0bfc   48                   pha							; or meant to alter memory in-between
-0bfd   68                   pla							; $c08c,x accesses
+0bfd   68                   pla							; $c08c,x	; Read RAM bank 1; no write accesses
 0bfe   dd 8c c0             cmp $c08c,x	; Read RAM bank 1; no write - compare to what was read earlier from same location
 0c01   d0 03      l0c01     bne l0c06	; return if no match
 0c03   88                   dey		; continue down $ff, $fe...$01, return once reached $00 again.
@@ -707,24 +707,24 @@
 0c3b   a0 20                ldy #$20
 0c3d   88         l0c3d     dey
 0c3e   f0 b2                beq l0bf2
-0c40   bd 8c c0   l0c40     lda $c08c,x
+0c40   bd 8c c0   l0c40     lda $c08c,x	; Read RAM bank 1; no write
 0c43   10 fb                bpl l0c40
 0c45   49 d5      l0c45     eor #$d5
 0c47   d0 f4                bne l0c3d
 0c49   ea                   nop
-0c4a   bd 8c c0   l0c4a     lda $c08c,x
+0c4a   bd 8c c0   l0c4a     lda $c08c,x	; Read RAM bank 1; no write
 0c4d   10 fb                bpl l0c4a
 0c4f   c9 aa                cmp #$aa
 0c51   d0 f2                bne l0c45
 0c53   ea                   nop
-0c54   bd 8c c0   l0c54     lda $c08c,x
+0c54   bd 8c c0   l0c54     lda $c08c,x	; Read RAM bank 1; no write
 0c57   10 fb                bpl l0c54
 0c59   c9 ad                cmp #$ad
 0c5b   d0 e8                bne l0c45
 0c5d   a0 aa                ldy #$aa
 0c5f   a9 00                lda #$00
 0c61   85 93      l0c61     sta $93
-0c63   ae ec c0   l0c63     ldx $c0ec
+0c63   ae ec c0   l0c63     ldx $c0ec 	; IWM:Q6 off (read) 
 0c66   10 fb                bpl l0c63
 0c68   bd 00 09             lda $0900,x
 0c6b   99 56 08             sta $0856,y
@@ -734,7 +734,7 @@
 0c73   a0 aa                ldy #$aa
 0c75   d0 03                bne l0c7a
 0c77   99 00 10   l0c77     sta $1000,y
-0c7a   ae ec c0   l0c7a     ldx $c0ec
+0c7a   ae ec c0   l0c7a     ldx $c0ec 	; IWM:Q6 off (read) 
 0c7d   10 fb                bpl l0c7a
 0c7f   5d 00 09             eor $0900,x
 0c82   be 56 08             ldx $0856,y
@@ -744,7 +744,7 @@
 0c8b   48                   pha
 0c8c   29 fc                and #$fc
 0c8e   a0 aa                ldy #$aa
-0c90   ae ec c0   l0c90     ldx $c0ec
+0c90   ae ec c0   l0c90     ldx $c0ec	; IWM:Q6 off (read) 
 0c93   10 fb                bpl l0c90
 0c95   5d 00 09             eor $0900,x
 0c98   be 56 08             ldx $0856,y
@@ -752,7 +752,7 @@
 0c9e   99 00 10             sta $1000,y
 0ca1   c8                   iny
 0ca2   d0 ec                bne l0c90
-0ca4   ae ec c0   l0ca4     ldx $c0ec
+0ca4   ae ec c0   l0ca4     ldx $c0ec	; IWM:Q6 off (read) 
 0ca7   10 fb                bpl l0ca4
 0ca9   29 fc                and #$fc
 0cab   a0 ac                ldy #$ac
@@ -760,7 +760,7 @@
 0cb0   be 54 08             ldx $0854,y
 0cb3   5d 02 0a             eor $0a02,x
 0cb6   99 00 10             sta $1000,y
-0cb9   ae ec c0   l0cb9     ldx $c0ec
+0cb9   ae ec c0   l0cb9     ldx $c0ec	; IWM:Q6 off (read) 
 0cbc   10 fb                bpl l0cb9
 0cbe   c8                   iny
 0cbf   d0 ec                bne l0cad
@@ -769,7 +769,7 @@
 0cc6   a6 8e                ldx $8e
 0cc8   a8                   tay
 0cc9   d0 09                bne l0cd4
-0ccb   bd 8c c0   l0ccb     lda $c08c,x
+0ccb   bd 8c c0   l0ccb     lda $c08c,x	; Read RAM bank 1; no write
 0cce   10 fb                bpl l0ccb
 0cd0   c9 de                cmp #$de
 0cd2   f0 02                beq l0cd6
@@ -781,10 +781,10 @@
 0cdc   60                   rts
 0cdd   48         l0cdd     pha
 0cde   48                   pha
-0cdf   bd 80 c0             lda $c080,x
-0ce2   bd 82 c0             lda $c082,x
-0ce5   bd 84 c0             lda $c084,x
-0ce8   bd 86 c0             lda $c086,x
+0cdf   bd 80 c0             lda $c080,x	; Read RAM bank 2; no write
+0ce2   bd 82 c0             lda $c082,x	; Read ROM; no write
+0ce5   bd 84 c0             lda $c084,x	; Read RAM bank 2; no write
+0ce8   bd 86 c0             lda $c086,x	; Read ROM; no write
 0ceb   68                   pla
 0cec   a4 81                ldy $81
 0cee   b9 5a 09             lda $095a,y
@@ -854,7 +854,7 @@
 0d70   2a                   rol a
 0d71   05 8e                ora $8e
 0d73   aa                   tax
-0d74   bd 80 c0             lda $c080,x
+0d74   bd 80 c0             lda $c080,x	; Read RAM bank 2; no write
 0d77   a6 8e                ldx $8e
 0d79   60         l0d79     rts
 
@@ -881,7 +881,7 @@
 
 0da3   20 f4 0b   l0da3     jsr l0bf4
 0da6   08                   php
-0da7   bd 89 c0             lda $c089,x	; Read ROM; write RAM bank 1
+0da7   bd 89 c0             lda $c089,x	; Read ROM; write RAM bank 1	; Read ROM; write RAM bank 1
 0daa   a5 8f                lda $8f
 0dac   cd 59 09             cmp $0959
 0daf   f0 07                beq l0db8
@@ -993,7 +993,7 @@
 0e87   d0 eb                bne l0e74
 0e89   a9 00                lda #$00
 0e8b   85 84      l0e8b     sta $84
-0e8d   bd 88 c0             lda $c088,x
+0e8d   bd 88 c0             lda $c088,x	; Read RAM bank 1; no write
 0e90   58                   cli
 0e91   60                   rts
 0e92   20 0c 0b   l0e92     jsr l0b0c
@@ -1009,8 +1009,8 @@
 0ea9   46 94                lsr $94
 0eab   60                   rts
 0eac   48         l0eac     pha
-0ead   bd 88 c0             lda $c088,x
-0eb0   bd 89 c0             lda $c089,x
+0ead   bd 88 c0             lda $c088,x	; Read RAM bank 1; no write
+0eb0   bd 89 c0             lda $c089,x	; Read ROM; write RAM bank 1
 0eb3   68                   pla
 0eb4   e9 50                sbc #$50
 0eb6   99 5a 09             sta $095a,y
@@ -1050,7 +1050,7 @@
 0ee3   38                   sec
 0ee4   e9 01                sbc #$01
 0ee6   d0 f7                bne l0edf
-0ee8   2c 30 c0             bit $c030
+0ee8   2c 30 c0             bit $c030	; Toggle Speaker
 0eeb   88                   dey
 0eec   d0 e8                bne l0ed6
 0eee   60                   rts
@@ -1673,7 +1673,7 @@
 11bd   00                   brk
 11be   00                   brk
 11bf   00                   brk
-11c0   2c 81 c0             bit $c081
+11c0   2c 81 c0             bit $c081	; Read ROM; write RAM bank 2
 11c3   4c 65 ff             jmp $ff65
 11c6   a9 ff                lda #$ff
 11c8   8d f9 ff             sta $fff9
@@ -3715,7 +3715,7 @@
 1ab0   c2                   ???                ;%11000010
 1ab1   b5 03                lda $03,x
 1ab3   35 c9                and $c9,x
-1ab5   fe 0a c0             inc $c00a,x
+1ab5   fe 0a c0             inc $c00a,x	; Use Internal Slot 3 ROM
 1ab8   36 00                rol $00,x
 1aba   c9 79                cmp #$79
 1abc   fe 09 c2             inc $c209,x

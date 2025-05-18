@@ -1,11 +1,14 @@
 # Disassembly of code
 Reverse engineering code from Basis 108 ROMs and CPM floppies to understand CPM boot process
 
+Boot sectors from CP/M disk tracks 0 - 2 get loaded into memory starting at $800, then code gets executed starting from $801
+
 # Notes
 
 6502 reset/NMI vectors
-$fffc	fa62
-$fffe	fa40
+$fffa faaa	; NMI
+$fffc	fa62	; reset
+$fffe	fa40	; IRQ/BRK
 
 manual page 56
 3f0,3f1	break handler

@@ -4432,11 +4432,9 @@ fff7   17                   db $17
 fff8   f5                   db $f5
 fff9   03                   db $03
 
-fffa   fb                   db $fb
-fffb   03                   db $03
-
-fffc		db 62 fa
-fffe		db 40 fa
+fffa		db fb 03	; NMI
+fffc		db 62 fa	; reset
+fffe		db 40 fa	; IRQ/BRK
                             .end
 
 
