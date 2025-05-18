@@ -1,0 +1,4443 @@
+; basis108 D5 rom
+
+                            * = $e000
+e000   20 23 ec   le000     jsr lec23
+e003   a9 00      le003     lda #$00
+e005   85 ab                sta $ab
+e007   20 aa e7             jsr le7aa
+e00a   a9 70                lda #$70
+e00c   a0 f0                ldy #$f0
+e00e   20 a7 e7             jsr le7a7
+e011   a5 a2                lda $a2
+e013   48                   pha
+e014   10 0d                bpl le023
+e016   20 a0 e7             jsr le7a0
+e019   a5 a2                lda $a2
+e01b   30 09                bmi le026
+e01d   a5 16                lda $16
+e01f   49 ff                eor #$ff
+e021   85 16                sta $16
+e023   20 d0 ee   le023     jsr leed0
+e026   a9 70      le026     lda #$70
+e028   a0 f0                ldy #$f0
+e02a   20 be e7             jsr le7be
+e02d   68                   pla
+e02e   10 03                bpl le033
+e030   20 d0 ee             jsr leed0
+e033   a9 75      le033     lda #$75
+e035   a0 f0                ldy #$f0
+e037   4c 5c ef             jmp lef5c
+e03a   20 21 eb             jsr leb21
+e03d   a9 00                lda #$00
+e03f   85 16                sta $16
+e041   20 f1 ef             jsr leff1
+e044   a2 8a                ldx #$8a
+e046   a0 00                ldy #$00
+e048   20 e7 ef             jsr lefe7
+e04b   a9 93                lda #$93
+e04d   a0 00                ldy #$00
+e04f   20 f9 ea             jsr leaf9
+e052   a9 00                lda #$00
+e054   85 a2                sta $a2
+e056   a5 16                lda $16
+e058   20 62 f0             jsr lf062
+e05b   a9 8a                lda #$8a
+e05d   a0 00                ldy #$00
+e05f   4c 66 ea             jmp lea66
+e062   48                   pha
+e063   4c 23 f0             jmp lf023
+e066   81 49                sta ($49,x)
+e068   0f                   ???                ;%00001111
+e069   da                   ???                ;%11011010
+e06a   a2 83                ldx #$83
+e06c   49 0f                eor #$0f
+e06e   da                   ???                ;%11011010
+e06f   a2 7f                ldx #$7f
+e071   00                   brk
+e072   00                   brk
+e073   00                   brk
+e074   00                   brk
+e075   05 84                ora $84
+e077   e6 1a                inc $1a
+e079   2d 1b 86             and $861b
+e07c   28                   plp
+e07d   07                   ???                ;%00000111
+e07e   fb                   ???                ;%11111011
+e07f   f8                   sed
+e080   87                   ???                ;%10000111
+e081   99 68 89             sta $8968,y
+e084   01 87                ora ($87,x)
+e086   23                   ???                ;%00100011 '#'
+e087   35 df                and $df,x
+e089   e1 86                sbc ($86,x)
+e08b   a5 5d                lda $5d
+e08d   e7                   ???                ;%11100111
+e08e   28                   plp
+e08f   83                   ???                ;%10000011
+e090   49 0f                eor #$0f
+e092   da                   ???                ;%11011010
+e093   a2 a6                ldx #$a6
+e095   d3                   ???                ;%11010011
+e096   c1 c8                cmp ($c8,x)
+e098   d4                   ???                ;%11010100
+e099   c8                   iny
+e09a   d5 c4                cmp $c4,x
+e09c   ce ca a5             dec $a5ca
+e09f   a2 48                ldx #$48
+e0a1   10 03                bpl le0a6
+e0a3   20 d0 ee             jsr leed0
+e0a6   a5 9d      le0a6     lda $9d
+e0a8   48                   pha
+e0a9   c9 81                cmp #$81
+e0ab   90 07                bcc le0b4
+e0ad   a9 13                lda #$13
+e0af   a0 e9                ldy #$e9
+e0b1   20 66 ea             jsr lea66
+e0b4   a9 ce      le0b4     lda #$ce
+e0b6   a0 f0                ldy #$f0
+e0b8   20 5c ef             jsr lef5c
+e0bb   68                   pla
+e0bc   c9 81                cmp #$81
+e0be   90 07                bcc le0c7
+e0c0   a9 66                lda #$66
+e0c2   a0 f0                ldy #$f0
+e0c4   20 a7 e7             jsr le7a7
+e0c7   68         le0c7     pla
+e0c8   10 03                bpl le0cd
+e0ca   4c d0 ee             jmp leed0
+e0cd   60         le0cd     rts
+e0ce   0b                   ???                ;%00001011
+e0cf   76 b3                ror $b3,x
+e0d1   83                   ???                ;%10000011
+e0d2   bd d3 79             lda $79d3,x
+e0d5   1e f4 a6             asl $a6f4,x
+e0d8   f5 7b                sbc $7b,x
+e0da   83                   ???                ;%10000011
+e0db   fc                   ???                ;%11111100
+e0dc   b0 10                bcs le0ee
+e0de   7c                   ???                ;%01111100 '|'
+e0df   0c                   ???                ;%00001100
+e0e0   1f                   ???                ;%00011111
+e0e1   67                   ???                ;%01100111 'g'
+e0e2   ca                   dex
+e0e3   7c                   ???                ;%01111100 '|'
+e0e4   de 53 cb             dec $cb53,x
+e0e7   c1 7d                cmp ($7d,x)
+e0e9   14                   ???                ;%00010100
+e0ea   64                   ???                ;%01100100 'd'
+e0eb   70 4c                bvs le139
+e0ed   7d b7 ea             adc $eab7,x
+e0f0   51 7a                eor ($7a),y
+e0f2   7d 63 30             adc $3063,x
+e0f5   88                   dey
+e0f6   7e 7e 92             ror $927e,x
+e0f9   44                   ???                ;%01000100 'D'
+e0fa   99 3a 7e             sta $7e3a,y
+e0fd   4c cc 91             jmp $91cc
+e100   c7                   ???                ;%11000111
+e101   7f                   ???                ;%01111111
+e102   aa                   tax
+e103   aa                   tax
+e104   aa                   tax
+e105   13                   ???                ;%00010011
+e106   81 00                sta ($00,x)
+e108   00                   brk
+e109   00                   brk
+e10a   00                   brk
+e10b   e6 b8      le10b     inc $b8
+e10d   d0 02                bne le111
+e10f   e6 b9                inc $b9
+e111   ad 60 ea   le111     lda $ea60
+e114   c9 3a                cmp #$3a
+e116   b0 0a                bcs le122
+e118   c9 20                cmp #$20
+e11a   f0 ef                beq le10b
+e11c   38                   sec
+e11d   e9 30                sbc #$30
+e11f   38                   sec
+e120   e9 d0                sbc #$d0
+e122   60         le122     rts
+e123   80                   ???                ;%10000000
+e124   4f                   ???                ;%01001111 'O'
+e125   c7                   ???                ;%11000111
+e126   52                   ???                ;%01010010 'R'
+e127   58                   cli
+e128   a2 ff                ldx #$ff
+e12a   86 76                stx $76
+e12c   a2 fb                ldx #$fb
+e12e   9a                   txs
+e12f   a2 05                ldx #$05
+e131   bd 8a f1   le131     lda $f18a,x
+e134   95 00                sta $00,x
+e136   ca                   dex
+e137   10 f8                bpl le131
+e139   85 90      le139     sta $90
+e13b   85 0a                sta $0a
+e13d   20 73 f2             jsr lf273
+e140   a9 99                lda #$99
+e142   a0 e1                ldy #$e1
+e144   85 0b                sta $0b
+e146   84 0c                sty $0c
+e148   a2 1c                ldx #$1c
+e14a   bd 0a f1   le14a     lda $f10a,x
+e14d   95 b0                sta $b0,x
+e14f   86 f1                stx $f1
+e151   ca                   dex
+e152   d0 f6                bne le14a
+e154   86 f2                stx $f2
+e156   8a                   txa
+e157   85 a4                sta $a4
+e159   85 54                sta $54
+e15b   48                   pha
+e15c   a9 03                lda #$03
+e15e   85 8f                sta $8f
+e160   20 fb da             jsr $dafb
+e163   a9 01                lda #$01
+e165   8d fd 01             sta $01fd
+e168   8d fc 01             sta $01fc
+e16b   a2 55                ldx #$55
+e16d   86 52                stx $52
+e16f   a2 c0                ldx #$c0
+e171   a0 00                ldy #$00
+e173   8c 00 08             sty $0800
+e176   84 73                sty $73
+e178   86 74                stx $74
+e17a   84 6f                sty $6f
+e17c   86 70                stx $70
+e17e   a0 08                ldy #$08
+e180   85 67                sta $67
+e182   84 68                sty $68
+e184   20 4b d6             jsr $d64b
+e187   6c 01 00             jmp ($0001)
+e18a   4c 3c d4             jmp $d43c
+e18d   4c 3a db             jmp $db3a
+e190   a5 24                lda $24	; Horizontal cursor displacement (from top)
+e192   2c fd fe             bit lfefd
+e195   50 03                bvc le19a
+e197   c9 40                cmp #$40
+e199   60         le199     rts
+e19a   c9 18      le19a     cmp #$18
+e19c   60                   rts
+e19d   a5 24                lda $24	; Horizontal cursor displacement (from top)
+e19f   2c fd fe             bit lfefd
+e1a2   50 03                bvc le1a7
+e1a4   c9 49                cmp #$49
+e1a6   60                   rts
+e1a7   c9 21      le1a7     cmp #$21
+e1a9   60                   rts
+e1aa   2c fd fe             bit lfefd
+e1ad   50 07                bvc le1b6
+e1af   c9 50                cmp #$50
+e1b1   90 09                bcc le1bc
+e1b3   e9 50                sbc #$50
+e1b5   60                   rts
+e1b6   c9 28      le1b6     cmp #$28
+e1b8   90 02                bcc le1bc
+e1ba   e9 28                sbc #$28
+e1bc   60         le1bc     rts
+e1bd   2c fd fe             bit lfefd
+e1c0   50 fa                bvc le1bc
+e1c2   20 30 fc             jsr lfc30
+e1c5   20 b7 00             jsr $00b7
+e1c8   f0 0a                beq le1d4
+e1ca   20 f8 e6             jsr le6f8
+e1cd   8a                   txa
+e1ce   29 01                and #$01
+e1d0   aa                   tax
+e1d1   9d 06 c0             sta $c006,x	; Peripheral ROM ($C100-$CFFF) 
+e1d4   60         le1d4     rts
+e1d5   20 67 dd             jsr $dd67
+e1d8   20 52 e7             jsr le752
+e1db   6c 50 00             jmp ($0050)
+e1de   20 f8 e6             jsr le6f8
+e1e1   8a                   txa
+e1e2   4c 8b fe             jmp lfe8b
+e1e5   20 f8 e6             jsr le6f8
+e1e8   8a                   txa
+e1e9   4c 95 fe             jmp lfe95
+e1ec   20 f8 e6             jsr le6f8
+e1ef   20 8d f7             jsr lf78d
+e1f2   ea                   nop
+e1f3   86 f0                stx $f0
+e1f5   a9 2c                lda #$2c
+e1f7   20 c0 de             jsr $dec0
+e1fa   20 f8 e6             jsr le6f8
+e1fd   20 8d f7             jsr lf78d
+e200   ea                   nop
+e201   86 2c                stx $2c	; RWTS storage for checksum, sector, track, volume
+e203   86 2d                stx $2d
+e205   60                   rts
+e206   4c 99 e1   le206     jmp le199
+e209   20 ec f1             jsr lf1ec
+e20c   e4 f0                cpx $f0
+e20e   b0 08                bcs le218
+e210   a5 f0                lda $f0
+e212   85 2c                sta $2c	; RWTS storage for checksum, sector, track, volume
+e214   85 2d                sta $2d
+e216   86 f0                stx $f0
+e218   a9 c5      le218     lda #$c5
+e21a   20 c0 de             jsr $dec0
+e21d   20 f8 e6             jsr le6f8
+e220   20 8d f7             jsr lf78d
+e223   ea                   nop
+e224   60                   rts
+e225   20 ec f1             jsr lf1ec
+e228   8a                   txa
+e229   a4 f0                ldy $f0
+e22b   20 9e f7             jsr lf79e
+e22e   ea                   nop
+e22f   4c 00 f8             jmp lf800
+e232   20 09 f2             jsr lf209
+e235   8a                   txa
+e236   a4 2c                ldy $2c	; RWTS storage for checksum, sector, track, volume
+e238   20 9e f7             jsr lf79e
+e23b   ea                   nop
+e23c   a4 f0                ldy $f0
+e23e   4c 19 f8             jmp lf819
+e241   20 09 f2             jsr lf209
+e244   8a                   txa
+e245   a8                   tay
+e246   20 a3 f7             jsr lf7a3
+e249   ea                   nop
+e24a   a5 f0                lda $f0
+e24c   4c b4 f7             jmp lf7b4
+e24f   20 f8 e6             jsr le6f8
+e252   8a                   txa
+e253   4c 64 f8             jmp lf864
+e256   20 f8 e6             jsr le6f8
+e259   ca                   dex
+e25a   8a                   txa
+e25b   c9 18                cmp #$18
+e25d   b0 a7                bcs le206
+e25f   4c 5b fb             jmp lfb5b
+e262   20 f8 e6             jsr le6f8
+e265   8a                   txa
+e266   49 ff                eor #$ff
+e268   aa                   tax
+e269   e8                   inx
+e26a   86 f1                stx $f1
+e26c   60                   rts
+e26d   38                   sec
+e26e   90 18                bcc le288
+e270   66 f2                ror $f2
+e272   60                   rts
+e273   4c ad f7             jmp lf7ad
+e276   ea                   nop
+e277   20 75 f7             jsr lf775
+e27a   ea                   nop
+e27b   85 32      le27b     sta $32
+e27d   86 f3                stx $f3
+e27f   60                   rts
+e280   20 82 f7             jsr lf782
+e283   ea                   nop
+e284   d0 f5                bne le27b
+e286   20 67 dd             jsr $dd67
+e289   20 52 e7             jsr le752
+e28c   a5 50                lda $50
+e28e   c5 6d                cmp $6d
+e290   a5 51                lda $51
+e292   e5 6e                sbc $6e
+e294   b0 03                bcs le299
+e296   4c 10 d4   le296     jmp $d410
+e299   a5 50      le299     lda $50
+e29b   85 73                sta $73
+e29d   85 6f                sta $6f
+e29f   a5 51                lda $51
+e2a1   85 74                sta $74
+e2a3   85 70                sta $70
+e2a5   60                   rts
+e2a6   20 67 dd             jsr $dd67
+e2a9   20 52 e7             jsr le752
+e2ac   a5 50                lda $50
+e2ae   c5 73                cmp $73
+e2b0   a5 51                lda $51
+e2b2   e5 74                sbc $74
+e2b4   b0 e0                bcs le296
+e2b6   a5 50                lda $50
+e2b8   c5 69                cmp $69
+e2ba   a5 51                lda $51
+e2bc   e5 6a                sbc $6a
+e2be   90 d6                bcc le296
+e2c0   a5 50                lda $50
+e2c2   85 69                sta $69
+e2c4   a5 51                lda $51
+e2c6   85 6a                sta $6a
+e2c8   4c 6c d6             jmp $d66c
+e2cb   a9 ab                lda #$ab
+e2cd   20 c0 de             jsr $dec0
+e2d0   a5 b8                lda $b8
+e2d2   85 f4                sta $f4
+e2d4   a5 b9                lda $b9
+e2d6   85 f5                sta $f5
+e2d8   38                   sec
+e2d9   66 d8                ror $d8
+e2db   a5 75                lda $75
+e2dd   85 f6                sta $f6
+e2df   a5 76                lda $76
+e2e1   85 f7                sta $f7
+e2e3   20 a6 d9             jsr $d9a6
+e2e6   4c 98 d9             jmp $d998
+e2e9   86 de                stx $de
+e2eb   a6 f8                ldx $f8
+e2ed   86 df                stx $df
+e2ef   a5 75                lda $75
+e2f1   85 da                sta $da
+e2f3   a5 76                lda $76
+e2f5   85 db                sta $db
+e2f7   a5 79                lda $79
+e2f9   85 dc                sta $dc
+e2fb   a5 7a                lda $7a
+e2fd   85 dd                sta $dd
+e2ff   a5 f4                lda $f4
+e301   85 b8                sta $b8
+e303   a5 f5                lda $f5
+e305   85 b9                sta $b9
+e307   a5 f6                lda $f6
+e309   85 75                sta $75
+e30b   a5 f7                lda $f7
+e30d   85 76                sta $76
+e30f   20 b7 00             jsr $00b7
+e312   20 3e d9             jsr $d93e
+e315   4c d2 d7             jmp $d7d2
+e318   a5 da                lda $da
+e31a   85 75                sta $75
+e31c   a5 db                lda $db
+e31e   85 76                sta $76
+e320   a5 dc                lda $dc
+e322   85 b8                sta $b8
+e324   a5 dd                lda $dd
+e326   85 b9                sta $b9
+e328   a6 df                ldx $df
+e32a   9a                   txs
+e32b   4c d2 d7             jmp $d7d2
+e32e   4c c9 de   le32e     jmp $dec9
+e331   b0 fb                bcs le32e
+e333   a6 af                ldx $af
+e335   86 69                stx $69
+e337   a6 b0                ldx $b0
+e339   86 6a                stx $6a
+e33b   20 0c da             jsr $da0c
+e33e   20 1a d6             jsr $d61a
+e341   a5 9b                lda $9b
+e343   85 60                sta $60
+e345   a5 9c                lda $9c
+e347   85 61                sta $61
+e349   a9 2c                lda #$2c
+e34b   20 c0 de             jsr $dec0
+e34e   20 0c da             jsr $da0c
+e351   e6 50                inc $50
+e353   d0 02                bne le357
+e355   e6 51                inc $51
+e357   20 1a d6   le357     jsr $d61a
+e35a   a5 9b                lda $9b
+e35c   c5 60                cmp $60
+e35e   a5 9c                lda $9c
+e360   e5 61                sbc $61
+e362   b0 01                bcs le365
+e364   60                   rts
+e365   a0 00      le365     ldy #$00
+e367   b1 9b      le367     lda ($9b),y
+e369   91 60                sta ($60),y
+e36b   e6 9b                inc $9b
+e36d   d0 02                bne le371
+e36f   e6 9c                inc $9c
+e371   e6 60      le371     inc $60
+e373   d0 02                bne le377
+e375   e6 61                inc $61
+e377   a5 69      le377     lda $69
+e379   c5 9b                cmp $9b
+e37b   a5 6a                lda $6a
+e37d   e5 9c                sbc $9c
+e37f   b0 e6                bcs le367
+e381   a6 61                ldx $61
+e383   a4 60                ldy $60
+e385   d0 01                bne le388
+e387   ca                   dex
+e388   88         le388     dey
+e389   86 6a                stx $6a
+e38b   84 69                sty $69
+e38d   4c f2 d4             jmp $d4f2
+
+e390   ad 56 c0             lda $c056	; LORES switch Display LoRes Graphics
+e393   ad 53 c0             lda $c053	; MIXSET switch Display Split Screen
+e396   4c 40 fb             jmp lfb40
+
+e399   ad 54 c0             lda $c054	; TXTPAGE1 switch Display Page 1
+e39c   4c 39 fb             jmp lfb39
+
+e39f   20 d9 f7             jsr lf7d9
+e3a2   a0 03                ldy #$03
+e3a4   b1 9b                lda ($9b),y
+e3a6   aa                   tax
+e3a7   88                   dey
+e3a8   b1 9b                lda ($9b),y
+e3aa   e9 01                sbc #$01
+e3ac   b0 01                bcs le3af
+e3ae   ca                   dex
+e3af   85 50      le3af     sta $50
+e3b1   86 51                stx $51
+e3b3   20 cd fe             jsr lfecd
+e3b6   20 bc f7             jsr lf7bc
+e3b9   4c cd fe             jmp lfecd
+
+e3bc   20 d9 f7             jsr lf7d9
+e3bf   20 fd fe             jsr lfefd
+e3c2   a0 02                ldy #$02
+e3c4   b1 9b                lda ($9b),y
+e3c6   c5 50                cmp $50
+e3c8   c8                   iny
+e3c9   b1 9b                lda ($9b),y
+e3cb   e5 51                sbc $51
+e3cd   b0 03                bcs le3d2
+e3cf   4c 10 d4             jmp $d410
+
+e3d2   20 bc f7   le3d2     jsr lf7bc
+e3d5   4c fd fe             jmp lfefd
+
+e3d8   2c 55 c0             bit $c055	; If 80STORE Off: Display Page 2; If 80STORE On: Read/Write Aux Display Mem
+e3db   2c 52 c0             bit $c052	; Display Full Screen
+e3de   a9 40                lda #$40
+e3e0   d0 08                bne le3ea
+e3e2   a9 20                lda #$20
+e3e4   2c 54 c0             bit $c054	; TXTPAGE1 switch Display Page 1
+e3e7   2c 53 c0             bit $c053	; MIXSET switch Display Split Screen
+e3ea   85 e6      le3ea     sta $e6
+e3ec   ad 57 c0             lda $c057	; Display HiRes Graphics
+e3ef   ad 50 c0             lda $c050	; TXTCLR switch Display Graphics
+e3f2   a9 00                lda #$00
+e3f4   85 1c                sta $1c
+e3f6   a5 e6                lda $e6
+e3f8   85 1b                sta $1b
+e3fa   a0 00                ldy #$00
+e3fc   84 1a                sty $1a
+e3fe   a5 1c      le3fe     lda $1c
+e400   91 1a                sta ($1a),y
+e402   20 7e f4             jsr lf47e
+e405   c8                   iny
+e406   d0 f6                bne le3fe
+e408   e6 1b                inc $1b
+e40a   a5 1b                lda $1b
+e40c   29 1f                and #$1f
+e40e   d0 ee                bne le3fe
+e410   60                   rts
+
+
+e411   85 e2                sta $e2
+e413   86 e0                stx $e0
+e415   84 e1                sty $e1
+e417   48                   pha
+e418   29 c0                and #$c0
+e41a   85 26                sta $26	; Hires byte position, lores left end point, DOS scratch
+e41c   4a                   lsr a
+e41d   4a                   lsr a
+e41e   05 26                ora $26	; Hires byte position, lores left end point, DOS scratch
+e420   85 26                sta $26	; Hires byte position, lores left end point, DOS scratch
+e422   68                   pla
+e423   85 27                sta $26	; Hires byte position, lores left end point, DOS scratch
+e425   0a                   asl a
+e426   0a                   asl a
+e427   0a                   asl a
+e428   26 27                rol $26	; Hires byte position, lores left end point, DOS scratch
+e42a   0a                   asl a
+e42b   26 27                rol $26	; Hires byte position, lores left end point, DOS scratch
+e42d   0a                   asl a
+e42e   66 26                ror $26	; Hires byte position, lores left end point, DOS scratch
+e430   a5 27                lda $26	; Hires byte position, lores left end point, DOS scratch
+e432   29 1f                and #$1f
+e434   05 e6                ora $e6
+e436   85 27                sta $26	; Hires byte position, lores left end point, DOS scratch
+e438   8a                   txa
+e439   c0 00                cpy #$00
+e43b   f0 05                beq le442
+e43d   a0 23                ldy #$23
+e43f   69 04                adc #$04
+e441   c8         le441     iny
+e442   e9 07      le442     sbc #$07
+e444   b0 fb                bcs le441
+e446   84 e5                sty $e5
+e448   aa                   tax
+e449   bd b9 f4             lda $f4b9,x
+e44c   85 30                sta $30
+e44e   98                   tya
+e44f   4a                   lsr a
+e450   a5 e4                lda $e4
+e452   85 1c                sta $1c
+e454   b0 28                bcs le47e
+e456   60                   rts
+e457   20 11 f4             jsr lf411
+e45a   a5 1c                lda $1c
+e45c   51 26                eor ($26),y
+e45e   25 30                and $30
+e460   51 26                eor ($26),y
+e462   91 26                sta ($26),y
+e464   60                   rts
+e465   10 23      le465     bpl le48a
+e467   a5 30                lda $30
+e469   4a                   lsr a
+e46a   b0 05                bcs le471
+e46c   49 c0                eor #$c0
+e46e   85 30      le46e     sta $30
+e470   60                   rts
+e471   88         le471     dey
+e472   10 02                bpl le476
+e474   a0 27                ldy #$27
+e476   a9 c0      le476     lda #$c0
+e478   85 30      le478     sta $30
+e47a   84 e5                sty $e5
+e47c   a5 1c                lda $1c
+e47e   0a         le47e     asl a
+e47f   c9 c0                cmp #$c0
+e481   10 06                bpl le489
+e483   a5 1c                lda $1c
+e485   49 7f                eor #$7f
+e487   85 1c                sta $1c
+e489   60         le489     rts
+e48a   a5 30      le48a     lda $30
+e48c   0a                   asl a
+e48d   49 80                eor #$80
+e48f   30 dd                bmi le46e
+e491   a9 81                lda #$81
+e493   c8                   iny
+e494   c0 28                cpy #$28
+e496   90 e0                bcc le478
+e498   a0 00                ldy #$00
+e49a   b0 dc                bcs le478
+e49c   18                   clc
+e49d   a5 d1                lda $d1
+e49f   29 04                and #$04
+e4a1   f0 25                beq le4c8
+e4a3   a9 7f                lda #$7f
+e4a5   25 30                and $30
+e4a7   31 26                and ($26),y
+e4a9   d0 19                bne le4c4
+e4ab   e6 ea                inc $ea
+e4ad   a9 7f                lda #$7f
+e4af   25 30                and $30
+e4b1   10 11                bpl le4c4
+e4b3   18                   clc
+e4b4   a5 d1                lda $d1
+e4b6   29 04                and #$04
+e4b8   f0 0e                beq le4c8
+e4ba   b1 26                lda ($26),y
+e4bc   45 1c                eor $1c
+e4be   25 30                and $30
+e4c0   d0 02                bne le4c4
+e4c2   e6 ea                inc $ea
+e4c4   51 26      le4c4     eor ($26),y
+e4c6   91 26                sta ($26),y
+e4c8   a5 d1      le4c8     lda $d1
+e4ca   65 d3                adc $d3
+e4cc   29 03                and #$03
+e4ce   c9 02                cmp #$02
+e4d0   6a                   ror a
+e4d1   b0 92                bcs le465
+e4d3   30 30                bmi le505
+e4d5   18                   clc
+e4d6   a5 27                lda $26	; Hires byte position, lores left end point, DOS scratch
+e4d8   2c b9 f5             bit $f5b9
+e4db   d0 22                bne le4ff
+e4dd   06 26                asl $26	; Hires byte position, lores left end point, DOS scratch
+e4df   b0 1a                bcs le4fb
+e4e1   2c cd f4             bit $f4cd
+e4e4   f0 05                beq le4eb
+e4e6   69 1f                adc #$1f
+e4e8   38                   sec
+e4e9   b0 12                bcs le4fd
+e4eb   69 23      le4eb     adc #$23
+e4ed   48                   pha
+e4ee   a5 26                lda $26	; Hires byte position, lores left end point, DOS scratch
+e4f0   69 b0                adc #$b0
+e4f2   b0 02                bcs le4f6
+e4f4   69 f0                adc #$f0
+e4f6   85 26      le4f6     sta $26	; Hires byte position, lores left end point, DOS scratch
+e4f8   68                   pla
+e4f9   b0 02                bcs le4fd
+e4fb   69 1f      le4fb     adc #$1f
+e4fd   66 26      le4fd     ror $26	; Hires byte position, lores left end point, DOS scratch
+e4ff   69 fc      le4ff     adc #$fc
+e501   85 27      le501     sta $26	; Hires byte position, lores left end point, DOS scratch
+e503   60                   rts
+e504   18                   clc
+e505   a5 27      le505     lda $26	; Hires byte position, lores left end point, DOS scratch
+e507   69 04                adc #$04
+e509   2c b9 f5             bit $f5b9
+e50c   d0 f3                bne le501
+e50e   06 26                asl $26	; Hires byte position, lores left end point, DOS scratch
+e510   90 18                bcc le52a
+e512   69 e0                adc #$e0
+e514   18                   clc
+e515   2c 08 f5             bit $f508
+e518   f0 12                beq le52c
+e51a   a5 26                lda $26	; Hires byte position, lores left end point, DOS scratch
+e51c   69 50                adc #$50
+e51e   49 f0                eor #$f0
+e520   f0 02                beq le524
+e522   49 f0                eor #$f0
+e524   85 26      le524     sta $26	; Hires byte position, lores left end point, DOS scratch
+e526   a5 e6                lda $e6
+e528   90 02                bcc le52c
+e52a   69 e0      le52a     adc #$e0
+e52c   66 26      le52c     ror $26	; Hires byte position, lores left end point, DOS scratch
+e52e   90 d1                bcc le501
+e530   48                   pha
+e531   a9 00                lda #$00
+e533   85 e0                sta $e0
+e535   85 e1                sta $e1
+e537   85 e2                sta $e2
+e539   68                   pla
+e53a   48                   pha
+e53b   38                   sec
+e53c   e5 e0                sbc $e0
+e53e   48                   pha
+e53f   8a                   txa
+e540   e5 e1                sbc $e1
+e542   85 d3                sta $d3
+e544   b0 0a                bcs le550
+e546   68                   pla
+e547   49 ff                eor #$ff
+e549   69 01                adc #$01
+e54b   48                   pha
+e54c   a9 00                lda #$00
+e54e   e5 d3                sbc $d3
+e550   85 d1      le550     sta $d1
+e552   85 d5                sta $d5
+e554   68                   pla
+e555   85 d0                sta $d0
+e557   85 d4                sta $d4
+e559   68                   pla
+e55a   85 e0                sta $e0
+e55c   86 e1                stx $e1
+e55e   98                   tya
+e55f   18                   clc
+e560   e5 e2                sbc $e2
+e562   90 04                bcc le568
+e564   49 ff                eor #$ff
+e566   69 fe                adc #$fe
+e568   85 d2      le568     sta $d2
+e56a   84 e2                sty $e2
+e56c   66 d3                ror $d3
+e56e   38                   sec
+e56f   e5 d0                sbc $d0
+e571   aa                   tax
+e572   a9 ff                lda #$ff
+e574   e5 d1                sbc $d1
+e576   85 1d                sta $1d
+e578   a4 e5                ldy $e5
+e57a   b0 05                bcs le581
+e57c   0a         le57c     asl a
+e57d   20 65 f4             jsr lf465
+e580   38                   sec
+e581   a5 d4      le581     lda $d4
+e583   65 d2                adc $d2
+e585   85 d4                sta $d4
+e587   a5 d5                lda $d5
+e589   e9 00                sbc #$00
+e58b   85 d5      le58b     sta $d5
+e58d   b1 26                lda ($26),y
+e58f   45 1c                eor $1c
+e591   25 30                and $30
+e593   51 26                eor ($26),y
+e595   91 26                sta ($26),y
+e597   e8                   inx
+e598   d0 04                bne le59e
+e59a   e6 1d                inc $1d
+e59c   f0 62                beq le600
+e59e   a5 d3      le59e     lda $d3
+e5a0   b0 da                bcs le57c
+e5a2   20 d3 f4             jsr lf4d3
+e5a5   18                   clc
+e5a6   a5 d4                lda $d4
+e5a8   65 d0                adc $d0
+e5aa   85 d4                sta $d4
+e5ac   a5 d5                lda $d5
+e5ae   65 d1                adc $d1
+e5b0   50 d9                bvc le58b
+e5b2   81 82                sta ($82,x)
+e5b4   84 88                sty $88
+e5b6   90 a0                bcc le558
+e5b8   c0 1c                cpy #$1c
+e5ba   ff                   ???                ;%11111111
+e5bb   fe fa f4             inc $f4fa,x
+e5be   ec e1 d4             cpx $d4e1
+e5c1   c5 b4                cmp $b4
+e5c3   a1 8d                lda ($8d,x)
+e5c5   78                   sei
+e5c6   61 49                adc ($49,x)
+e5c8   31 18                and ($18),y
+e5ca   ff                   ???                ;%11111111
+e5cb   a5 26                lda $26	; Hires byte position, lores left end point, DOS scratch
+e5cd   0a                   asl a
+e5ce   a5 27                lda $26	; Hires byte position, lores left end point, DOS scratch
+e5d0   29 03                and #$03
+e5d2   2a                   rol a
+e5d3   05 26                ora $26	; Hires byte position, lores left end point, DOS scratch
+e5d5   0a                   asl a
+e5d6   0a                   asl a
+e5d7   0a                   asl a
+e5d8   85 e2                sta $e2
+e5da   a5 27                lda $26	; Hires byte position, lores left end point, DOS scratch
+e5dc   4a                   lsr a
+e5dd   4a                   lsr a
+e5de   29 07                and #$07
+e5e0   05 e2                ora $e2
+e5e2   85 e2                sta $e2
+e5e4   a5 e5                lda $e5
+e5e6   0a                   asl a
+e5e7   65 e5                adc $e5
+e5e9   0a                   asl a
+e5ea   aa                   tax
+e5eb   ca                   dex
+e5ec   a5 30                lda $30
+e5ee   29 7f                and #$7f
+e5f0   e8         le5f0     inx
+e5f1   4a                   lsr a
+e5f2   d0 fc                bne le5f0
+e5f4   85 e1                sta $e1
+e5f6   8a                   txa
+e5f7   18                   clc
+e5f8   65 e5                adc $e5
+e5fa   90 02                bcc le5fe
+e5fc   e6 e1                inc $e1
+e5fe   85 e0      le5fe     sta $e0
+e600   60         le600     rts
+e601   86 1a                stx $1a
+e603   84 1b                sty $1b
+e605   aa                   tax
+e606   4a                   lsr a
+e607   4a                   lsr a
+e608   4a                   lsr a
+e609   4a                   lsr a
+e60a   85 d3                sta $d3
+e60c   8a                   txa
+e60d   29 0f                and #$0f
+e60f   aa                   tax
+e610   bc ba f5             ldy $f5ba,x
+e613   84 d0                sty $d0
+e615   49 0f                eor #$0f
+e617   aa                   tax
+e618   bc bb f5             ldy $f5bb,x
+e61b   c8                   iny
+e61c   84 d2                sty $d2
+e61e   a4 e5                ldy $e5
+e620   a2 00                ldx #$00
+e622   86 ea                stx $ea
+e624   a1 1a                lda ($1a,x)
+e626   85 d1      le626     sta $d1
+e628   a2 80                ldx #$80
+e62a   86 d4                stx $d4
+e62c   86 d5                stx $d5
+e62e   a6 e7                ldx $e7
+e630   a5 d4      le630     lda $d4
+e632   38                   sec
+e633   65 d0                adc $d0
+e635   85 d4                sta $d4
+e637   90 04                bcc le63d
+e639   20 b3 f4             jsr lf4b3
+e63c   18                   clc
+e63d   a5 d5      le63d     lda $d5
+e63f   65 d2                adc $d2
+e641   85 d5                sta $d5
+e643   90 03                bcc le648
+e645   20 b4 f4             jsr lf4b4
+e648   ca         le648     dex
+e649   d0 e5                bne le630
+e64b   a5 d1                lda $d1
+e64d   4a                   lsr a
+e64e   4a                   lsr a
+e64f   4a                   lsr a
+e650   d0 d4                bne le626
+e652   e6 1a                inc $1a
+e654   d0 02                bne le658
+e656   e6 1b                inc $1b
+e658   a1 1a      le658     lda ($1a,x)
+e65a   d0 ca                bne le626
+e65c   60                   rts
+e65d   86 1a                stx $1a
+e65f   84 1b                sty $1b
+e661   aa                   tax
+e662   4a                   lsr a
+e663   4a                   lsr a
+e664   4a                   lsr a
+e665   4a                   lsr a
+e666   85 d3                sta $d3
+e668   8a                   txa
+e669   29 0f                and #$0f
+e66b   aa                   tax
+e66c   bc ba f5             ldy $f5ba,x
+e66f   84 d0                sty $d0
+e671   49 0f                eor #$0f
+e673   aa                   tax
+e674   bc bb f5             ldy $f5bb,x
+e677   c8                   iny
+e678   84 d2                sty $d2
+e67a   a4 e5                ldy $e5
+e67c   a2 00                ldx #$00
+e67e   86 ea                stx $ea
+e680   a1 1a                lda ($1a,x)
+e682   85 d1      le682     sta $d1
+e684   a2 80                ldx #$80
+e686   86 d4                stx $d4
+e688   86 d5                stx $d5
+e68a   a6 e7                ldx $e7
+e68c   a5 d4      le68c     lda $d4
+e68e   38                   sec
+e68f   65 d0                adc $d0
+e691   85 d4                sta $d4
+e693   90 04                bcc le699
+e695   20 9c f4             jsr lf49c
+e698   18                   clc
+e699   a5 d5      le699     lda $d5
+e69b   65 d2                adc $d2
+e69d   85 d5                sta $d5
+e69f   90 03                bcc le6a4
+e6a1   20 9d f4             jsr lf49d
+e6a4   ca         le6a4     dex
+e6a5   d0 e5                bne le68c
+e6a7   a5 d1                lda $d1
+e6a9   4a                   lsr a
+e6aa   4a                   lsr a
+e6ab   4a                   lsr a
+e6ac   d0 d4                bne le682
+e6ae   e6 1a                inc $1a
+e6b0   d0 02                bne le6b4
+e6b2   e6 1b                inc $1b
+e6b4   a1 1a      le6b4     lda ($1a,x)
+e6b6   d0 ca                bne le682
+e6b8   60                   rts
+e6b9   20 67 dd             jsr $dd67
+e6bc   20 52 e7             jsr le752
+e6bf   a4 51                ldy $51
+e6c1   a6 50                ldx $50
+e6c3   c0 01                cpy #$01
+e6c5   90 06                bcc le6cd
+e6c7   d0 1d                bne le6e6
+e6c9   e0 18                cpx #$18
+e6cb   b0 19                bcs le6e6
+e6cd   8a         le6cd     txa
+e6ce   48                   pha
+e6cf   98                   tya
+e6d0   48                   pha
+e6d1   a9 2c                lda #$2c
+e6d3   20 c0 de             jsr $dec0
+e6d6   20 f8 e6             jsr le6f8
+e6d9   e0 c0                cpx #$c0
+e6db   b0 09                bcs le6e6
+e6dd   86 9d                stx $9d
+e6df   68                   pla
+e6e0   a8                   tay
+e6e1   68                   pla
+e6e2   aa                   tax
+e6e3   a5 9d                lda $9d
+e6e5   60                   rts
+e6e6   4c 06 f2   le6e6     jmp lf206
+e6e9   20 f8 e6             jsr le6f8
+e6ec   e0 08                cpx #$08
+e6ee   b0 f6                bcs le6e6
+e6f0   bd f6 f6             lda $f6f6,x
+e6f3   85 e4                sta $e4
+e6f5   60         le6f5     rts
+e6f6   00                   brk
+e6f7   2a                   rol a
+e6f8   55 7f      le6f8     eor $7f,x
+e6fa   80                   ???                ;%10000000
+e6fb   aa                   tax
+e6fc   d5 ff                cmp $ff,x
+e6fe   c9 c1                cmp #$c1
+e700   f0 0d                beq le70f
+e702   20 b9 f6             jsr lf6b9
+e705   20 57 f4             jsr lf457
+e708   20 b7 00             jsr $00b7
+e70b   c9 c1                cmp #$c1
+e70d   d0 e6                bne le6f5
+e70f   20 c0 de   le70f     jsr $dec0
+e712   20 b9 f6             jsr lf6b9
+e715   84 9d                sty $9d
+e717   a8                   tay
+e718   8a                   txa
+e719   a6 9d                ldx $9d
+e71b   20 3a f5             jsr lf53a
+e71e   4c 08 f7             jmp lf708
+e721   20 f8 e6             jsr le6f8
+e724   86 f9                stx $f9
+e726   60                   rts
+e727   20 f8 e6             jsr le6f8
+e72a   86 e7                stx $e7
+e72c   60                   rts
+e72d   20 f8 e6             jsr le6f8
+e730   a5 e8                lda $e8
+e732   85 1a                sta $1a
+e734   a5 e9                lda $e9
+e736   85 1b                sta $1b
+e738   8a                   txa
+e739   a2 00                ldx #$00
+e73b   c1 1a                cmp ($1a,x)
+e73d   f0 02                beq le741
+e73f   b0 a5                bcs le6e6
+e741   0a         le741     asl a
+e742   90 03                bcc le747
+e744   e6 1b                inc $1b
+e746   18                   clc
+e747   a8         le747     tay
+e748   b1 1a                lda ($1a),y
+e74a   65 1a                adc $1a
+e74c   aa                   tax
+e74d   c8                   iny
+e74e   b1 1a                lda ($1a),y
+e750   65 e9                adc $e9
+e752   85 1b      le752     sta $1b
+e754   86 1a                stx $1a
+e756   20 b7 00             jsr $00b7
+e759   c9 c5                cmp #$c5
+e75b   d0 09                bne le766
+e75d   20 c0 de             jsr $dec0
+e760   20 b9 f6             jsr lf6b9
+e763   20 11 f4             jsr lf411
+e766   a5 f9      le766     lda $f9
+e768   60                   rts
+e769   20 2d f7             jsr lf72d
+e76c   4c 05 f6             jmp lf605
+e76f   20 2d f7             jsr lf72d
+e772   4c 61 f6             jmp lf661
+e775   a2 00                ldx #$00
+e777   2c fd fe             bit lfefd
+e77a   50 03                bvc le77f
+e77c   a9 7f      le77c     lda #$7f
+e77e   60                   rts
+e77f   a9 3f      le77f     lda #$3f
+e781   60                   rts
+e782   a2 00                ldx #$00
+e784   2c fd fe             bit lfefd
+e787   70 f3                bvs le77c
+e789   a2 40                ldx #$40
+e78b   d0 ef                bne le77c
+e78d   2c fd fe             bit lfefd
+e790   50 05                bvc le797
+e792   e0 50      le792     cpx #$50
+e794   b0 05                bcs le79b
+e796   60         le796     rts
+e797   e0 30      le797     cpx #$30
+e799   90 fb                bcc le796
+e79b   4c 99 e1   le79b     jmp le199
+e79e   2c fd fe             bit lfefd
+e7a1   70 f4                bvs le797
+e7a3   2c fd fe             bit lfefd
+e7a6   70 ea                bvs le792
+e7a8   c0 28                cpy #$28
+e7aa   b0 ef      le7aa     bcs le79b
+e7ac   60                   rts
+e7ad   a9 ff                lda #$ff
+e7af   a2 00                ldx #$00
+e7b1   4c 7b f2             jmp lf27b
+e7b4   a6 2d                ldx $2d
+e7b6   20 97 f7             jsr lf797
+e7b9   4c 28 f8             jmp lf828
+e7bc   18                   clc
+e7bd   a5 9b                lda $9b
+e7bf   65 50                adc $50
+e7c1   85 3e                sta $3e
+e7c3   a5 9c                lda $9c
+e7c5   65 51                adc $51
+e7c7   85 3f                sta $3f
+e7c9   a0 04                ldy #$04
+e7cb   b1 9b                lda ($9b),y
+e7cd   20 ef e0             jsr le0ef
+e7d0   a5 94                lda $94
+e7d2   85 3c                sta $3c
+e7d4   a5 95                lda $95
+e7d6   85 3d                sta $3d
+e7d8   60                   rts
+e7d9   a9 40                lda #$40
+e7db   85 14                sta $14
+e7dd   20 e3 df             jsr $dfe3
+e7e0   a9 00                lda #$00
+e7e2   85 14                sta $14
+e7e4   4c f0 d8             jmp $d8f0
+e7e7   20 f8 e6             jsr le6f8
+e7ea   ca                   dex
+e7eb   8a                   txa
+e7ec   20 aa f1             jsr lf1aa
+e7ef   ea                   nop
+e7f0   90 08                bcc le7fa
+e7f2   48                   pha
+e7f3   20 fb da             jsr $dafb
+e7f6   68                   pla
+e7f7   4c ec f7             jmp lf7ec
+e7fa   85 24      le7fa     sta $24	; Horizontal cursor displacement (from top)
+e7fc   60                   rts
+e7fd   cb                   ???                ;%11001011
+e7fe   d2                   ???                ;%11010010
+e7ff   d7                   ???                ;%11010111
+e800   4a                   lsr a
+e801   08                   php
+e802   20 47 f8             jsr lf847
+e805   28                   plp
+e806   a9 0f                lda #$0f
+e808   90 02                bcc le80c
+e80a   69 e0                adc #$e0
+e80c   85 2e      le80c     sta $2e
+e80e   08                   php
+e80f   20 c9 fc             jsr lfcc9
+e812   4c ed fc             jmp lfced
+e815   8d 0b c0             sta $c00b	; Use Card Slot 3 ROM
+e818   60                   rts
+e819   20 00 f8             jsr lf800
+e81c   c4 2c      le81c     cpy $2c	; RWTS storage for checksum, sector, track, volume
+e81e   b0 11                bcs le831
+e820   c8                   iny
+e821   20 0e f8             jsr lf80e
+e824   90 f6                bcc le81c
+e826   69 01      le826     adc #$01
+e828   48                   pha
+e829   20 00 f8             jsr lf800
+e82c   68                   pla
+e82d   c5 2d                cmp $2d
+e82f   90 f5                bcc le826
+e831   60         le831     rts
+e832   a0 2f                ldy #$2f
+e834   d0 02                bne le838
+e836   a0 27                ldy #$27
+e838   84 2d      le838     sty $2d
+e83a   a0 4f                ldy #$4f
+e83c   a9 00      le83c     lda #$00
+e83e   85 30                sta $30
+e840   20 28 f8             jsr lf828
+e843   88                   dey
+e844   10 f6                bpl le83c
+e846   60                   rts
+e847   48                   pha
+e848   4a                   lsr a
+e849   29 03                and #$03
+e84b   09 04                ora #$04
+e84d   85 27                sta $26	; Hires byte position, lores left end point, DOS scratch
+e84f   68                   pla
+e850   29 18                and #$18
+e852   90 02                bcc le856
+e854   09 80                ora #$80
+e856   85 26      le856     sta $26	; Hires byte position, lores left end point, DOS scratch
+e858   0a                   asl a
+e859   0a                   asl a
+e85a   05 26                ora $26	; Hires byte position, lores left end point, DOS scratch
+e85c   85 26                sta $26	; Hires byte position, lores left end point, DOS scratch
+e85e   60                   rts
+e85f   a5 30                lda $30
+e861   18                   clc
+e862   69 03                adc #$03
+e864   29 0f                and #$0f
+e866   85 30                sta $30
+e868   0a                   asl a
+e869   0a                   asl a
+e86a   0a                   asl a
+e86b   0a                   asl a
+e86c   05 30                ora $30
+e86e   85 30                sta $30
+e870   60                   rts
+e871   4a                   lsr a
+e872   08                   php
+e873   20 fa fc             jsr lfcfa
+e876   ea                   nop
+e877   ea                   nop
+e878   28                   plp
+e879   90 04                bcc le87f
+e87b   4a                   lsr a
+e87c   4a                   lsr a
+e87d   4a                   lsr a
+e87e   4a                   lsr a
+e87f   29 0f      le87f     and #$0f
+e881   60                   rts
+e882   a6 3a                ldx $3a
+e884   a4 3b                ldy $3b
+e886   20 96 fd             jsr lfd96
+e889   20 48 f9             jsr lf948
+e88c   a1 3a                lda ($3a,x)
+e88e   a8                   tay
+e88f   4a                   lsr a
+e890   90 09                bcc le89b
+e892   6a                   ror a
+e893   b0 10                bcs le8a5
+e895   c9 a2                cmp #$a2
+e897   f0 0c                beq le8a5
+e899   29 87                and #$87
+e89b   4a         le89b     lsr a
+e89c   aa                   tax
+e89d   bd 62 f9             lda $f962,x
+e8a0   20 79 f8             jsr lf879
+e8a3   d0 04                bne le8a9
+e8a5   a0 80      le8a5     ldy #$80
+e8a7   a9 00                lda #$00
+e8a9   aa         le8a9     tax
+e8aa   bd a6 f9             lda $f9a6,x
+e8ad   85 2e                sta $2e
+e8af   29 03                and #$03
+e8b1   85 2f                sta $2f
+e8b3   98                   tya
+e8b4   29 8f                and #$8f
+e8b6   aa                   tax
+e8b7   98                   tya
+e8b8   a0 03                ldy #$03
+e8ba   e0 8a                cpx #$8a
+e8bc   f0 0b                beq le8c9
+e8be   4a         le8be     lsr a
+e8bf   90 08                bcc le8c9
+e8c1   4a                   lsr a
+e8c2   4a         le8c2     lsr a
+e8c3   09 20                ora #$20
+e8c5   88                   dey
+e8c6   d0 fa                bne le8c2
+e8c8   c8                   iny
+e8c9   88         le8c9     dey
+e8ca   d0 f2                bne le8be
+e8cc   60                   rts
+e8cd   00                   brk
+e8ce   00                   brk
+e8cf   00                   brk
+e8d0   20 82 f8             jsr lf882
+e8d3   48                   pha
+e8d4   b1 3a      le8d4     lda ($3a),y
+e8d6   20 da fd             jsr lfdda
+e8d9   a2 01                ldx #$01
+e8db   20 4a f9   le8db     jsr lf94a
+e8de   c4 2f                cpy $2f
+e8e0   c8                   iny
+e8e1   90 f1                bcc le8d4
+e8e3   a2 03                ldx #$03
+e8e5   c0 04                cpy #$04
+e8e7   90 f2                bcc le8db
+e8e9   68                   pla
+e8ea   a8                   tay
+e8eb   b9 c0 f9             lda $f9c0,y
+e8ee   85 2c                sta $2c	; RWTS storage for checksum, sector, track, volume
+e8f0   b9 00 fa             lda $fa00,y
+e8f3   85 2d                sta $2d
+e8f5   a9 00      le8f5     lda #$00
+e8f7   a0 05                ldy #$05
+e8f9   06 2d      le8f9     asl $2d
+e8fb   26 2c                rol $2c	; RWTS storage for checksum, sector, track, volume
+e8fd   2a                   rol a
+e8fe   88                   dey
+e8ff   d0 f8                bne le8f9
+e901   69 bf                adc #$bf
+e903   20 ed fd             jsr lfded
+e906   ca                   dex
+e907   d0 ec                bne le8f5
+e909   20 48 f9             jsr lf948
+e90c   a4 2f                ldy $2f
+e90e   a2 06                ldx #$06
+e910   e0 03      le910     cpx #$03
+e912   f0 1c                beq le930
+e914   06 2e      le914     asl $2e
+e916   90 0e                bcc le926
+e918   bd b3 f9             lda $f9b3,x
+e91b   20 ed fd             jsr lfded
+e91e   bd b9 f9             lda $f9b9,x
+e921   f0 03                beq le926
+e923   20 ed fd             jsr lfded
+e926   ca         le926     dex
+e927   d0 e7                bne le910
+e929   60                   rts
+e92a   88         le92a     dey
+e92b   30 e7                bmi le914
+e92d   20 da fd             jsr lfdda
+e930   a5 2e      le930     lda $2e
+e932   c9 e8                cmp #$e8
+e934   b1 3a                lda ($3a),y
+e936   90 f2                bcc le92a
+e938   20 56 f9             jsr lf956
+e93b   aa                   tax
+e93c   e8                   inx
+e93d   d0 01                bne le940
+e93f   c8                   iny
+e940   98         le940     tya
+e941   20 da fd             jsr lfdda
+e944   8a                   txa
+e945   4c da fd             jmp lfdda
+e948   a2 03                ldx #$03
+e94a   a9 a0      le94a     lda #$a0
+e94c   20 ed fd             jsr lfded
+e94f   ca                   dex
+e950   d0 f8                bne le94a
+e952   60                   rts
+e953   38                   sec
+e954   a5 2f                lda $2f
+e956   a4 3b                ldy $3b
+e958   aa                   tax
+e959   10 01                bpl le95c
+e95b   88                   dey
+e95c   65 3a      le95c     adc $3a
+e95e   90 01                bcc le961
+e960   c8                   iny
+e961   60         le961     rts
+e962   04                   ???                ;%00000100
+e963   20 54 30             jsr $3054
+e966   0d 80 04             ora $0480
+e969   90 03                bcc le96e
+e96b   22                   ???                ;%00100010 '"'
+e96c   54                   ???                ;%01010100 'T'
+e96d   33                   ???                ;%00110011 '3'
+e96e   0d 80 04   le96e     ora $0480
+e971   90 04                bcc le977
+e973   20 54 33             jsr $3354
+e976   0d 80 04             ora $0480
+e979   90 04                bcc le97f
+e97b   20 54 3b             jsr $3b54
+e97e   0d 80 04             ora $0480
+e981   90 00                bcc le983
+e983   22         le983     ???                ;%00100010 '"'
+e984   44                   ???                ;%01000100 'D'
+e985   33                   ???                ;%00110011 '3'
+e986   0d c8 44             ora $44c8
+e989   00                   brk
+e98a   11 22                ora ($22),y
+e98c   44                   ???                ;%01000100 'D'
+e98d   33                   ???                ;%00110011 '3'
+e98e   0d c8 44             ora $44c8
+e991   a9 01                lda #$01
+e993   22                   ???                ;%00100010 '"'
+e994   44                   ???                ;%01000100 'D'
+e995   33                   ???                ;%00110011 '3'
+e996   0d 80 04             ora $0480
+e999   90 01                bcc le99c
+e99b   22                   ???                ;%00100010 '"'
+e99c   44         le99c     ???                ;%01000100 'D'
+e99d   33                   ???                ;%00110011 '3'
+e99e   0d 80 04             ora $0480
+e9a1   90 26                bcc le9c9
+e9a3   31 87                and ($87),y
+e9a5   9a                   txs
+e9a6   00                   brk
+e9a7   21 81                and ($81,x)
+e9a9   82                   ???                ;%10000010
+e9aa   00                   brk
+e9ab   00                   brk
+e9ac   59 4d 91             eor $914d,y
+e9af   92                   ???                ;%10010010
+e9b0   86 4a                stx $4a
+e9b2   85 9d                sta $9d
+e9b4   ac a9 ac             ldy $aca9
+e9b7   a3                   ???                ;%10100011
+e9b8   a8                   tay
+e9b9   a4 d9                ldy $d9
+e9bb   00                   brk
+e9bc   d8                   cld
+e9bd   a4 a4                ldy $a4
+e9bf   00                   brk
+e9c0   1c                   ???                ;%00011100
+e9c1   8a                   txa
+e9c2   1c                   ???                ;%00011100
+e9c3   23                   ???                ;%00100011 '#'
+e9c4   5d 8b 1b             eor $1b8b,x
+e9c7   a1 9d                lda ($9d,x)
+e9c9   8a         le9c9     txa
+e9ca   1d 23 9d             ora $9d23,x
+e9cd   8b                   ???                ;%10001011
+e9ce   1d a1 00             ora $00a1,x
+e9d1   29 19                and #$19
+e9d3   ae 69 a8             ldx $a869
+e9d6   19 23 24             ora $2423,y
+e9d9   53                   ???                ;%01010011 'S'
+e9da   1b                   ???                ;%00011011
+e9db   23                   ???                ;%00100011 '#'
+e9dc   24 53                bit $53
+e9de   19 a1 00             ora $00a1,y
+e9e1   1a                   ???                ;%00011010
+e9e2   5b                   ???                ;%01011011 '['
+e9e3   5b                   ???                ;%01011011 '['
+e9e4   a5 69                lda $69
+e9e6   24 24                bit $24
+e9e8   ae ae a8             ldx $a8ae
+e9eb   ad 29 00             lda $0029
+e9ee   7c                   ???                ;%01111100 '|'
+e9ef   00                   brk
+e9f0   15 9c                ora $9c,x
+e9f2   6d 9c a5             adc $a59c
+e9f5   69 29                adc #$29
+e9f7   53                   ???                ;%01010011 'S'
+e9f8   84 13                sty $13
+e9fa   34                   ???                ;%00110100 '4'
+e9fb   11 a5                ora ($a5),y
+e9fd   69 23                adc #$23
+e9ff   a0 d8                ldy #$d8
+ea01   62                   ???                ;%01100010 'b'
+ea02   5a                   ???                ;%01011010 'Z'
+ea03   48                   pha
+ea04   26 62                rol $62
+ea06   94 88                sty $88,x
+ea08   54                   ???                ;%01010100 'T'
+ea09   44                   ???                ;%01000100 'D'
+ea0a   c8                   iny
+ea0b   54                   ???                ;%01010100 'T'
+ea0c   68                   pla
+ea0d   44                   ???                ;%01000100 'D'
+ea0e   e8                   inx
+ea0f   94 00                sty $00,x
+ea11   b4 08                ldy $08,x
+ea13   84 74                sty $74
+ea15   b4 28                ldy $28,x
+ea17   6e 74 f4             ror $f474
+ea1a   cc 4a 72             cpy $724a
+ea1d   f2                   ???                ;%11110010
+ea1e   a4 8a                ldy $8a
+ea20   00                   brk
+ea21   aa                   tax
+ea22   a2 a2                ldx #$a2
+ea24   74                   ???                ;%01110100 't'
+ea25   74                   ???                ;%01110100 't'
+ea26   74                   ???                ;%01110100 't'
+ea27   72                   ???                ;%01110010 'r'
+ea28   44                   ???                ;%01000100 'D'
+ea29   68                   pla
+ea2a   b2                   ???                ;%10110010
+ea2b   32                   ???                ;%00110010 '2'
+ea2c   b2                   ???                ;%10110010
+ea2d   00                   brk
+ea2e   22                   ???                ;%00100010 '"'
+ea2f   00                   brk
+ea30   1a                   ???                ;%00011010
+ea31   1a                   ???                ;%00011010
+ea32   26 26                rol $26
+ea34   72                   ???                ;%01110010 'r'
+ea35   72                   ???                ;%01110010 'r'
+ea36   88                   dey
+ea37   c8                   iny
+ea38   c4 ca                cpy $ca
+ea3a   26 48                rol $48
+ea3c   44                   ???                ;%01000100 'D'
+ea3d   44                   ???                ;%01000100 'D'
+ea3e   a2 c8                ldx #$c8
+ea40   85 45                sta $45
+ea42   68                   pla
+ea43   48                   pha
+ea44   29 10                and #$10
+ea46   d0 04                bne lea4c
+ea48   6c fe 03             jmp ($03fe)
+ea4b   00                   brk
+ea4c   28         lea4c     plp
+ea4d   20 4c ff             jsr lff4c
+ea50   68                   pla
+ea51   85 3a                sta $3a
+ea53   68                   pla
+ea54   85 3b                sta $3b
+ea56   6c f0 03             jmp ($03f0)
+ea59   20 82 f8             jsr lf882
+ea5c   20 da fa             jsr lfada
+ea5f   4c 65 ff             jmp lff65
+ea62   d8                   cld
+ea63   20 84 fe             jsr lfe84
+ea66   20 93 fe   lea66     jsr lfe93	; set up Character output pointer to $fdf0
+ea69   20 89 fe             jsr lfe89	; set up Character input pointer to $fd1b
+ea6c   20 3a ff             jsr lff3a
+ea6f   20 30 fc             jsr lfc30
+ea72   90 0b                bcc lea7f
+ea74   b5 3c      lea74     lda $3c,x
+ea76   9d f2 03             sta $03f2,x
+ea79   ca                   dex
+ea7a   f0 f8                beq lea74
+ea7c   4c 6f fb             jmp lfb6f
+ea7f   2c ff cf   lea7f     bit $cfff	; turn off all extension card roms
+ea82   2c 10 c0             bit $c010	; KBDSTRB Keyboard Strobe - mark keyboard as read
+ea85   ad f3 03             lda $03f3
+ea88   49 a5                eor #$a5
+ea8a   cd f4 03             cmp $03f4
+ea8d   d0 17                bne leaa6
+ea8f   ad f2 03             lda $03f2
+ea92   d0 0f                bne leaa3
+ea94   a9 e0                lda #$e0
+ea96   cd f3 03             cmp $03f3
+ea99   d0 08                bne leaa3
+ea9b   a0 03      lea9b     ldy #$03
+ea9d   8c f2 03             sty $03f2
+eaa0   4c 00 e0             jmp le000	; jump to basic
+eaa3   6c f2 03   leaa3     jmp ($03f2)
+eaa6   20 58 fc   leaa6     jsr lfc58
+eaa9   a2 05                ldx #$05
+eaab   bd fc fa   leaab     lda $fafc,x
+eaae   9d ef 03             sta $03ef,x
+eab1   ca                   dex
+eab2   d0 f7                bne leaab
+eab4   a9 c8                lda #$c8
+eab6   85 01                sta $01
+eab8   86 00                stx $00
+eaba   a0 07      leaba     ldy #$07
+eabc   c6 01                dec $01
+eabe   a5 01                lda $01
+eac0   c9 c1                cmp #$c1
+eac2   f0 d7                beq lea9b
+eac4   8d f8 07             sta $07f8
+eac7   b1 00      leac7     lda ($00),y
+eac9   d9 01 fb             cmp $fb01,y
+eacc   d0 ec                bne leaba
+eace   88                   dey
+eacf   88                   dey
+ead0   10 f5                bpl leac7
+ead2   6c 00 00             jmp ($0000)
+ead5   00                   brk
+ead6   00                   brk
+ead7   20 8e fd             jsr lfd8e
+eada   a9 45                lda #$45
+eadc   85 40                sta $40
+eade   a9 00                lda #$00
+eae0   85 41                sta $41
+eae2   a2 fb                ldx #$fb
+eae4   a9 a0      leae4     lda #$a0
+eae6   20 ed fd             jsr lfded
+eae9   bd 1e fa             lda $fa1e,x
+eaec   20 ed fd             jsr lfded
+eaef   a9 bd                lda #$bd
+eaf1   20 ed fd             jsr lfded
+eaf4   b5 4a                lda $4a,x
+eaf6   20 da fd             jsr lfdda
+eaf9   e8         leaf9     inx
+eafa   30 e8                bmi leae4
+eafc   60                   rts
+eafd   59 fa 00             eor $00fa,y
+eb00   e0 45                cpx #$45
+eb02   20 a0 00             jsr $00a0
+eb05   a2 03                ldx #$03
+eb07   86 3c                stx $3c
+eb09   08                   php
+eb0a   15 0a                ora $0a,x
+eb0c   0b                   ???                ;%00001011
+eb0d   40                   rti
+eb0e   0e 0f 4c             asl $4c0f
+eb11   15 f8                ora $f8,x
+eb13   20 75 fe             jsr lfe75
+eb16   a9 14                lda #$14
+eb18   60                   rts
+eb19   c1 d8                cmp ($d8,x)
+eb1b   d9 d0 d3             cmp $d3d0,y
+eb1e   ad 70 c0             lda $c070	; Analog Input Reset
+eb21   a0 00      leb21     ldy #$00
+eb23   ea                   nop
+eb24   ea                   nop
+eb25   bd 64 c0   leb25     lda $c064,x	; Analog Input 0
+eb28   10 04                bpl leb2e
+eb2a   c8                   iny
+eb2b   d0 f8                bne leb25
+eb2d   88                   dey
+eb2e   60         leb2e     rts
+eb2f   a9 04                lda #$04
+eb31   85 48                sta $48
+eb33   2c 56 c0             bit $c056	; LORES switch Display LoRes Graphics
+eb36   2c 54 c0             bit $c054	; TXTPAGE1 switch Display Page 1
+eb39   2c 51 c0             bit $c051	; TXTSET switch Display Text
+eb3c   a9 00                lda #$00
+eb3e   f0 0b                beq leb4b
+eb40   2c 50 c0             bit $c050	; TXTCLR switch Display Graphics
+eb43   2c 53 c0             bit $c053	; MIXSET switch Display Split Screen
+eb46   20 36 f8             jsr lf836
+eb49   a9 14                lda #$14
+eb4b   85 22      leb4b     sta $22	; Top Margin (0 - 23, 0 is default, 20 in graphics mode)
+eb4d   a9 00                lda #$00
+eb4f   85 20                sta $20	; Left Margin (0 - 39/79, 0 is default)
+eb51   a9 50                lda #$50
+eb53   85 21                sta $21	; Width (1 - 40/80, 40 is default, 0 crashes Applesoft)
+eb55   a9 18                lda #$18
+eb57   85 23                sta $23	; Bottom Margin (0 - 23, 23 is default)
+eb59   a9 17                lda #$17
+eb5b   85 25                sta $25	; Vertical Cursor Position (0 - 23)
+eb5d   4c 22 fc             jmp lfc22	; upate cursor position variables
+eb60   a4 00      leb60     ldy $00
+eb62   88                   dey
+eb63   b9 01 00   leb63     lda $0001,y
+eb66   d1 3c                cmp ($3c),y
+eb68   d0 29                bne leb93
+eb6a   88                   dey
+eb6b   10 f6                bpl leb63
+eb6d   30 21                bmi leb90
+eb6f   ad f3 03             lda $03f3
+eb72   49 a5                eor #$a5
+eb74   8d f4 03             sta $03f4
+eb77   60                   rts
+eb78   ac 00 c0             ldy $c000	; Last Key Pressed (+ 128 if strobe not cleared)
+eb7b   c0 93                cpy #$93
+eb7d   d0 0f                bne leb8e
+eb7f   2c 10 c0             bit $c010	; KBDSTRB Keyboard Strobe - mark keyboard as read
+eb82   ac 00 c0   leb82     ldy $c000	; Last Key Pressed (+ 128 if strobe not cleared)
+eb85   10 fb                bpl leb82
+eb87   c0 83                cpy #$83
+eb89   f0 72                beq lebfd
+eb8b   8d 10 c0             sta $c010	; KBDSTRB Keyboard Strobe - mark keyboard as read
+eb8e   d0 6d      leb8e     bne lebfd
+eb90   20 92 fd   leb90     jsr lfd92
+eb93   20 ba fc   leb93     jsr lfcba
+eb96   90 c8                bcc leb60
+eb98   60                   rts
+eb99   0f                   ???                ;%00001111
+eb9a   f9 65 19             sbc $1965,y
+eb9d   57                   ???                ;%01010111 'W'
+eb9e   9b                   ???                ;%10011011
+eb9f   41 a0                eor ($a0,x)
+eba1   06 d9                asl $d9
+eba3   09 fb                ora #$fb
+eba5   d0 0b                bne lebb2
+eba7   a9 fc                lda #$fc
+eba9   48                   pha
+ebaa   b9 99 fb             lda $fb99,y
+ebad   48                   pha
+ebae   a0 18                ldy #$18
+ebb0   d0 2d                bne lebdf
+ebb2   88         lebb2     dey
+ebb3   10 ed                bpl leba2
+ebb5   60                   rts
+ebb6   20 a0 fb   lebb6     jsr lfba0
+ebb9   20 0c fd             jsr lfd0c
+ebbc   29 ff                and #$ff
+ebbe   10 f6                bpl lebb6
+ebc0   60                   rts
+ebc1   48                   pha
+ebc2   4a                   lsr a
+ebc3   29 03                and #$03
+ebc5   09 04                ora #$04
+ebc7   85 29                sta $29	; Base Address of Text Cursor's Position high byte
+ebc9   68                   pla
+ebca   29 18                and #$18
+ebcc   90 02                bcc lebd0
+ebce   09 80                ora #$80
+ebd0   85 28      lebd0     sta $28	; Base Address of Text Cursor's Position low byte
+ebd2   0a                   asl a
+ebd3   0a                   asl a
+ebd4   05 28                ora $28	; Base Address of Text Cursor's Position low byte
+ebd6   85 28                sta $28	; Base Address of Text Cursor's Position low byte
+ebd8   60                   rts
+ebd9   c9 87      lebd9     cmp #$87
+ebdb   d0 10                bne lebed
+ebdd   a0 70                ldy #$70
+ebdf   98         lebdf     tya
+ebe0   4a                   lsr a
+ebe1   4a                   lsr a
+ebe2   09 07                ora #$07
+ebe4   20 a8 fc             jsr lfca8
+ebe7   2c 30 c0             bit $c030	; Toggle Speaker
+ebea   88                   dey
+ebeb   d0 f2                bne lebdf
+ebed   60         lebed     rts
+ebee   25 32      lebee     and $32
+ebf0   20 ce fe   lebf0     jsr lfece
+ebf3   ea                   nop
+ebf4   e6 24                inc $24	; Horizontal cursor displacement (from top)
+ebf6   a4 24                ldy $24	; Horizontal cursor displacement (from top)
+ebf8   c4 21                cpy $21	; Width (1 - 40/80, 40 is default, 0 crashes Applesoft)
+ebfa   b0 66                bcs lec62
+ebfc   60         lebfc     rts
+ebfd   c9 a0      lebfd     cmp #$a0
+ebff   b0 ed                bcs lebee
+ec01   a8                   tay
+ec02   10 ec                bpl lebf0
+ec04   c9 8d                cmp #$8d
+ec06   f0 5a                beq lec62
+ec08   c9 8a                cmp #$8a
+ec0a   f0 5a                beq lec66
+ec0c   c9 88                cmp #$88
+ec0e   d0 c9                bne lebd9
+ec10   c6 24                dec $24	; Horizontal cursor displacement (from top)
+ec12   10 e8                bpl lebfc
+ec14   a5 21                lda $21	; Width (1 - 40/80, 40 is default, 0 crashes Applesoft)
+ec16   85 24                sta $24	; Horizontal cursor displacement (from top)
+ec18   c6 24                dec $24	; Horizontal cursor displacement (from top)
+ec1a   a5 22                lda $22	; Top Margin (0 - 23, 0 is default, 20 in graphics mode)
+ec1c   c5 25                cmp $25	; Vertical Cursor Position (0 - 23)
+ec1e   b0 dc                bcs lebfc
+ec20   c6 25                dec $25	; Vertical Cursor Position (0 - 23)
+ec22   a5 25      lec22     lda $25	; Vertical Cursor Position (0 - 23)
+ec24   20 c1 fb   lec24     jsr lfbc1	; set Base Address of Text Cursor's Position
+ec27   a5 20                lda $20	; Left Margin (0 - 39/79, 0 is default)
+ec29   4a                   lsr a
+ec2a   18                   clc
+ec2b   65 28                adc $28	; Base Address of Text Cursor's Position low byte
+ec2d   85 28                sta $28	; Base Address of Text Cursor's Position low byte
+ec2f   60                   rts
+					; basis108 character generator switches. page 35. 0010 should be German
+ec30   8d 00 c0             sta $c000	; SW0=0 
+ec33   8d 02 c0             sta $c002	; SW1=0
+ec36   8d 05 c0             sta $c005	; SW2=1
+ec39   8d 06 c0             sta $c006	; SW3=0 
+ec3c   8d 0b c0             sta $c00b	; Use Card Slot 3 ROM
+ec3f   4c 2f fb             jmp lfb2f
+ec42   a4 24                ldy $24	; Horizontal cursor displacement (from top)
+ec44   a5 25                lda $25	; Vertical Cursor Position (0 - 23)
+ec46   48         lec46     pha
+ec47   20 24 fc             jsr lfc24
+ec4a   20 9e fc             jsr lfc9e
+ec4d   a0 00                ldy #$00
+ec4f   68                   pla
+ec50   69 00                adc #$00
+ec52   c5 23                cmp $23	; Bottom Margin (0 - 23, 23 is default)
+ec54   90 f0                bcc lec46
+ec56   b0 ca                bcs lec22
+ec58   a5 22                lda $22	; Top Margin (0 - 23, 0 is default, 20 in graphics mode)
+ec5a   85 25                sta $25	; Vertical Cursor Position (0 - 23)
+ec5c   a0 00                ldy #$00
+ec5e   84 24                sty $24	; Horizontal cursor displacement (from top)
+ec60   f0 e4                beq lec46
+ec62   a9 00      lec62     lda #$00
+ec64   85 24                sta $24	; Horizontal cursor displacement (from top)
+ec66   e6 25      lec66     inc $25	; Vertical Cursor Position (0 - 23)
+ec68   a5 25                lda $25	; Vertical Cursor Position (0 - 23)
+ec6a   c5 23                cmp $23	; Bottom Margin (0 - 23, 23 is default)
+ec6c   90 b6                bcc lec24
+ec6e   c6 25                dec $25	; Vertical Cursor Position (0 - 23)
+ec70   a5 22                lda $22	; Top Margin (0 - 23, 0 is default, 20 in graphics mode)
+ec72   48                   pha
+ec73   20 24 fc             jsr lfc24
+ec76   a5 28      lec76     lda $28	; Base Address of Text Cursor's Position low byte
+ec78   85 2a                sta $2a	; Used as scratch during scrolling; DOS scratch
+ec7a   a5 29                lda $29	; Base Address of Text Cursor's Position high byte
+ec7c   85 2b                sta $2b	; Boot slot X 16 (after boot)
+ec7e   a4 21                ldy $21	; Width (1 - 40/80, 40 is default, 0 crashes Applesoft)
+ec80   88                   dey
+ec81   68                   pla
+ec82   69 01                adc #$01
+ec84   c5 23                cmp $23	; Bottom Margin (0 - 23, 23 is default)
+ec86   b0 0d                bcs lec95
+ec88   48                   pha
+ec89   20 24 fc             jsr lfc24
+ec8c   8c 79 04             sty $0479
+ec8f   98                   tya
+ec90   20 09 ff             jsr lff09
+ec93   90 e1                bcc lec76
+ec95   a0 00      lec95     ldy #$00
+ec97   20 9e fc             jsr lfc9e
+ec9a   b0 86                bcs lec22
+ec9c   a4 24                ldy $24	; Horizontal cursor displacement (from top)
+ec9e   38                   sec
+ec9f   08                   php
+eca0   4c db fc             jmp lfcdb
+eca3   00                   brk
+eca4   00                   brk
+eca5   00                   brk
+eca6   00                   brk
+eca7   00                   brk
+eca8   38                   sec
+eca9   48         leca9     pha
+ecaa   e9 01      lecaa     sbc #$01
+ecac   d0 fc                bne lecaa
+ecae   68                   pla
+ecaf   e9 01                sbc #$01
+ecb1   d0 f6                bne leca9
+ecb3   60                   rts
+ecb4   e6 42                inc $42
+ecb6   d0 02                bne lecba
+ecb8   e6 43                inc $43
+ecba   a5 3c      lecba     lda $3c
+ecbc   c5 3e                cmp $3e
+ecbe   a5 3d                lda $3d
+ecc0   e5 3f                sbc $3f
+ecc2   e6 3c                inc $3c
+ecc4   d0 02                bne lecc8
+ecc6   e6 3d                inc $3d
+ecc8   60         lecc8     rts
+ecc9   48                   pha
+ecca   98                   tya
+eccb   4a                   lsr a
+eccc   8d 0c c0             sta $c00c	; 40 Columns
+eccf   90 04                bcc lecd5
+ecd1   78                   sei
+ecd2   8d 0d c0             sta $c00c	; 80 Columns
+ecd5   8c 79 04   lecd5     sty $0479
+ecd8   a8                   tay
+ecd9   68                   pla
+ecda   60                   rts
+ecdb   20 c9 fc   lecdb     jsr lfcc9
+ecde   a9 a0                lda #$a0
+ece0   91 28                sta ($28),y
+ece2   ac 79 04             ldy $0479
+ece5   c8                   iny
+ece6   c4 21                cpy $21	; Width (1 - 40/80, 40 is default, 0 crashes Applesoft)
+ece8   90 f1                bcc lecdb
+ecea   4c e6 fe             jmp lfee6
+eced   b1 26                lda ($26),y
+ecef   45 30                eor $30
+ecf1   25 2e                and $2e
+ecf3   51 26                eor ($26),y
+ecf5   91 26                sta ($26),y
+ecf7   4c e3 fe             jmp lfee3
+ecfa   4c f4 fb             jmp lfbf4
+ecfd   20 47 f8             jsr lf847
+ed00   20 c9 fc             jsr lfcc9
+ed03   b1 26                lda ($26),y
+ed05   08                   php
+ed06   4c e3 fe             jmp lfee3
+ed09   00                   brk
+ed0a   00                   brk
+ed0b   00                   brk
+ed0c   ea                   nop
+ed0d   ea                   nop
+ed0e   ea                   nop
+ed0f   ea                   nop
+ed10   ea                   nop
+ed11   ea                   nop
+ed12   ea                   nop
+ed13   20 d7 fe             jsr lfed7
+ed16   49 80                eor #$80
+ed18   6c 38 00             jmp ($0038)
+ed1b   e6 4e      led1b     inc $4e
+ed1d   d0 02                bne led21
+ed1f   e6 4f                inc $4f
+ed21   2c 00 c0   led21     bit $c000	; Last Key Pressed (+ 128 if strobe not cleared)
+ed24   10 f5                bpl led1b
+ed26   20 d7 fe             jsr lfed7
+ed29   ad 08 c0             lda $c008	; Main Stack and Zero Page 
+ed2c   29 80                and #$80
+ed2e   4d 00 c0             eor $c000	; Last Key Pressed (+ 128 if strobe not cleared)
+ed31   8d 10 c0             sta $c010	; KBDSTRB Keyboard Strobe - mark keyboard as read
+ed34   60                   rts
+ed35   4c b9 fb             jmp lfbb9
+ed38   d0 44                bne led7e
+ed3a   4c 30 fc             jmp lfc30
+ed3d   a5 32      led3d     lda $32
+ed3f   48                   pha
+ed40   a9 ff                lda #$ff
+ed42   85 32                sta $32
+ed44   bd 00 02             lda $0200,x
+ed47   20 ed fd             jsr lfded
+ed4a   68                   pla
+ed4b   85 32                sta $32
+ed4d   bd 00 02             lda $0200,x
+ed50   c9 88                cmp #$88
+ed52   f0 1d                beq led71
+ed54   c9 98                cmp #$98
+ed56   f0 0a                beq led62
+ed58   e0 f8                cpx #$f8
+ed5a   90 03                bcc led5f
+ed5c   20 3a ff             jsr lff3a
+ed5f   e8         led5f     inx
+ed60   d0 13                bne led75
+ed62   a9 a3      led62     lda #$a3
+ed64   20 ed fd             jsr lfded
+ed67   20 8e fd   led67     jsr lfd8e
+ed6a   a5 33                lda $33
+ed6c   20 ed fd             jsr lfded
+ed6f   a2 01                ldx #$01
+ed71   8a         led71     txa
+ed72   f0 f3                beq led67
+ed74   ca                   dex
+ed75   20 b9 fb   led75     jsr lfbb9
+ed78   c9 95                cmp #$95
+ed7a   d0 08                bne led84
+ed7c   f0 03                beq led81
+ed7e   4c 74 fa   led7e     jmp lfa74
+ed81   20 fe fe   led81     jsr lfefe
+ed84   9d 00 02   led84     sta $0200,x
+ed87   c9 8d                cmp #$8d
+ed89   d0 b2                bne led3d
+ed8b   20 9c fc             jsr lfc9c
+ed8e   a9 8d                lda #$8d
+ed90   d0 5b                bne leded
+ed92   a4 3d                ldy $3d
+ed94   a6 3c                ldx $3c
+ed96   20 8e fd             jsr lfd8e
+ed99   20 40 f9             jsr lf940
+ed9c   a0 00                ldy #$00
+ed9e   a9 ba                lda #$ba
+eda0   4c ed fd             jmp lfded
+eda3   a5 3c      leda3     lda $3c
+eda5   09 07                ora #$07
+eda7   85 3e                sta $3e
+eda9   a5 3d                lda $3d
+edab   85 3f                sta $3f
+edad   a5 3c      ledad     lda $3c
+edaf   29 07                and #$07
+edb1   d0 03                bne ledb6
+edb3   20 92 fd   ledb3     jsr lfd92
+edb6   a9 a0      ledb6     lda #$a0
+edb8   20 ed fd             jsr lfded
+edbb   b1 3c                lda ($3c),y
+edbd   20 da fd             jsr lfdda
+edc0   20 ba fc             jsr lfcba
+edc3   90 e8                bcc ledad
+edc5   60                   rts
+edc6   4a         ledc6     lsr a
+edc7   90 ea                bcc ledb3
+edc9   4a                   lsr a
+edca   4a                   lsr a
+edcb   a5 3e                lda $3e
+edcd   90 02                bcc ledd1
+edcf   49 ff                eor #$ff
+edd1   65 3c      ledd1     adc $3c
+edd3   48                   pha
+edd4   a9 bd                lda #$bd
+edd6   20 ed fd             jsr lfded
+edd9   68                   pla
+edda   48                   pha
+eddb   4a                   lsr a
+eddc   4a                   lsr a
+eddd   4a                   lsr a
+edde   4a                   lsr a
+eddf   20 e5 fd             jsr lfde5
+ede2   68                   pla
+ede3   29 0f                and #$0f
+ede5   09 b0                ora #$b0
+ede7   c9 ba                cmp #$ba
+ede9   90 02                bcc leded
+edeb   69 06                adc #$06
+eded   6c 36 00   leded     jmp ($0036)
+edf0   48                   pha
+edf1   84 35                sty $35
+edf3   20 78 fb             jsr lfb78
+edf6   a4 35                ldy $35
+edf8   68                   pla
+edf9   60                   rts
+edfa   20 8e fd             jsr lfd8e
+edfd   a9 a0                lda #$a0
+edff   d0 ec                bne leded
+ee01   c6 34                dec $34
+ee03   f0 9e                beq leda3
+ee05   ca                   dex
+ee06   d0 16                bne lee1e
+ee08   c9 ba                cmp #$ba
+ee0a   d0 ba                bne ledc6
+ee0c   85 31                sta $31
+ee0e   a5 3e                lda $3e
+ee10   91 40                sta ($40),y
+ee12   e6 40                inc $40
+ee14   d0 02                bne lee18
+ee16   e6 41                inc $41
+ee18   60         lee18     rts
+ee19   a4 34                ldy $34
+ee1b   b9 ff 01             lda $01ff,y
+ee1e   85 31      lee1e     sta $31
+ee20   60                   rts
+ee21   a2 01                ldx #$01
+ee23   b5 3e      lee23     lda $3e,x
+ee25   95 42                sta $42,x
+ee27   ca                   dex
+ee28   10 f9                bpl lee23
+ee2a   60                   rts
+ee2b   00                   brk
+ee2c   b1 3c      lee2c     lda ($3c),y
+ee2e   91 42                sta ($42),y
+ee30   20 b4 fc             jsr lfcb4
+ee33   90 f7                bcc lee2c
+ee35   60                   rts
+ee36   b1 3c      lee36     lda ($3c),y
+ee38   d1 42                cmp ($42),y
+ee3a   f0 17                beq lee53
+ee3c   20 92 fd             jsr lfd92
+ee3f   b1 3c                lda ($3c),y
+ee41   20 da fd             jsr lfdda
+ee44   a9 bc                lda #$bc
+ee46   20 ed fd             jsr lfded
+ee49   a9 be                lda #$be
+ee4b   20 ed fd             jsr lfded
+ee4e   b1 42                lda ($42),y
+ee50   20 da fd             jsr lfdda
+ee53   20 b4 fc   lee53     jsr lfcb4
+ee56   90 de                bcc lee36
+ee58   60                   rts
+ee59   6c f2 03             jmp ($03f2)
+ee5c   4c 00 e0             jmp le000	; jump to basic
+ee5f   00                   brk
+ee60   20 13 fb             jsr lfb13
+ee63   48         lee63     pha
+ee64   20 d0 f8             jsr lf8d0
+ee67   20 53 f9             jsr lf953
+ee6a   85 3a                sta $3a
+ee6c   84 3b                sty $3b
+ee6e   68                   pla
+ee6f   38                   sec
+ee70   e9 01                sbc #$01
+ee72   d0 ef                bne lee63
+ee74   60                   rts
+ee75   8a                   txa
+ee76   f0 07                beq lee7f
+ee78   b5 3c      lee78     lda $3c,x
+ee7a   95 3a                sta $3a,x
+ee7c   ca                   dex
+ee7d   10 f9                bpl lee78
+ee7f   60         lee7f     rts
+ee80   a0 7f                ldy #$7f
+ee82   d0 02                bne lee86
+ee84   a0 ff                ldy #$ff
+ee86   84 32      lee86     sty $32
+ee88   60                   rts
+ee89   a9 00                lda #$00
+ee8b   85 3e                sta $3e
+ee8d   a2 38                ldx #$38
+ee8f   a0 1b                ldy #$1b
+ee91   d0 08                bne lee9b
+ee93   a9 00                lda #$00
+ee95   85 3e                sta $3e
+ee97   a2 36                ldx #$36
+ee99   a0 f0                ldy #$f0
+ee9b   a5 3e      lee9b     lda $3e
+ee9d   29 07                and #$07
+ee9f   f0 06                beq leea7
+eea1   09 c0                ora #$c0
+eea3   a0 00                ldy #$00
+eea5   f0 02                beq leea9
+eea7   a9 fd      leea7     lda #$fd
+eea9   94 00      leea9     sty $00,x
+eeab   95 01                sta $01,x
+eead   a5 3e                lda $3e
+eeaf   29 08                and #$08
+eeb1   15 00                ora $00,x
+eeb3   95 00                sta $00,x
+eeb5   60                   rts
+eeb6   20 75 fe             jsr lfe75
+eeb9   20 3f ff             jsr lff3f
+eebc   6c 3a 00             jmp ($003a)
+eebf   4c d7 fa             jmp lfad7
+eec2   4c 60 fb             jmp lfb60
+eec5   a2 01                ldx #$01
+eec7   4c 38 fd             jmp lfd38
+eeca   4c f8 03             jmp $03f8
+eecd   60                   rts
+eece   08                   php
+eecf   a4 24                ldy $24	; Horizontal cursor displacement (from top)
+eed1   20 c9 fc             jsr lfcc9
+eed4   4c e1 fe             jmp lfee1
+eed7   08                   php
+eed8   a4 24                ldy $24	; Horizontal cursor displacement (from top)
+eeda   20 c9 fc             jsr lfcc9
+eedd   b1 28                lda ($28),y
+eedf   49 80                eor #$80
+eee1   91 28                sta ($28),y
+eee3   ac 79 04             ldy $0479
+eee6   8d 0c c0             sta $c00c	; 40 Columns
+eee9   28                   plp
+eeea   60                   rts
+eeeb   a9 28                lda #$28
+eeed   85 21                sta $21	; Width (1 - 40/80, 40 is default, 0 crashes Applesoft)
+eeef   45 20                eor $20	; Left Margin (0 - 39/79, 0 is default)
+eef1   85 20                sta $20	; Left Margin (0 - 39/79, 0 is default)
+eef3   4c 22 fc             jmp lfc22	; upate cursor position variables
+eef6   20 01 fe             jsr lfe01
+eef9   68                   pla
+eefa   68                   pla
+eefb   d0 6c                bne lef69
+eefd   60                   rts
+eefe   08                   php
+eeff   a4 24                ldy $24	; Horizontal cursor displacement (from top)
+ef01   20 c9 fc             jsr lfcc9
+ef04   b1 28                lda ($28),y
+ef06   4c e3 fe             jmp lfee3
+ef09   08                   php
+ef0a   78                   sei
+ef0b   4a                   lsr a
+ef0c   a8                   tay
+ef0d   90 0f                bcc lef1e
+ef0f   8d 0d c0   lef0f     sta $c00c	; 80 Columns
+ef12   b1 28                lda ($28),y
+ef14   91 2a                sta ($2a),y
+ef16   8d 0c c0             sta $c00c	; 40 Columns
+ef19   ce 79 04             dec $0479
+ef1c   30 0a                bmi lef28
+ef1e   b1 28      lef1e     lda ($28),y
+ef20   91 2a                sta ($2a),y
+ef22   88                   dey
+ef23   ce 79 04             dec $0479
+ef26   10 e7                bpl lef0f
+ef28   28         lef28     plp
+ef29   18                   clc
+ef2a   60                   rts
+ef2b   00                   brk
+ef2c   00                   brk
+ef2d   a9 c5                lda #$c5
+ef2f   20 ed fd             jsr lfded
+ef32   a9 d2                lda #$d2
+ef34   20 ed fd             jsr lfded
+ef37   20 ed fd             jsr lfded
+ef3a   a9 87                lda #$87
+ef3c   4c ed fd             jmp lfded
+ef3f   a5 48                lda $48
+ef41   48                   pha
+ef42   a5 45                lda $45
+ef44   a6 46                ldx $46
+ef46   a4 47                ldy $47
+ef48   28                   plp
+ef49   60                   rts
+ef4a   85 45                sta $45
+ef4c   86 46                stx $46
+ef4e   84 47                sty $47
+ef50   08                   php
+ef51   68                   pla
+ef52   85 48                sta $48
+ef54   ba                   tsx
+ef55   86 49                stx $49
+ef57   d8                   cld
+ef58   60                   rts
+ef59   20 84 fe             jsr lfe84
+ef5c   20 2f fb   lef5c     jsr lfb2f	; set up screen mode, margins and cursor
+ef5f   20 93 fe             jsr lfe93	; set up Character output pointer to $fdf0
+ef62   20 89 fe             jsr lfe89	; set up Character input pointer to $fd1b
+ef65   d8         lef65     cld
+ef66   20 3a ff             jsr lff3a
+ef69   a9 aa      lef69     lda #$aa
+ef6b   85 33                sta $33
+ef6d   20 67 fd             jsr lfd67
+ef70   20 c7 ff             jsr lffc7
+ef73   20 a7 ff             jsr lffa7
+ef76   84 34                sty $34
+ef78   a0 17                ldy #$17
+ef7a   88         lef7a     dey
+ef7b   30 e8                bmi lef65
+ef7d   d9 cc ff             cmp $ffcc,y
+ef80   d0 f8                bne lef7a
+ef82   20 be ff             jsr lffbe
+ef85   a4 34                ldy $34
+ef87   4c 73 ff             jmp lff73
+ef8a   a2 03      lef8a     ldx #$03
+ef8c   0a                   asl a
+ef8d   0a                   asl a
+ef8e   0a                   asl a
+ef8f   0a                   asl a
+ef90   0a         lef90     asl a
+ef91   26 3e                rol $3e
+ef93   26 3f                rol $3f
+ef95   ca                   dex
+ef96   10 f8                bpl lef90
+ef98   a5 31      lef98     lda $31
+ef9a   d0 06                bne lefa2
+ef9c   b5 3f                lda $3f,x
+ef9e   95 3d                sta $3d,x
+efa0   95 41                sta $41,x
+efa2   e8         lefa2     inx
+efa3   f0 f3                beq lef98
+efa5   d0 06                bne lefad
+efa7   a2 00                ldx #$00
+efa9   86 3e                stx $3e
+efab   86 3f                stx $3f
+efad   b9 00 02   lefad     lda $0200,y
+efb0   c8                   iny
+efb1   49 b0                eor #$b0
+efb3   c9 0a                cmp #$0a
+efb5   90 d3                bcc lef8a
+efb7   69 88                adc #$88
+efb9   c9 fa                cmp #$fa
+efbb   b0 cd                bcs lef8a
+efbd   60                   rts
+efbe   a9 fe                lda #$fe
+efc0   48                   pha
+efc1   b9 e3 ff             lda $ffe3,y
+efc4   48                   pha
+efc5   a5 31                lda $31
+efc7   a0 00                ldy #$00
+efc9   84 31                sty $31
+efcb   60                   rts
+efcc   bc bb b2             ldy $b2bb,x
+efcf   be ef 06             ldx $06ef,y
+efd2   c4 a9                cpy $a9
+efd4   ec f3 a6             cpx $a6f3
+efd7   a4 07                ldy $07
+efd9   02                   ???                ;%00000010
+efda   05 ed                ora $ed
+efdc   eb                   ???                ;%11101011
+efdd   00                   brk
+efde   93                   ???                ;%10010011
+efdf   a7                   ???                ;%10100111
+efe0   95 c6                sta $c6,x
+efe2   99 58 5b             sta $5b58,y
+efe5   c9 be                cmp #$be
+efe7   35 2b      lefe7     and $2b,x	; Boot slot X 16 (after boot)
+efe9   8c 96 c6             sty $c696
+efec   c1 18                cmp ($18,x)
+efee   18                   clc
+efef   83                   ???                ;%10000011
+eff0   7f                   ???                ;%01111111
+eff1   5f         leff1     ???                ;%01011111 '_'
+eff2   ea                   nop
+eff3   c4 b5                cpy $b5
+eff5   18                   clc
+eff6   18                   clc
+eff7   20 f5 04             jsr $04f5
+effa   fb                   ???                ;%11111011
+effb   03                   ???                ;%00000011
+effc   62                   ???                ;%01100010 'b'
+effd   fa                   ???                ;%11111010
+effe   40                   rti
+efff   fa                   ???                ;%11111010
+f000   20 23 ec             jsr lec23
+f003   a9 00                lda #$00
+f005   85 ab                sta $ab
+f007   20 aa e7             jsr le7aa
+f00a   a9 70                lda #$70
+f00c   a0 f0                ldy #$f0
+f00e   20 a7 e7             jsr le7a7
+f011   a5 a2                lda $a2
+f013   48                   pha
+f014   10 0d                bpl lf023
+f016   20 a0 e7             jsr le7a0
+f019   a5 a2                lda $a2
+f01b   30 09                bmi lf026
+f01d   a5 16                lda $16
+f01f   49 ff                eor #$ff
+f021   85 16                sta $16
+f023   20 d0 ee   lf023     jsr leed0
+f026   a9 70      lf026     lda #$70
+f028   a0 f0                ldy #$f0
+f02a   20 be e7             jsr le7be
+f02d   68                   pla
+f02e   10 03                bpl lf033
+f030   20 d0 ee             jsr leed0
+f033   a9 75      lf033     lda #$75
+f035   a0 f0                ldy #$f0
+f037   4c 5c ef             jmp lef5c
+f03a   20 21 eb             jsr leb21
+f03d   a9 00                lda #$00
+f03f   85 16                sta $16
+f041   20 f1 ef             jsr leff1
+f044   a2 8a                ldx #$8a
+f046   a0 00                ldy #$00
+f048   20 e7 ef             jsr lefe7
+f04b   a9 93                lda #$93
+f04d   a0 00                ldy #$00
+f04f   20 f9 ea             jsr leaf9
+f052   a9 00                lda #$00
+f054   85 a2                sta $a2
+f056   a5 16                lda $16
+f058   20 62 f0             jsr lf062
+f05b   a9 8a                lda #$8a
+f05d   a0 00                ldy #$00
+f05f   4c 66 ea             jmp lea66
+f062   48         lf062     pha
+f063   4c 23 f0             jmp lf023
+f066   81 49                sta ($49,x)
+f068   0f                   ???                ;%00001111
+f069   da                   ???                ;%11011010
+f06a   a2 83                ldx #$83
+f06c   49 0f                eor #$0f
+f06e   da                   ???                ;%11011010
+f06f   a2 7f                ldx #$7f
+f071   00                   brk
+f072   00                   brk
+f073   00                   brk
+f074   00                   brk
+f075   05 84                ora $84
+f077   e6 1a                inc $1a
+f079   2d 1b 86             and $861b
+f07c   28                   plp
+f07d   07                   ???                ;%00000111
+f07e   fb                   ???                ;%11111011
+f07f   f8                   sed
+f080   87                   ???                ;%10000111
+f081   99 68 89             sta $8968,y
+f084   01 87                ora ($87,x)
+f086   23                   ???                ;%00100011 '#'
+f087   35 df                and $df,x
+f089   e1 86                sbc ($86,x)
+f08b   a5 5d                lda $5d
+f08d   e7                   ???                ;%11100111
+f08e   28                   plp
+f08f   83                   ???                ;%10000011
+f090   49 0f                eor #$0f
+f092   da                   ???                ;%11011010
+f093   a2 a6                ldx #$a6
+f095   d3                   ???                ;%11010011
+f096   c1 c8                cmp ($c8,x)
+f098   d4                   ???                ;%11010100
+f099   c8                   iny
+f09a   d5 c4                cmp $c4,x
+f09c   ce ca a5             dec $a5ca
+f09f   a2 48                ldx #$48
+f0a1   10 03                bpl lf0a6
+f0a3   20 d0 ee             jsr leed0
+f0a6   a5 9d      lf0a6     lda $9d
+f0a8   48                   pha
+f0a9   c9 81                cmp #$81
+f0ab   90 07                bcc lf0b4
+f0ad   a9 13                lda #$13
+f0af   a0 e9                ldy #$e9
+f0b1   20 66 ea             jsr lea66
+f0b4   a9 ce      lf0b4     lda #$ce
+f0b6   a0 f0                ldy #$f0
+f0b8   20 5c ef             jsr lef5c
+f0bb   68                   pla
+f0bc   c9 81                cmp #$81
+f0be   90 07                bcc lf0c7
+f0c0   a9 66                lda #$66
+f0c2   a0 f0                ldy #$f0
+f0c4   20 a7 e7             jsr le7a7
+f0c7   68         lf0c7     pla
+f0c8   10 03                bpl lf0cd
+f0ca   4c d0 ee             jmp leed0
+f0cd   60         lf0cd     rts
+f0ce   0b                   ???                ;%00001011
+f0cf   76 b3                ror $b3,x
+f0d1   83                   ???                ;%10000011
+f0d2   bd d3 79             lda $79d3,x
+f0d5   1e f4 a6             asl $a6f4,x
+f0d8   f5 7b                sbc $7b,x
+f0da   83                   ???                ;%10000011
+f0db   fc                   ???                ;%11111100
+f0dc   b0 10                bcs lf0ee
+f0de   7c                   ???                ;%01111100 '|'
+f0df   0c                   ???                ;%00001100
+f0e0   1f                   ???                ;%00011111
+f0e1   67                   ???                ;%01100111 'g'
+f0e2   ca                   dex
+f0e3   7c                   ???                ;%01111100 '|'
+f0e4   de 53 cb             dec $cb53,x
+f0e7   c1 7d                cmp ($7d,x)
+f0e9   14                   ???                ;%00010100
+f0ea   64                   ???                ;%01100100 'd'
+f0eb   70 4c                bvs lf139
+f0ed   7d b7 ea             adc $eab7,x
+f0f0   51 7a                eor ($7a),y
+f0f2   7d 63 30             adc $3063,x
+f0f5   88                   dey
+f0f6   7e 7e 92             ror $927e,x
+f0f9   44                   ???                ;%01000100 'D'
+f0fa   99 3a 7e             sta $7e3a,y
+f0fd   4c cc 91             jmp $91cc
+f100   c7                   ???                ;%11000111
+f101   7f                   ???                ;%01111111
+f102   aa                   tax
+f103   aa                   tax
+f104   aa                   tax
+f105   13                   ???                ;%00010011
+f106   81 00                sta ($00,x)
+f108   00                   brk
+f109   00                   brk
+f10a   00                   brk
+f10b   e6 b8      lf10b     inc $b8
+f10d   d0 02                bne lf111
+f10f   e6 b9                inc $b9
+f111   ad 60 ea   lf111     lda $ea60
+f114   c9 3a                cmp #$3a
+f116   b0 0a                bcs lf122
+f118   c9 20                cmp #$20
+f11a   f0 ef                beq lf10b
+f11c   38                   sec
+f11d   e9 30                sbc #$30
+f11f   38                   sec
+f120   e9 d0                sbc #$d0
+f122   60         lf122     rts
+f123   80                   ???                ;%10000000
+f124   4f                   ???                ;%01001111 'O'
+f125   c7                   ???                ;%11000111
+f126   52                   ???                ;%01010010 'R'
+f127   58                   cli
+f128   a2 ff                ldx #$ff
+f12a   86 76                stx $76
+f12c   a2 fb                ldx #$fb
+f12e   9a                   txs
+f12f   a2 05                ldx #$05
+f131   bd 8a f1   lf131     lda $f18a,x
+f134   95 00                sta $00,x
+f136   ca                   dex
+f137   10 f8                bpl lf131
+f139   85 90      lf139     sta $90
+f13b   85 0a                sta $0a
+f13d   20 73 f2             jsr lf273
+f140   a9 99                lda #$99
+f142   a0 e1                ldy #$e1
+f144   85 0b                sta $0b
+f146   84 0c                sty $0c
+f148   a2 1c                ldx #$1c
+f14a   bd 0a f1   lf14a     lda $f10a,x
+f14d   95 b0                sta $b0,x
+f14f   86 f1                stx $f1
+f151   ca                   dex
+f152   d0 f6                bne lf14a
+f154   86 f2                stx $f2
+f156   8a                   txa
+f157   85 a4                sta $a4
+f159   85 54                sta $54
+f15b   48                   pha
+f15c   a9 03                lda #$03
+f15e   85 8f                sta $8f
+f160   20 fb da             jsr $dafb
+f163   a9 01                lda #$01
+f165   8d fd 01             sta $01fd
+f168   8d fc 01             sta $01fc
+f16b   a2 55                ldx #$55
+f16d   86 52                stx $52
+f16f   a2 c0                ldx #$c0
+f171   a0 00                ldy #$00
+f173   8c 00 08             sty $0800
+f176   84 73                sty $73
+f178   86 74                stx $74
+f17a   84 6f                sty $6f
+f17c   86 70                stx $70
+f17e   a0 08                ldy #$08
+f180   85 67                sta $67
+f182   84 68                sty $68
+f184   20 4b d6             jsr $d64b
+f187   6c 01 00             jmp ($0001)
+f18a   4c 3c d4             jmp $d43c
+f18d   4c 3a db             jmp $db3a
+f190   a5 24                lda $24	; Horizontal cursor displacement (from top)
+f192   2c fd fe             bit lfefd
+f195   50 03                bvc lf19a
+f197   c9 40                cmp #$40
+f199   60                   rts
+f19a   c9 18      lf19a     cmp #$18
+f19c   60                   rts
+f19d   a5 24                lda $24	; Horizontal cursor displacement (from top)
+f19f   2c fd fe             bit lfefd
+f1a2   50 03                bvc lf1a7
+f1a4   c9 49                cmp #$49
+f1a6   60                   rts
+f1a7   c9 21      lf1a7     cmp #$21
+f1a9   60                   rts
+f1aa   2c fd fe   lf1aa     bit lfefd
+f1ad   50 07                bvc lf1b6
+f1af   c9 50                cmp #$50
+f1b1   90 09                bcc lf1bc
+f1b3   e9 50                sbc #$50
+f1b5   60                   rts
+f1b6   c9 28      lf1b6     cmp #$28
+f1b8   90 02                bcc lf1bc
+f1ba   e9 28                sbc #$28
+f1bc   60         lf1bc     rts
+f1bd   2c fd fe             bit lfefd
+f1c0   50 fa                bvc lf1bc
+f1c2   20 30 fc             jsr lfc30
+f1c5   20 b7 00             jsr $00b7
+f1c8   f0 0a                beq lf1d4
+f1ca   20 f8 e6             jsr le6f8
+f1cd   8a                   txa
+f1ce   29 01                and #$01
+f1d0   aa                   tax
+f1d1   9d 06 c0             sta $c006,x	; Peripheral ROM ($C100-$CFFF) 
+f1d4   60         lf1d4     rts
+f1d5   20 67 dd             jsr $dd67
+f1d8   20 52 e7             jsr le752
+f1db   6c 50 00             jmp ($0050)
+f1de   20 f8 e6             jsr le6f8
+f1e1   8a                   txa
+f1e2   4c 8b fe             jmp lfe8b
+f1e5   20 f8 e6             jsr le6f8
+f1e8   8a                   txa
+f1e9   4c 95 fe             jmp lfe95
+f1ec   20 f8 e6   lf1ec     jsr le6f8
+f1ef   20 8d f7             jsr lf78d
+f1f2   ea                   nop
+f1f3   86 f0                stx $f0
+f1f5   a9 2c                lda #$2c
+f1f7   20 c0 de             jsr $dec0
+f1fa   20 f8 e6             jsr le6f8
+f1fd   20 8d f7             jsr lf78d
+f200   ea                   nop
+f201   86 2c                stx $2c	; RWTS storage for checksum, sector, track, volume
+f203   86 2d                stx $2d
+f205   60                   rts
+f206   4c 99 e1   lf206     jmp le199
+f209   20 ec f1   lf209     jsr lf1ec
+f20c   e4 f0                cpx $f0
+f20e   b0 08                bcs lf218
+f210   a5 f0                lda $f0
+f212   85 2c                sta $2c	; RWTS storage for checksum, sector, track, volume
+f214   85 2d                sta $2d
+f216   86 f0                stx $f0
+f218   a9 c5      lf218     lda #$c5
+f21a   20 c0 de             jsr $dec0
+f21d   20 f8 e6             jsr le6f8
+f220   20 8d f7             jsr lf78d
+f223   ea                   nop
+f224   60                   rts
+f225   20 ec f1             jsr lf1ec
+f228   8a                   txa
+f229   a4 f0                ldy $f0
+f22b   20 9e f7             jsr lf79e
+f22e   ea                   nop
+f22f   4c 00 f8             jmp lf800
+f232   20 09 f2             jsr lf209
+f235   8a                   txa
+f236   a4 2c                ldy $2c	; RWTS storage for checksum, sector, track, volume
+f238   20 9e f7             jsr lf79e
+f23b   ea                   nop
+f23c   a4 f0                ldy $f0
+f23e   4c 19 f8             jmp lf819
+f241   20 09 f2             jsr lf209
+f244   8a                   txa
+f245   a8                   tay
+f246   20 a3 f7             jsr lf7a3
+f249   ea                   nop
+f24a   a5 f0                lda $f0
+f24c   4c b4 f7             jmp lf7b4
+f24f   20 f8 e6             jsr le6f8
+f252   8a                   txa
+f253   4c 64 f8             jmp lf864
+f256   20 f8 e6             jsr le6f8
+f259   ca                   dex
+f25a   8a                   txa
+f25b   c9 18                cmp #$18
+f25d   b0 a7                bcs lf206
+f25f   4c 5b fb             jmp lfb5b
+f262   20 f8 e6             jsr le6f8
+f265   8a                   txa
+f266   49 ff                eor #$ff
+f268   aa                   tax
+f269   e8                   inx
+f26a   86 f1                stx $f1
+f26c   60                   rts
+f26d   38                   sec
+f26e   90 18                bcc lf288
+f270   66 f2                ror $f2
+f272   60                   rts
+f273   4c ad f7   lf273     jmp lf7ad
+f276   ea                   nop
+f277   20 75 f7             jsr lf775
+f27a   ea                   nop
+f27b   85 32      lf27b     sta $32
+f27d   86 f3                stx $f3
+f27f   60                   rts
+f280   20 82 f7             jsr lf782
+f283   ea                   nop
+f284   d0 f5                bne lf27b
+f286   20 67 dd             jsr $dd67
+f289   20 52 e7             jsr le752
+f28c   a5 50                lda $50
+f28e   c5 6d                cmp $6d
+f290   a5 51                lda $51
+f292   e5 6e                sbc $6e
+f294   b0 03                bcs lf299
+f296   4c 10 d4   lf296     jmp $d410
+f299   a5 50      lf299     lda $50
+f29b   85 73                sta $73
+f29d   85 6f                sta $6f
+f29f   a5 51                lda $51
+f2a1   85 74                sta $74
+f2a3   85 70                sta $70
+f2a5   60                   rts
+f2a6   20 67 dd             jsr $dd67
+f2a9   20 52 e7             jsr le752
+f2ac   a5 50                lda $50
+f2ae   c5 73                cmp $73
+f2b0   a5 51                lda $51
+f2b2   e5 74                sbc $74
+f2b4   b0 e0                bcs lf296
+f2b6   a5 50                lda $50
+f2b8   c5 69                cmp $69
+f2ba   a5 51                lda $51
+f2bc   e5 6a                sbc $6a
+f2be   90 d6                bcc lf296
+f2c0   a5 50                lda $50
+f2c2   85 69                sta $69
+f2c4   a5 51                lda $51
+f2c6   85 6a                sta $6a
+f2c8   4c 6c d6             jmp $d66c
+f2cb   a9 ab                lda #$ab
+f2cd   20 c0 de             jsr $dec0
+f2d0   a5 b8                lda $b8
+f2d2   85 f4                sta $f4
+f2d4   a5 b9                lda $b9
+f2d6   85 f5                sta $f5
+f2d8   38                   sec
+f2d9   66 d8                ror $d8
+f2db   a5 75                lda $75
+f2dd   85 f6                sta $f6
+f2df   a5 76                lda $76
+f2e1   85 f7                sta $f7
+f2e3   20 a6 d9             jsr $d9a6
+f2e6   4c 98 d9             jmp $d998
+f2e9   86 de                stx $de
+f2eb   a6 f8                ldx $f8
+f2ed   86 df                stx $df
+f2ef   a5 75                lda $75
+f2f1   85 da                sta $da
+f2f3   a5 76                lda $76
+f2f5   85 db                sta $db
+f2f7   a5 79                lda $79
+f2f9   85 dc                sta $dc
+f2fb   a5 7a                lda $7a
+f2fd   85 dd                sta $dd
+f2ff   a5 f4                lda $f4
+f301   85 b8                sta $b8
+f303   a5 f5                lda $f5
+f305   85 b9                sta $b9
+f307   a5 f6                lda $f6
+f309   85 75                sta $75
+f30b   a5 f7                lda $f7
+f30d   85 76                sta $76
+f30f   20 b7 00             jsr $00b7
+f312   20 3e d9             jsr $d93e
+f315   4c d2 d7             jmp $d7d2
+f318   a5 da                lda $da
+f31a   85 75                sta $75
+f31c   a5 db                lda $db
+f31e   85 76                sta $76
+f320   a5 dc                lda $dc
+f322   85 b8                sta $b8
+f324   a5 dd                lda $dd
+f326   85 b9                sta $b9
+f328   a6 df                ldx $df
+f32a   9a                   txs
+f32b   4c d2 d7             jmp $d7d2
+f32e   4c c9 de   lf32e     jmp $dec9
+f331   b0 fb                bcs lf32e
+f333   a6 af                ldx $af
+f335   86 69                stx $69
+f337   a6 b0                ldx $b0
+f339   86 6a                stx $6a
+f33b   20 0c da             jsr $da0c
+f33e   20 1a d6             jsr $d61a
+f341   a5 9b                lda $9b
+f343   85 60                sta $60
+f345   a5 9c                lda $9c
+f347   85 61                sta $61
+f349   a9 2c                lda #$2c
+f34b   20 c0 de             jsr $dec0
+f34e   20 0c da             jsr $da0c
+f351   e6 50                inc $50
+f353   d0 02                bne lf357
+f355   e6 51                inc $51
+f357   20 1a d6   lf357     jsr $d61a
+f35a   a5 9b                lda $9b
+f35c   c5 60                cmp $60
+f35e   a5 9c                lda $9c
+f360   e5 61                sbc $61
+f362   b0 01                bcs lf365
+f364   60                   rts
+f365   a0 00      lf365     ldy #$00
+f367   b1 9b      lf367     lda ($9b),y
+f369   91 60                sta ($60),y
+f36b   e6 9b                inc $9b
+f36d   d0 02                bne lf371
+f36f   e6 9c                inc $9c
+f371   e6 60      lf371     inc $60
+f373   d0 02                bne lf377
+f375   e6 61                inc $61
+f377   a5 69      lf377     lda $69
+f379   c5 9b                cmp $9b
+f37b   a5 6a                lda $6a
+f37d   e5 9c                sbc $9c
+f37f   b0 e6                bcs lf367
+f381   a6 61                ldx $61
+f383   a4 60                ldy $60
+f385   d0 01                bne lf388
+f387   ca                   dex
+f388   88         lf388     dey
+f389   86 6a                stx $6a
+f38b   84 69                sty $69
+f38d   4c f2 d4             jmp $d4f2
+f390   ad 56 c0             lda $c056	; LORES switch Display LoRes Graphics
+f393   ad 53 c0             lda $c053	; MIXSET switch Display Split Screen
+f396   4c 40 fb             jmp lfb40
+f399   ad 54 c0             lda $c054	; TXTPAGE1 switch Display Page 1
+f39c   4c 39 fb             jmp lfb39
+f39f   20 d9 f7             jsr lf7d9
+f3a2   a0 03                ldy #$03
+f3a4   b1 9b                lda ($9b),y
+f3a6   aa                   tax
+f3a7   88                   dey
+f3a8   b1 9b                lda ($9b),y
+f3aa   e9 01                sbc #$01
+f3ac   b0 01                bcs lf3af
+f3ae   ca                   dex
+f3af   85 50      lf3af     sta $50
+f3b1   86 51                stx $51
+f3b3   20 cd fe             jsr lfecd
+f3b6   20 bc f7             jsr lf7bc
+f3b9   4c cd fe             jmp lfecd
+f3bc   20 d9 f7             jsr lf7d9
+f3bf   20 fd fe             jsr lfefd
+f3c2   a0 02                ldy #$02
+f3c4   b1 9b                lda ($9b),y
+f3c6   c5 50                cmp $50
+f3c8   c8                   iny
+f3c9   b1 9b                lda ($9b),y
+f3cb   e5 51                sbc $51
+f3cd   b0 03                bcs lf3d2
+f3cf   4c 10 d4             jmp $d410
+f3d2   20 bc f7   lf3d2     jsr lf7bc
+f3d5   4c fd fe             jmp lfefd
+f3d8   2c 55 c0             bit $c055	; If 80STORE Off: Display Page 2; If 80STORE On: Read/Write Aux Display Mem
+f3db   2c 52 c0             bit $c052	; Display Full Screen
+f3de   a9 40                lda #$40
+f3e0   d0 08                bne lf3ea
+f3e2   a9 20                lda #$20
+f3e4   2c 54 c0             bit $c054	; TXTPAGE1 switch Display Page 1
+f3e7   2c 53 c0             bit $c053	; MIXSET switch Display Split Screen
+f3ea   85 e6      lf3ea     sta $e6
+f3ec   ad 57 c0             lda $c057	; Display HiRes Graphics
+f3ef   ad 50 c0             lda $c050	; TXTCLR switch Display Graphics
+f3f2   a9 00                lda #$00
+f3f4   85 1c                sta $1c
+f3f6   a5 e6                lda $e6
+f3f8   85 1b                sta $1b
+f3fa   a0 00                ldy #$00
+f3fc   84 1a                sty $1a
+f3fe   a5 1c      lf3fe     lda $1c
+f400   91 1a                sta ($1a),y
+f402   20 7e f4             jsr lf47e
+f405   c8                   iny
+f406   d0 f6                bne lf3fe
+f408   e6 1b                inc $1b
+f40a   a5 1b                lda $1b
+f40c   29 1f                and #$1f
+f40e   d0 ee                bne lf3fe
+f410   60                   rts
+f411   85 e2      lf411     sta $e2
+f413   86 e0                stx $e0
+f415   84 e1                sty $e1
+f417   48                   pha
+f418   29 c0                and #$c0
+f41a   85 26                sta $26	; Hires byte position, lores left end point, DOS scratch
+f41c   4a                   lsr a
+f41d   4a                   lsr a
+f41e   05 26                ora $26	; Hires byte position, lores left end point, DOS scratch
+f420   85 26                sta $26	; Hires byte position, lores left end point, DOS scratch
+f422   68                   pla
+f423   85 27                sta $26	; Hires byte position, lores left end point, DOS scratch
+f425   0a                   asl a
+f426   0a                   asl a
+f427   0a                   asl a
+f428   26 27                rol $26	; Hires byte position, lores left end point, DOS scratch
+f42a   0a                   asl a
+f42b   26 27                rol $26	; Hires byte position, lores left end point, DOS scratch
+f42d   0a                   asl a
+f42e   66 26                ror $26	; Hires byte position, lores left end point, DOS scratch
+f430   a5 27                lda $26	; Hires byte position, lores left end point, DOS scratch
+f432   29 1f                and #$1f
+f434   05 e6                ora $e6
+f436   85 27                sta $26	; Hires byte position, lores left end point, DOS scratch
+f438   8a                   txa
+f439   c0 00                cpy #$00
+f43b   f0 05                beq lf442
+f43d   a0 23                ldy #$23
+f43f   69 04                adc #$04
+f441   c8         lf441     iny
+f442   e9 07      lf442     sbc #$07
+f444   b0 fb                bcs lf441
+f446   84 e5                sty $e5
+f448   aa                   tax
+f449   bd b9 f4             lda $f4b9,x
+f44c   85 30                sta $30
+f44e   98                   tya
+f44f   4a                   lsr a
+f450   a5 e4                lda $e4
+f452   85 1c                sta $1c
+f454   b0 28                bcs lf47e
+f456   60                   rts
+f457   20 11 f4   lf457     jsr lf411
+f45a   a5 1c                lda $1c
+f45c   51 26                eor ($26),y
+f45e   25 30                and $30
+f460   51 26                eor ($26),y
+f462   91 26                sta ($26),y
+f464   60                   rts
+f465   10 23      lf465     bpl lf48a
+f467   a5 30                lda $30
+f469   4a                   lsr a
+f46a   b0 05                bcs lf471
+f46c   49 c0                eor #$c0
+f46e   85 30      lf46e     sta $30
+f470   60                   rts
+f471   88         lf471     dey
+f472   10 02                bpl lf476
+f474   a0 27                ldy #$27
+f476   a9 c0      lf476     lda #$c0
+f478   85 30      lf478     sta $30
+f47a   84 e5                sty $e5
+f47c   a5 1c                lda $1c
+f47e   0a         lf47e     asl a
+f47f   c9 c0                cmp #$c0
+f481   10 06                bpl lf489
+f483   a5 1c                lda $1c
+f485   49 7f                eor #$7f
+f487   85 1c                sta $1c
+f489   60         lf489     rts
+f48a   a5 30      lf48a     lda $30
+f48c   0a                   asl a
+f48d   49 80                eor #$80
+f48f   30 dd                bmi lf46e
+f491   a9 81                lda #$81
+f493   c8                   iny
+f494   c0 28                cpy #$28
+f496   90 e0                bcc lf478
+f498   a0 00                ldy #$00
+f49a   b0 dc                bcs lf478
+f49c   18         lf49c     clc
+f49d   a5 d1      lf49d     lda $d1
+f49f   29 04                and #$04
+f4a1   f0 25                beq lf4c8
+f4a3   a9 7f                lda #$7f
+f4a5   25 30                and $30
+f4a7   31 26                and ($26),y
+f4a9   d0 19                bne lf4c4
+f4ab   e6 ea                inc $ea
+f4ad   a9 7f                lda #$7f
+f4af   25 30                and $30
+f4b1   10 11                bpl lf4c4
+f4b3   18         lf4b3     clc
+f4b4   a5 d1      lf4b4     lda $d1
+f4b6   29 04                and #$04
+f4b8   f0 0e                beq lf4c8
+f4ba   b1 26                lda ($26),y
+f4bc   45 1c                eor $1c
+f4be   25 30                and $30
+f4c0   d0 02                bne lf4c4
+f4c2   e6 ea                inc $ea
+f4c4   51 26      lf4c4     eor ($26),y
+f4c6   91 26                sta ($26),y
+f4c8   a5 d1      lf4c8     lda $d1
+f4ca   65 d3                adc $d3
+f4cc   29 03                and #$03
+f4ce   c9 02                cmp #$02
+f4d0   6a                   ror a
+f4d1   b0 92                bcs lf465
+f4d3   30 30      lf4d3     bmi lf505
+f4d5   18                   clc
+f4d6   a5 27                lda $26	; Hires byte position, lores left end point, DOS scratch
+f4d8   2c b9 f5             bit $f5b9
+f4db   d0 22                bne lf4ff
+f4dd   06 26                asl $26	; Hires byte position, lores left end point, DOS scratch
+f4df   b0 1a                bcs lf4fb
+f4e1   2c cd f4             bit $f4cd
+f4e4   f0 05                beq lf4eb
+f4e6   69 1f                adc #$1f
+f4e8   38                   sec
+f4e9   b0 12                bcs lf4fd
+f4eb   69 23      lf4eb     adc #$23
+f4ed   48                   pha
+f4ee   a5 26                lda $26	; Hires byte position, lores left end point, DOS scratch
+f4f0   69 b0                adc #$b0
+f4f2   b0 02                bcs lf4f6
+f4f4   69 f0                adc #$f0
+f4f6   85 26      lf4f6     sta $26	; Hires byte position, lores left end point, DOS scratch
+f4f8   68                   pla
+f4f9   b0 02                bcs lf4fd
+f4fb   69 1f      lf4fb     adc #$1f
+f4fd   66 26      lf4fd     ror $26	; Hires byte position, lores left end point, DOS scratch
+f4ff   69 fc      lf4ff     adc #$fc
+f501   85 27      lf501     sta $26	; Hires byte position, lores left end point, DOS scratch
+f503   60                   rts
+f504   18                   clc
+f505   a5 27      lf505     lda $26	; Hires byte position, lores left end point, DOS scratch
+f507   69 04                adc #$04
+f509   2c b9 f5             bit $f5b9
+f50c   d0 f3                bne lf501
+f50e   06 26                asl $26	; Hires byte position, lores left end point, DOS scratch
+f510   90 18                bcc lf52a
+f512   69 e0                adc #$e0
+f514   18                   clc
+f515   2c 08 f5             bit $f508
+f518   f0 12                beq lf52c
+f51a   a5 26                lda $26	; Hires byte position, lores left end point, DOS scratch
+f51c   69 50                adc #$50
+f51e   49 f0                eor #$f0
+f520   f0 02                beq lf524
+f522   49 f0                eor #$f0
+f524   85 26      lf524     sta $26	; Hires byte position, lores left end point, DOS scratch
+f526   a5 e6                lda $e6
+f528   90 02                bcc lf52c
+f52a   69 e0      lf52a     adc #$e0
+f52c   66 26      lf52c     ror $26	; Hires byte position, lores left end point, DOS scratch
+f52e   90 d1                bcc lf501
+f530   48                   pha
+f531   a9 00                lda #$00
+f533   85 e0                sta $e0
+f535   85 e1                sta $e1
+f537   85 e2                sta $e2
+f539   68                   pla
+f53a   48         lf53a     pha
+f53b   38                   sec
+f53c   e5 e0                sbc $e0
+f53e   48                   pha
+f53f   8a                   txa
+f540   e5 e1                sbc $e1
+f542   85 d3                sta $d3
+f544   b0 0a                bcs lf550
+f546   68                   pla
+f547   49 ff                eor #$ff
+f549   69 01                adc #$01
+f54b   48                   pha
+f54c   a9 00                lda #$00
+f54e   e5 d3                sbc $d3
+f550   85 d1      lf550     sta $d1
+f552   85 d5                sta $d5
+f554   68                   pla
+f555   85 d0                sta $d0
+f557   85 d4                sta $d4
+f559   68                   pla
+f55a   85 e0                sta $e0
+f55c   86 e1                stx $e1
+f55e   98                   tya
+f55f   18                   clc
+f560   e5 e2                sbc $e2
+f562   90 04                bcc lf568
+f564   49 ff                eor #$ff
+f566   69 fe                adc #$fe
+f568   85 d2      lf568     sta $d2
+f56a   84 e2                sty $e2
+f56c   66 d3                ror $d3
+f56e   38                   sec
+f56f   e5 d0                sbc $d0
+f571   aa                   tax
+f572   a9 ff                lda #$ff
+f574   e5 d1                sbc $d1
+f576   85 1d                sta $1d
+f578   a4 e5                ldy $e5
+f57a   b0 05                bcs lf581
+f57c   0a         lf57c     asl a
+f57d   20 65 f4             jsr lf465
+f580   38                   sec
+f581   a5 d4      lf581     lda $d4
+f583   65 d2                adc $d2
+f585   85 d4                sta $d4
+f587   a5 d5                lda $d5
+f589   e9 00                sbc #$00
+f58b   85 d5      lf58b     sta $d5
+f58d   b1 26                lda ($26),y
+f58f   45 1c                eor $1c
+f591   25 30                and $30
+f593   51 26                eor ($26),y
+f595   91 26                sta ($26),y
+f597   e8                   inx
+f598   d0 04                bne lf59e
+f59a   e6 1d                inc $1d
+f59c   f0 62                beq lf600
+f59e   a5 d3      lf59e     lda $d3
+f5a0   b0 da                bcs lf57c
+f5a2   20 d3 f4             jsr lf4d3
+f5a5   18                   clc
+f5a6   a5 d4                lda $d4
+f5a8   65 d0                adc $d0
+f5aa   85 d4                sta $d4
+f5ac   a5 d5                lda $d5
+f5ae   65 d1                adc $d1
+f5b0   50 d9                bvc lf58b
+f5b2   81 82                sta ($82,x)
+f5b4   84 88                sty $88
+f5b6   90 a0                bcc lf558
+f5b8   c0 1c                cpy #$1c
+f5ba   ff                   ???                ;%11111111
+f5bb   fe fa f4             inc $f4fa,x
+f5be   ec e1 d4             cpx $d4e1
+f5c1   c5 b4                cmp $b4
+f5c3   a1 8d                lda ($8d,x)
+f5c5   78                   sei
+f5c6   61 49                adc ($49,x)
+f5c8   31 18                and ($18),y
+f5ca   ff                   ???                ;%11111111
+f5cb   a5 26                lda $26	; Hires byte position, lores left end point, DOS scratch
+f5cd   0a                   asl a
+f5ce   a5 27                lda $26	; Hires byte position, lores left end point, DOS scratch
+f5d0   29 03                and #$03
+f5d2   2a                   rol a
+f5d3   05 26                ora $26	; Hires byte position, lores left end point, DOS scratch
+f5d5   0a                   asl a
+f5d6   0a                   asl a
+f5d7   0a                   asl a
+f5d8   85 e2                sta $e2
+f5da   a5 27                lda $26	; Hires byte position, lores left end point, DOS scratch
+f5dc   4a                   lsr a
+f5dd   4a                   lsr a
+f5de   29 07                and #$07
+f5e0   05 e2                ora $e2
+f5e2   85 e2                sta $e2
+f5e4   a5 e5                lda $e5
+f5e6   0a                   asl a
+f5e7   65 e5                adc $e5
+f5e9   0a                   asl a
+f5ea   aa                   tax
+f5eb   ca                   dex
+f5ec   a5 30                lda $30
+f5ee   29 7f                and #$7f
+f5f0   e8         lf5f0     inx
+f5f1   4a                   lsr a
+f5f2   d0 fc                bne lf5f0
+f5f4   85 e1                sta $e1
+f5f6   8a                   txa
+f5f7   18                   clc
+f5f8   65 e5                adc $e5
+f5fa   90 02                bcc lf5fe
+f5fc   e6 e1                inc $e1
+f5fe   85 e0      lf5fe     sta $e0
+f600   60         lf600     rts
+f601   86 1a                stx $1a
+f603   84 1b                sty $1b
+f605   aa         lf605     tax
+f606   4a                   lsr a
+f607   4a                   lsr a
+f608   4a                   lsr a
+f609   4a                   lsr a
+f60a   85 d3                sta $d3
+f60c   8a                   txa
+f60d   29 0f                and #$0f
+f60f   aa                   tax
+f610   bc ba f5             ldy $f5ba,x
+f613   84 d0                sty $d0
+f615   49 0f                eor #$0f
+f617   aa                   tax
+f618   bc bb f5             ldy $f5bb,x
+f61b   c8                   iny
+f61c   84 d2                sty $d2
+f61e   a4 e5                ldy $e5
+f620   a2 00                ldx #$00
+f622   86 ea                stx $ea
+f624   a1 1a                lda ($1a,x)
+f626   85 d1      lf626     sta $d1
+f628   a2 80                ldx #$80
+f62a   86 d4                stx $d4
+f62c   86 d5                stx $d5
+f62e   a6 e7                ldx $e7
+f630   a5 d4      lf630     lda $d4
+f632   38                   sec
+f633   65 d0                adc $d0
+f635   85 d4                sta $d4
+f637   90 04                bcc lf63d
+f639   20 b3 f4             jsr lf4b3
+f63c   18                   clc
+f63d   a5 d5      lf63d     lda $d5
+f63f   65 d2                adc $d2
+f641   85 d5                sta $d5
+f643   90 03                bcc lf648
+f645   20 b4 f4             jsr lf4b4
+f648   ca         lf648     dex
+f649   d0 e5                bne lf630
+f64b   a5 d1                lda $d1
+f64d   4a                   lsr a
+f64e   4a                   lsr a
+f64f   4a                   lsr a
+f650   d0 d4                bne lf626
+f652   e6 1a                inc $1a
+f654   d0 02                bne lf658
+f656   e6 1b                inc $1b
+f658   a1 1a      lf658     lda ($1a,x)
+f65a   d0 ca                bne lf626
+f65c   60                   rts
+f65d   86 1a                stx $1a
+f65f   84 1b                sty $1b
+f661   aa         lf661     tax
+f662   4a                   lsr a
+f663   4a                   lsr a
+f664   4a                   lsr a
+f665   4a                   lsr a
+f666   85 d3                sta $d3
+f668   8a                   txa
+f669   29 0f                and #$0f
+f66b   aa                   tax
+f66c   bc ba f5             ldy $f5ba,x
+f66f   84 d0                sty $d0
+f671   49 0f                eor #$0f
+f673   aa                   tax
+f674   bc bb f5             ldy $f5bb,x
+f677   c8                   iny
+f678   84 d2                sty $d2
+f67a   a4 e5                ldy $e5
+f67c   a2 00                ldx #$00
+f67e   86 ea                stx $ea
+f680   a1 1a                lda ($1a,x)
+f682   85 d1      lf682     sta $d1
+f684   a2 80                ldx #$80
+f686   86 d4                stx $d4
+f688   86 d5                stx $d5
+f68a   a6 e7                ldx $e7
+f68c   a5 d4      lf68c     lda $d4
+f68e   38                   sec
+f68f   65 d0                adc $d0
+f691   85 d4                sta $d4
+f693   90 04                bcc lf699
+f695   20 9c f4             jsr lf49c
+f698   18                   clc
+f699   a5 d5      lf699     lda $d5
+f69b   65 d2                adc $d2
+f69d   85 d5                sta $d5
+f69f   90 03                bcc lf6a4
+f6a1   20 9d f4             jsr lf49d
+f6a4   ca         lf6a4     dex
+f6a5   d0 e5                bne lf68c
+f6a7   a5 d1                lda $d1
+f6a9   4a                   lsr a
+f6aa   4a                   lsr a
+f6ab   4a                   lsr a
+f6ac   d0 d4                bne lf682
+f6ae   e6 1a                inc $1a
+f6b0   d0 02                bne lf6b4
+f6b2   e6 1b                inc $1b
+f6b4   a1 1a      lf6b4     lda ($1a,x)
+f6b6   d0 ca                bne lf682
+f6b8   60                   rts
+f6b9   20 67 dd   lf6b9     jsr $dd67
+f6bc   20 52 e7             jsr le752
+f6bf   a4 51                ldy $51
+f6c1   a6 50                ldx $50
+f6c3   c0 01                cpy #$01
+f6c5   90 06                bcc lf6cd
+f6c7   d0 1d                bne lf6e6
+f6c9   e0 18                cpx #$18
+f6cb   b0 19                bcs lf6e6
+f6cd   8a         lf6cd     txa
+f6ce   48                   pha
+f6cf   98                   tya
+f6d0   48                   pha
+f6d1   a9 2c                lda #$2c
+f6d3   20 c0 de             jsr $dec0
+f6d6   20 f8 e6             jsr le6f8
+f6d9   e0 c0                cpx #$c0
+f6db   b0 09                bcs lf6e6
+f6dd   86 9d                stx $9d
+f6df   68                   pla
+f6e0   a8                   tay
+f6e1   68                   pla
+f6e2   aa                   tax
+f6e3   a5 9d                lda $9d
+f6e5   60                   rts
+f6e6   4c 06 f2   lf6e6     jmp lf206
+f6e9   20 f8 e6             jsr le6f8
+f6ec   e0 08                cpx #$08
+f6ee   b0 f6                bcs lf6e6
+f6f0   bd f6 f6             lda $f6f6,x
+f6f3   85 e4                sta $e4
+f6f5   60         lf6f5     rts
+f6f6   00                   brk
+f6f7   2a                   rol a
+f6f8   55 7f                eor $7f,x
+f6fa   80                   ???                ;%10000000
+f6fb   aa                   tax
+f6fc   d5 ff                cmp $ff,x
+f6fe   c9 c1                cmp #$c1
+f700   f0 0d                beq lf70f
+f702   20 b9 f6             jsr lf6b9
+f705   20 57 f4             jsr lf457
+f708   20 b7 00   lf708     jsr $00b7
+f70b   c9 c1                cmp #$c1
+f70d   d0 e6                bne lf6f5
+f70f   20 c0 de   lf70f     jsr $dec0
+f712   20 b9 f6             jsr lf6b9
+f715   84 9d                sty $9d
+f717   a8                   tay
+f718   8a                   txa
+f719   a6 9d                ldx $9d
+f71b   20 3a f5             jsr lf53a
+f71e   4c 08 f7             jmp lf708
+f721   20 f8 e6             jsr le6f8
+f724   86 f9                stx $f9
+f726   60                   rts
+f727   20 f8 e6             jsr le6f8
+f72a   86 e7                stx $e7
+f72c   60                   rts
+f72d   20 f8 e6   lf72d     jsr le6f8
+f730   a5 e8                lda $e8
+f732   85 1a                sta $1a
+f734   a5 e9                lda $e9
+f736   85 1b                sta $1b
+f738   8a                   txa
+f739   a2 00                ldx #$00
+f73b   c1 1a                cmp ($1a,x)
+f73d   f0 02                beq lf741
+f73f   b0 a5                bcs lf6e6
+f741   0a         lf741     asl a
+f742   90 03                bcc lf747
+f744   e6 1b                inc $1b
+f746   18                   clc
+f747   a8         lf747     tay
+f748   b1 1a                lda ($1a),y
+f74a   65 1a                adc $1a
+f74c   aa                   tax
+f74d   c8                   iny
+f74e   b1 1a                lda ($1a),y
+f750   65 e9                adc $e9
+f752   85 1b                sta $1b
+f754   86 1a                stx $1a
+f756   20 b7 00             jsr $00b7
+f759   c9 c5                cmp #$c5
+f75b   d0 09                bne lf766
+f75d   20 c0 de             jsr $dec0
+f760   20 b9 f6             jsr lf6b9
+f763   20 11 f4             jsr lf411
+f766   a5 f9      lf766     lda $f9
+f768   60                   rts
+f769   20 2d f7             jsr lf72d
+f76c   4c 05 f6             jmp lf605
+f76f   20 2d f7             jsr lf72d
+f772   4c 61 f6             jmp lf661
+f775   a2 00      lf775     ldx #$00
+f777   2c fd fe             bit lfefd
+f77a   50 03                bvc lf77f
+f77c   a9 7f      lf77c     lda #$7f
+f77e   60                   rts
+f77f   a9 3f      lf77f     lda #$3f
+f781   60                   rts
+f782   a2 00      lf782     ldx #$00
+f784   2c fd fe             bit lfefd
+f787   70 f3                bvs lf77c
+f789   a2 40                ldx #$40
+f78b   d0 ef                bne lf77c
+f78d   2c fd fe   lf78d     bit lfefd
+f790   50 05                bvc lf797
+f792   e0 50      lf792     cpx #$50
+f794   b0 05                bcs lf79b
+f796   60         lf796     rts
+f797   e0 30      lf797     cpx #$30
+f799   90 fb                bcc lf796
+f79b   4c 99 e1   lf79b     jmp le199
+f79e   2c fd fe   lf79e     bit lfefd
+f7a1   70 f4                bvs lf797
+f7a3   2c fd fe   lf7a3     bit lfefd
+f7a6   70 ea                bvs lf792
+f7a8   c0 28                cpy #$28
+f7aa   b0 ef                bcs lf79b
+f7ac   60                   rts
+f7ad   a9 ff      lf7ad     lda #$ff
+f7af   a2 00                ldx #$00
+f7b1   4c 7b f2             jmp lf27b
+f7b4   a6 2d      lf7b4     ldx $2d
+f7b6   20 97 f7             jsr lf797
+f7b9   4c 28 f8             jmp lf828
+f7bc   18         lf7bc     clc
+f7bd   a5 9b                lda $9b
+f7bf   65 50                adc $50
+f7c1   85 3e                sta $3e
+f7c3   a5 9c                lda $9c
+f7c5   65 51                adc $51
+f7c7   85 3f                sta $3f
+f7c9   a0 04                ldy #$04
+f7cb   b1 9b                lda ($9b),y
+f7cd   20 ef e0             jsr le0ef
+f7d0   a5 94                lda $94
+f7d2   85 3c                sta $3c
+f7d4   a5 95                lda $95
+f7d6   85 3d                sta $3d
+f7d8   60                   rts
+f7d9   a9 40      lf7d9     lda #$40
+f7db   85 14                sta $14
+f7dd   20 e3 df             jsr $dfe3
+f7e0   a9 00                lda #$00
+f7e2   85 14                sta $14
+f7e4   4c f0 d8             jmp $d8f0
+f7e7   20 f8 e6             jsr le6f8
+f7ea   ca                   dex
+f7eb   8a                   txa
+f7ec   20 aa f1   lf7ec     jsr lf1aa
+f7ef   ea                   nop
+f7f0   90 08                bcc lf7fa
+f7f2   48                   pha
+f7f3   20 fb da             jsr $dafb
+f7f6   68                   pla
+f7f7   4c ec f7             jmp lf7ec
+f7fa   85 24      lf7fa     sta $24	; Horizontal cursor displacement (from top)
+f7fc   60                   rts
+f7fd   cb                   ???                ;%11001011
+f7fe   d2                   ???                ;%11010010
+f7ff   d7                   ???                ;%11010111
+
+; ### PLOT
+f800   4a         lf800     lsr a
+f801   08                   php
+f802   20 47 f8             jsr lf847
+f805   28                   plp
+f806   a9 0f                lda #$0f
+f808   90 02                bcc lf80c
+f80a   69 e0                adc #$e0
+f80c   85 2e      lf80c     sta $2e
+f80e   b1 26      lf80e     lda ($26),y
+f810   45 30                eor $30
+f812   25 2e                and $2e
+f814   51 26                eor ($26),y
+f816   91 26                sta ($26),y
+f818   60                   rts
+
+; ### HLINE
+f819   20 00 f8   lf819     jsr lf800
+f81c   c4 2c      lf81c     cpy $2c	; RWTS storage for checksum, sector, track, volume
+f81e   b0 11                bcs lf831
+f820   c8                   iny
+f821   20 0e f8             jsr lf80e
+f824   90 f6                bcc lf81c
+f826   69 01      lf826     adc #$01
+
+; ### VLINE
+f828   48         lf828     pha
+f829   20 00 f8             jsr lf800
+f82c   68                   pla
+f82d   c5 2d                cmp $2d
+f82f   90 f5                bcc lf826
+f831   60         lf831     rts
+
+; ### CLRSCR
+f832   a0 2f                ldy #$2f
+f834   d0 02                bne lf838
+
+; ### CLRTOP
+f836   a0 27      lf836     ldy #$27
+f838   84 2d      lf838     sty $2d
+f83a   a0 27                ldy #$27
+f83c   a9 00      lf83c     lda #$00
+f83e   85 30                sta $30
+f840   20 28 f8             jsr lf828
+f843   88                   dey
+f844   10 f6                bpl lf83c
+f846   60                   rts
+f847   48         lf847     pha
+f848   4a                   lsr a
+f849   29 03                and #$03
+f84b   09 04                ora #$04
+f84d   85 27                sta $26	; Hires byte position, lores left end point, DOS scratch
+f84f   68                   pla
+f850   29 18                and #$18
+f852   90 02                bcc lf856
+f854   69 7f                adc #$7f
+f856   85 26      lf856     sta $26	; Hires byte position, lores left end point, DOS scratch
+f858   0a                   asl a
+f859   0a                   asl a
+f85a   05 26                ora $26	; Hires byte position, lores left end point, DOS scratch
+f85c   85 26                sta $26	; Hires byte position, lores left end point, DOS scratch
+f85e   60                   rts
+
+; ### NEXTCOL
+f85f   a5 30                lda $30
+f861   18                   clc
+f862   69 03                adc #$03
+
+; ### SETCOL
+f864   29 0f      lf864     and #$0f
+f866   85 30                sta $30
+f868   0a                   asl a
+f869   0a                   asl a
+f86a   0a                   asl a
+f86b   0a                   asl a
+f86c   05 30                ora $30
+f86e   85 30                sta $30
+f870   60                   rts
+
+; ### SCRN
+f871   4a                   lsr a
+f872   08                   php
+f873   20 47 f8             jsr lf847
+f876   b1 26                lda ($26),y
+f878   28                   plp
+f879   90 04      lf879     bcc lf87f
+f87b   4a                   lsr a
+f87c   4a                   lsr a
+f87d   4a                   lsr a
+f87e   4a                   lsr a
+f87f   29 0f      lf87f     and #$0f
+f881   60                   rts
+f882   a6 3a      lf882     ldx $3a
+f884   a4 3b                ldy $3b
+f886   20 96 fd             jsr lfd96
+f889   20 48 f9             jsr lf948
+f88c   a1 3a                lda ($3a,x)
+f88e   a8                   tay
+f88f   4a                   lsr a
+f890   90 09                bcc lf89b
+f892   6a                   ror a
+f893   b0 10                bcs lf8a5
+f895   c9 a2                cmp #$a2
+f897   f0 0c                beq lf8a5
+f899   29 87                and #$87
+f89b   4a         lf89b     lsr a
+f89c   aa                   tax
+f89d   bd 62 f9             lda $f962,x
+f8a0   20 79 f8             jsr lf879
+f8a3   d0 04                bne lf8a9
+f8a5   a0 80      lf8a5     ldy #$80
+f8a7   a9 00                lda #$00
+f8a9   aa         lf8a9     tax
+f8aa   bd a6 f9             lda $f9a6,x
+f8ad   85 2e                sta $2e
+f8af   29 03                and #$03
+f8b1   85 2f                sta $2f
+f8b3   98                   tya
+f8b4   29 8f                and #$8f
+f8b6   aa                   tax
+f8b7   98                   tya
+f8b8   a0 03                ldy #$03
+f8ba   e0 8a                cpx #$8a
+f8bc   f0 0b                beq lf8c9
+f8be   4a         lf8be     lsr a
+f8bf   90 08                bcc lf8c9
+f8c1   4a                   lsr a
+f8c2   4a         lf8c2     lsr a
+f8c3   09 20                ora #$20
+f8c5   88                   dey
+f8c6   d0 fa                bne lf8c2
+f8c8   c8                   iny
+f8c9   88         lf8c9     dey
+f8ca   d0 f2                bne lf8be
+f8cc   60                   rts
+f8cd   ff                   ???                ;%11111111
+f8ce   ff                   ???                ;%11111111
+f8cf   ff                   ???                ;%11111111
+f8d0   20 82 f8   lf8d0     jsr lf882
+f8d3   48                   pha
+f8d4   b1 3a      lf8d4     lda ($3a),y
+f8d6   20 da fd             jsr lfdda
+f8d9   a2 01                ldx #$01
+f8db   20 4a f9   lf8db     jsr lf94a
+f8de   c4 2f                cpy $2f
+f8e0   c8                   iny
+f8e1   90 f1                bcc lf8d4
+f8e3   a2 03                ldx #$03
+f8e5   c0 04                cpy #$04
+f8e7   90 f2                bcc lf8db
+f8e9   68                   pla
+f8ea   a8                   tay
+f8eb   b9 c0 f9             lda $f9c0,y
+f8ee   85 2c                sta $2c	; RWTS storage for checksum, sector, track, volume
+f8f0   b9 00 fa             lda $fa00,y
+f8f3   85 2d                sta $2d
+f8f5   a9 00      lf8f5     lda #$00
+f8f7   a0 05                ldy #$05
+f8f9   06 2d      lf8f9     asl $2d
+f8fb   26 2c                rol $2c	; RWTS storage for checksum, sector, track, volume
+f8fd   2a                   rol a
+f8fe   88                   dey
+f8ff   d0 f8                bne lf8f9
+f901   69 bf                adc #$bf
+f903   20 ed fd             jsr lfded
+f906   ca                   dex
+f907   d0 ec                bne lf8f5
+f909   20 48 f9             jsr lf948
+f90c   a4 2f                ldy $2f
+f90e   a2 06                ldx #$06
+f910   e0 03      lf910     cpx #$03
+f912   f0 1c                beq lf930
+f914   06 2e      lf914     asl $2e
+f916   90 0e                bcc lf926
+f918   bd b3 f9             lda $f9b3,x
+f91b   20 ed fd             jsr lfded
+f91e   bd b9 f9             lda $f9b9,x
+f921   f0 03                beq lf926
+f923   20 ed fd             jsr lfded
+f926   ca         lf926     dex
+f927   d0 e7                bne lf910
+f929   60                   rts
+f92a   88         lf92a     dey
+f92b   30 e7                bmi lf914
+f92d   20 da fd             jsr lfdda
+f930   a5 2e      lf930     lda $2e
+f932   c9 e8                cmp #$e8
+f934   b1 3a                lda ($3a),y
+f936   90 f2                bcc lf92a
+f938   20 56 f9             jsr lf956
+f93b   aa                   tax
+f93c   e8                   inx
+f93d   d0 01                bne lf940
+f93f   c8                   iny
+f940   98         lf940     tya
+
+; ### PRNTAX print A and X in hex
+f941   20 da fd             jsr lfdda
+f944   8a                   txa
+f945   4c da fd             jmp lfdda
+
+; ### PRBLNK print 3 blanks
+f948   a2 03      lf948     ldx #$03
+
+; ### PRBL2 print X number of blanks
+f94a   a9 a0      lf94a     lda #$a0
+f94c   20 ed fd             jsr lfded
+f94f   ca                   dex
+f950   d0 f8                bne lf94a
+f952   60                   rts
+f953   38         lf953     sec
+f954   a5 2f                lda $2f
+f956   a4 3b      lf956     ldy $3b
+f958   aa                   tax
+f959   10 01                bpl lf95c
+f95b   88                   dey
+f95c   65 3a      lf95c     adc $3a
+f95e   90 01                bcc lf961
+f960   c8                   iny
+f961   60         lf961     rts
+f962   04                   ???                ;%00000100
+f963   20 54 30             jsr $3054
+f966   0d 80 04             ora $0480
+f969   90 03                bcc lf96e
+f96b   22                   ???                ;%00100010 '"'
+f96c   54                   ???                ;%01010100 'T'
+f96d   33                   ???                ;%00110011 '3'
+f96e   0d 80 04   lf96e     ora $0480
+f971   90 04                bcc lf977
+f973   20 54 33             jsr $3354
+f976   0d 80 04             ora $0480
+f979   90 04                bcc lf97f
+f97b   20 54 3b             jsr $3b54
+f97e   0d 80 04             ora $0480
+f981   90 00                bcc lf983
+f983   22         lf983     ???                ;%00100010 '"'
+f984   44                   ???                ;%01000100 'D'
+f985   33                   ???                ;%00110011 '3'
+f986   0d c8 44             ora $44c8
+f989   00                   brk
+f98a   11 22                ora ($22),y
+f98c   44                   ???                ;%01000100 'D'
+f98d   33                   ???                ;%00110011 '3'
+f98e   0d c8 44             ora $44c8
+f991   a9 01                lda #$01
+f993   22                   ???                ;%00100010 '"'
+f994   44                   ???                ;%01000100 'D'
+f995   33                   ???                ;%00110011 '3'
+f996   0d 80 04             ora $0480
+f999   90 01                bcc lf99c
+f99b   22                   ???                ;%00100010 '"'
+f99c   44         lf99c     ???                ;%01000100 'D'
+f99d   33                   ???                ;%00110011 '3'
+f99e   0d 80 04             ora $0480
+f9a1   90 26                bcc lf9c9
+f9a3   31 87                and ($87),y
+f9a5   9a                   txs
+f9a6   00                   brk
+f9a7   21 81                and ($81,x)
+f9a9   82                   ???                ;%10000010
+f9aa   00                   brk
+f9ab   00                   brk
+f9ac   59 4d 91             eor $914d,y
+f9af   92                   ???                ;%10010010
+f9b0   86 4a                stx $4a
+f9b2   85 9d                sta $9d
+f9b4   ac a9 ac             ldy $aca9
+f9b7   a3                   ???                ;%10100011
+f9b8   a8                   tay
+f9b9   a4 d9                ldy $d9
+f9bb   00                   brk
+f9bc   d8                   cld
+f9bd   a4 a4                ldy $a4
+f9bf   00                   brk
+f9c0   1c                   ???                ;%00011100
+f9c1   8a                   txa
+f9c2   1c                   ???                ;%00011100
+f9c3   23                   ???                ;%00100011 '#'
+f9c4   5d 8b 1b             eor $1b8b,x
+f9c7   a1 9d                lda ($9d,x)
+f9c9   8a         lf9c9     txa
+f9ca   1d 23 9d             ora $9d23,x
+f9cd   8b                   ???                ;%10001011
+f9ce   1d a1 00             ora $00a1,x
+f9d1   29 19                and #$19
+f9d3   ae 69 a8             ldx $a869
+f9d6   19 23 24             ora $2423,y
+f9d9   53                   ???                ;%01010011 'S'
+f9da   1b                   ???                ;%00011011
+f9db   23                   ???                ;%00100011 '#'
+f9dc   24 53                bit $53
+f9de   19 a1 00             ora $00a1,y
+f9e1   1a                   ???                ;%00011010
+f9e2   5b                   ???                ;%01011011 '['
+f9e3   5b                   ???                ;%01011011 '['
+f9e4   a5 69                lda $69
+f9e6   24 24                bit $24
+f9e8   ae ae a8             ldx $a8ae
+f9eb   ad 29 00             lda $0029
+f9ee   7c                   ???                ;%01111100 '|'
+f9ef   00                   brk
+f9f0   15 9c                ora $9c,x
+f9f2   6d 9c a5             adc $a59c
+f9f5   69 29                adc #$29
+f9f7   53                   ???                ;%01010011 'S'
+f9f8   84 13                sty $13
+f9fa   34                   ???                ;%00110100 '4'
+f9fb   11 a5                ora ($a5),y
+f9fd   69 23                adc #$23
+f9ff   a0 d8                ldy #$d8
+fa01   62                   ???                ;%01100010 'b'
+fa02   5a                   ???                ;%01011010 'Z'
+fa03   48                   pha
+fa04   26 62                rol $62
+fa06   94 88                sty $88,x
+fa08   54                   ???                ;%01010100 'T'
+fa09   44                   ???                ;%01000100 'D'
+fa0a   c8                   iny
+fa0b   54                   ???                ;%01010100 'T'
+fa0c   68                   pla
+fa0d   44                   ???                ;%01000100 'D'
+fa0e   e8                   inx
+fa0f   94 00                sty $00,x
+fa11   b4 08                ldy $08,x
+fa13   84 74                sty $74
+fa15   b4 28                ldy $28,x
+fa17   6e 74 f4             ror $f474
+fa1a   cc 4a 72             cpy $724a
+fa1d   f2                   ???                ;%11110010
+fa1e   a4 8a                ldy $8a
+fa20   00                   brk
+fa21   aa                   tax
+fa22   a2 a2                ldx #$a2
+fa24   74                   ???                ;%01110100 't'
+fa25   74                   ???                ;%01110100 't'
+fa26   74                   ???                ;%01110100 't'
+fa27   72                   ???                ;%01110010 'r'
+fa28   44                   ???                ;%01000100 'D'
+fa29   68                   pla
+fa2a   b2                   ???                ;%10110010
+fa2b   32                   ???                ;%00110010 '2'
+fa2c   b2                   ???                ;%10110010
+fa2d   00                   brk
+fa2e   22                   ???                ;%00100010 '"'
+fa2f   00                   brk
+fa30   1a                   ???                ;%00011010
+fa31   1a                   ???                ;%00011010
+fa32   26 26                rol $26	; Hires byte position, lores left end point, DOS scratch
+fa34   72                   ???                ;%01110010 'r'
+fa35   72                   ???                ;%01110010 'r'
+fa36   88                   dey
+fa37   c8                   iny
+fa38   c4 ca                cpy $ca
+fa3a   26 48                rol $48
+fa3c   44                   ???                ;%01000100 'D'
+fa3d   44                   ???                ;%01000100 'D'
+fa3e   a2 c8                ldx #$c8
+fa40   85 45                sta $45
+fa42   68                   pla
+fa43   48                   pha
+fa44   0a                   asl a
+fa45   0a                   asl a
+fa46   0a                   asl a
+fa47   30 03                bmi lfa4c
+fa49   6c fe 03             jmp ($03fe)
+fa4c   28         lfa4c     plp
+fa4d   20 4c ff             jsr lff4c
+fa50   68                   pla
+fa51   85 3a                sta $3a
+fa53   68                   pla
+fa54   85 3b                sta $3b
+fa56   6c f0 03             jmp ($03f0)
+fa59   20 82 f8             jsr lf882
+fa5c   20 da fa             jsr lfada
+fa5f   4c 65 ff             jmp lff65
+
+BOOT:
+fa62   d8                   cld
+fa63   20 84 fe             jsr lfe84	; init to $ff Text Mask ($FF = Normal, $7F = Inverse, $3F = Flashing)
+fa66   20 2f fb             jsr lfb2f	; set up screen mode, margins and cursor
+fa69   20 93 fe             jsr lfe93	; set up Character output pointer to $fdf0
+fa6c   20 89 fe             jsr lfe89	; set up Character input pointer to $fd1b
+fa6f   ad 59 c0             lda $c059	; SETAN0 If IOUDIS off: Annunciator 0 On
+fa72   ad 5a c0             lda $c05a	; CLRAN1 If IOUDIS off: Annunciator 1 Off
+fa75   ad 5d c0             lda $c05d	; SETAN2 If IOUDIS off: Annunciator 2 On
+fa78   ad 5f c0             lda $c05f	; DHIRESOFF In 80-Column Mode: Single Width Graphics
+fa7b   ad ff cf             lda $cfff	; turn off all extension card roms
+fa7e   2c 10 c0             bit $c010	; KBDSTRB Keyboard Strobe - mark keyboard as read
+fa81   d8                   cld
+fa82   20 3a ff             jsr lff3a
+fa85   ad f3 03             lda $03f3
+fa88   49 a5                eor #$a5
+fa8a   cd f4 03             cmp $03f4
+fa8d   d0 17                bne lfaa6
+fa8f   ad f2 03             lda $03f2
+fa92   d0 0f                bne lfaa3
+fa94   a9 e0                lda #$e0
+fa96   cd f3 03             cmp $03f3
+fa99   d0 08                bne lfaa3
+fa9b   a0 03      lfa9b     ldy #$03
+fa9d   8c f2 03             sty $03f2
+faa0   4c 00 e0             jmp le000	; jump to basic
+
+
+faa3   6c f2 03   lfaa3     jmp ($03f2)
+faa6   20 60 fb   lfaa6     jsr lfb60
+faa9   a2 05                ldx #$05
+faab   bd fc fa   lfaab     lda $fafc,x
+faae   9d ef 03             sta $03ef,x
+fab1   ca                   dex
+fab2   d0 f7                bne lfaab
+fab4   a9 c8                lda #$c8
+fab6   86 00                stx $00
+fab8   85 01                sta $01
+faba   a0 07      lfaba     ldy #$07
+fabc   c6 01                dec $01
+fabe   a5 01                lda $01
+fac0   c9 c0                cmp #$c0
+fac2   f0 d7                beq lfa9b
+fac4   8d f8 07             sta $07f8
+fac7   b1 00      lfac7     lda ($00),y
+fac9   d9 01 fb             cmp $fb01,y
+facc   d0 ec                bne lfaba
+face   88                   dey
+facf   88                   dey
+fad0   10 f5                bpl lfac7
+fad2   6c 00 00             jmp ($0000)
+fad5   ea                   nop
+fad6   ea                   nop
+fad7   20 8e fd   lfad7     jsr lfd8e
+fada   a9 45      lfada     lda #$45
+fadc   85 40                sta $40
+fade   a9 00                lda #$00
+fae0   85 41                sta $41
+fae2   a2 fb                ldx #$fb
+fae4   a9 a0      lfae4     lda #$a0
+fae6   20 ed fd             jsr lfded
+fae9   bd 1e fa             lda $fa1e,x
+faec   20 ed fd             jsr lfded
+faef   a9 bd                lda #$bd
+faf1   20 ed fd             jsr lfded
+faf4   b5 4a                lda $4a,x
+faf6   20 da fd             jsr lfdda
+faf9   e8                   inx
+fafa   30 e8                bmi lfae4
+fafc   60                   rts
+fafd   59 fa 00             eor $00fa,y
+fb00   e0 45                cpx #$45
+fb02   20 ff 00             jsr $00ff
+fb05   ff                   ???                ;%11111111
+fb06   03                   ???                ;%00000011
+fb07   ff                   ???                ;%11111111
+fb08   3c                   ???                ;%00111100 '<'
+fb09   c1 d0                cmp ($d0,x)
+fb0b   d0 cc                bne lfad9
+fb0d   c5 a0                cmp $a0
+fb0f   dd db c4             cmp $c4db,x
+fb12   c2                   ???                ;%11000010
+fb13   c1 ff      lfb13     cmp ($ff,x)
+fb15   c3                   ???                ;%11000011
+fb16   ff                   ???                ;%11111111
+fb17   ff                   ???                ;%11111111
+fb18   ff                   ???                ;%11111111
+fb19   c1 d8                cmp ($d8,x)
+fb1b   d9 d0 d3             cmp $d3d0,y
+
+; ### PREAD read paddle
+fb1e   ad 70 c0             lda $c070	; Analog Input Reset
+fb21   a0 00                ldy #$00
+fb23   ea                   nop
+fb24   ea                   nop
+fb25   bd 64 c0   lfb25     lda $c064,x	; Analog Input 0
+fb28   10 04                bpl lfb2e
+fb2a   c8                   iny
+fb2b   d0 f8                bne lfb25
+fb2d   88                   dey
+fb2e   60         lfb2e     rts
+
+; ### switch to text full screen
+fb2f   a9 00      lfb2f     lda #$00
+fb31   85 48                sta $48
+fb33   ad 56 c0             lda $c056	; LORES switch Display LoRes Graphics
+fb36   ad 54 c0             lda $c054	; TXTPAGE1 switch Display Page 1
+fb39   ad 51 c0   lfb39     lda $c051	; TXTSET switch Display Text
+fb3c   a9 00                lda #$00
+fb3e   f0 0b                beq lfb4b	; always taken
+
+; ### switch to graphics split screen
+fb40   ad 50 c0   lfb40     lda $c050	; TXTCLR switch Display Graphics
+fb43   ad 53 c0             lda $c053	; MIXSET switch Display Split Screen
+fb46   20 36 f8             jsr lf836
+fb49   a9 14                lda #$14
+fb4b   85 22      lfb4b     sta $22	; Top Margin (0 - 23, 0 is default, 20 in graphics mode)
+fb4d   a9 00                lda #$00
+fb4f   85 20                sta $20	; Left Margin (0 - 39/79, 0 is default)
+fb51   a9 28                lda #$28
+fb53   85 21                sta $21	; Width (1 - 40/80, 40 is default, 0 crashes Applesoft)
+fb55   a9 18                lda #$18
+fb57   85 23                sta $23	; Bottom Margin (0 - 23, 23 is default)
+fb59   a9 17                lda #$17
+fb5b   85 25      lfb5b     sta $25	; Vertical Cursor Position (0 - 23)
+fb5d   4c 22 fc             jmp lfc22	; upate cursor position variables
+
+
+fb60   20 58 fc   lfb60     jsr lfc58
+fb63   a0 08                ldy #$08
+fb65   b9 08 fb   lfb65     lda $fb08,y
+fb68   99 0e 04             sta $040e,y
+fb6b   88                   dey
+fb6c   d0 f7                bne lfb65
+fb6e   60                   rts
+fb6f   ad f3 03   lfb6f     lda $03f3
+fb72   49 a5                eor #$a5
+fb74   8d f4 03             sta $03f4
+fb77   60                   rts
+fb78   c9 8d      lfb78     cmp #$8d
+fb7a   d0 18                bne lfb94
+fb7c   ac 00 c0             ldy $c000	; Last Key Pressed (+ 128 if strobe not cleared)
+fb7f   10 13                bpl lfb94
+fb81   c0 93                cpy #$93
+fb83   d0 0f                bne lfb94
+fb85   2c 10 c0             bit $c010	; KBDSTRB Keyboard Strobe - mark keyboard as read
+fb88   ac 00 c0   lfb88     ldy $c000	; Last Key Pressed (+ 128 if strobe not cleared)
+fb8b   10 fb                bpl lfb88
+fb8d   c0 83                cpy #$83
+fb8f   f0 03                beq lfb94
+fb91   2c 10 c0             bit $c010	; KBDSTRB Keyboard Strobe - mark keyboard as read
+fb94   4c fd fb   lfb94     jmp lfbfd
+
+fb97   38         lfb97     sec
+fb98   4c 2c fc             jmp lfc2c
+
+fb9b   a8         lfb9b     tay
+fb9c   b9 48 fa             lda $fa48,y	; look up value
+fb9f   20 97 fb             jsr lfb97
+fba2   20 0c fd             jsr lfd0c
+
+
+fba5   c9 ce      lfba5     cmp #$ce
+fba7   b0 ee                bcs lfb97	; char less than $ce -> 'N'
+fba9   c9 c9                cmp #$c9	; char >= $c9 -> 'I'
+fbab   90 ea                bcc lfb97
+fbad   c9 cc                cmp #$cc	; char = $cc -> 'L'
+fbaf   f0 e6                beq lfb97
+fbb1   d0 e8                bne lfb9b	; always taken
+
+fbb3   ea                   nop
+fbb4   ea                   nop
+fbb5   ea                   nop
+fbb6   ea                   nop
+fbb7   ea                   nop
+fbb8   ea                   nop
+fbb9   ea         lfbb9     nop
+fbba   ea                   nop
+fbbb   ea                   nop
+fbbc   ea                   nop
+fbbd   ea                   nop
+fbbe   ea                   nop
+fbbf   ea                   nop
+fbc0   ea                   nop
+
+; set Base Address of Text Cursor's Position
+fbc1   48         lfbc1     pha
+fbc2   4a                   lsr a	; divide by 2
+fbc3   29 03                and #$03	; keep lowest 3 bits
+fbc5   09 04                ora #$04	; make sure bit 3 is on. address range $0400-$07ff
+fbc7   85 29                sta $29	; Base Address of Text Cursor's Position high byte
+fbc9   68                   pla
+fbca   29 18                and #$18
+fbcc   90 02                bcc lfbd0
+fbce   69 7f                adc #$7f
+fbd0   85 28      lfbd0     sta $28	; Base Address of Text Cursor's Position low byte
+fbd2   0a                   asl a	; multiply by 4
+fbd3   0a                   asl a
+fbd4   05 28                ora $28	; Base Address of Text Cursor's Position low byte
+fbd6   85 28                sta $28	; Base Address of Text Cursor's Position low byte
+fbd8   60                   rts
+
+; ### bell
+fbd9   c9 87      lfbd9     cmp #$87	; is it bell?
+fbdb   d0 12                bne lfbef	; no, ignore it
+
+; ### BELL1
+fbdd   a9 40                lda #$40
+fbdf   20 a8 fc             jsr lfca8	; delay $40 loops - 2080 times - 2ms?
+fbe2   a0 c0                ldy #$c0	; 192 loops of speaker toggle
+fbe4   a9 0c      lfbe4     lda #$0c
+fbe6   20 a8 fc             jsr lfca8	; delay $0c loops - 78 times between each toggle. 6KHz?
+fbe9   ad 30 c0             lda $c030	; Toggle Speaker
+fbec   88                   dey
+fbed   d0 f5                bne lfbe4	; keep toggling
+fbef   60         lfbef     rts
+
+; ### add to line
+fbf0   a4 24      lfbf0     ldy $24	; Horizontal cursor displacement (from top) - get cursor position
+fbf2   91 28                sta ($28),y	; Pointer to current text line, add character to current text line
+
+; ### increment horizontal cursor position
+fbf4   e6 24      lfbf4     inc $24	; Horizontal cursor displacement (from top)
+fbf6   a5 24                lda $24	; Horizontal cursor displacement (from top)
+fbf8   c5 21                cmp $21	; Width (1 - 40/80, 40 is default, 0 crashes Applesoft)
+fbfa   b0 66                bcs lfc62	; went past last column? need to wrap and go down a line
+fbfc   60         lfbfc     rts		; else you're done
+
+; ### process char
+fbfd   c9 a0      lfbfd     cmp #$a0
+fbff   b0 ef                bcs lfbf0	; >= $20 -> ' ',  add to line
+fc01   a8                   tay		; load offset to table if < ' '
+fc02   10 ec                bpl lfbf0	; but if between 0 and $1f - add to line
+fc04   c9 8d                cmp #$8d	; CR?
+fc06   f0 5a                beq lfc62	; go to beginning of next line
+fc08   c9 8a                cmp #$8a	; LF?
+fc0a   f0 5a                beq lfc66	; go straight down 
+fc0c   c9 88                cmp #$88	; backspace?
+fc0e   d0 c9                bne lfbd9	; process further
+; got backspace, fall through to decrement horizontal cursor position
+
+; ### decrement horizontal cursor position
+fc10   c6 24      lfc10     dec $24	; Horizontal cursor displacement (from top)
+fc12   10 e8                bpl lfbfc	; done if still >=0, else wrap cursor and go up to next line
+fc14   a5 21                lda $21	; Width (1 - 40/80, 40 is default, 0 crashes Applesoft)
+fc16   85 24                sta $24	; Horizontal cursor displacement (from top)
+fc18   c6 24                dec $24	; Horizontal cursor displacement (from top)
+
+; ### decrement vertical cursor position - move up, 0 at top
+fc1a   a5 22      lfc1a     lda $22	; Top Margin (0 - 23, 0 is default, 20 in graphics mode)
+fc1c   c5 25                cmp $25	; Vertical Cursor Position (0 - 23)
+fc1e   b0 0b                bcs lfc2b	; top margin exceeded?
+fc20   c6 25                dec $25	; Vertical Cursor Position (0 - 23) move cursor up
+
+; ### upate cursor position variables
+fc22   a5 25      lfc22     lda $25	; fetch Vertical Cursor Position (0 - 23)
+fc24   20 c1 fb   lfc24     jsr lfbc1	; set Base Address of Text Cursor's Position
+fc27   65 20                adc $20	; add Left Margin (0 - 39/79, 0 is default)
+fc29   85 28                sta $28	; Base Address of Text Cursor's Position low byte
+fc2b   60         lfc2b     rts
+
+; ### process cursor keys?
+fc2c   49 c0      lfc2c     eor #$c0	; was it $c0
+fc2e   f0 28                beq lfc58	; yes, reset margins, display
+fc30   69 fd      lfc30     adc #$fd	; subtract 3
+fc32   90 c0                bcc lfbf4	; jump if was < 3 - increment horizontal cursor position
+fc34   f0 da                beq lfc10	; jump if was = 3 - decrement horizontal cursor position
+fc36   69 fd                adc #$fd
+fc38   90 2c                bcc lfc66	; jump if was < 6 - LF
+fc3a   f0 de                beq lfc1a	; jump if was = 6 - decrement vertical cursor position - move up, 0 at top
+fc3c   69 fd                adc #$fd
+fc3e   90 5c                bcc lfc9c	; jump if was < 9 - blank from cursor to end of line
+fc40   d0 e9                bne lfc2b	; jump if was > 9 - rts
+					; or continue if =9
+fc42   a4 24                ldy $24	; get Horizontal Cursor Position (0 - 39/79)
+fc44   a5 25                lda $25	; get Vertical Cursor Position (0 - 23)
+
+; ### blank rest of screen to bottom
+fc46   48         lfc46     pha		; save current Vertical Cursor Position
+fc47   20 24 fc             jsr lfc24	; upate cursor position variables
+fc4a   20 9e fc             jsr lfc9e	; blank line from cursor to end
+fc4d   a0 00                ldy #$00	; go to beginning of line
+fc4f   68                   pla		; get current line
+fc50   69 00                adc #$00	; go to next line
+fc52   c5 23                cmp $23	; Bottom Margin (0 - 23, 23 is default)  - check if reached bottom
+fc54   90 f0                bcc lfc46	; above bottom, keep blanking lines
+fc56   b0 ca                bcs lfc22	; upate cursor position variables
+
+; ### send cursor home
+fc58   a5 22      lfc58     lda $22	; Top Margin (0 - 23, 0 is default, 20 in graphics mode)
+fc5a   85 25                sta $25	; Vertical Cursor Position (0 - 23)
+fc5c   a0 00                ldy #$00
+fc5e   84 24                sty $24	; Horizontal cursor displacement (from top)
+fc60   f0 e4                beq lfc46	; blank rest of screen to bottom
+
+; ### CR, go to next line
+fc62   a9 00      lfc62     lda #$00
+fc64   85 24                sta $24	; Horizontal cursor displacement (from top)
+; ### LF
+fc66   e6 25      lfc66     inc $25	; Vertical Cursor Position (0 - 23)
+fc68   a5 25                lda $25	; Vertical Cursor Position (0 - 23)
+fc6a   c5 23                cmp $23	; Bottom Margin (0 - 23, 23 is default)
+fc6c   90 b6                bcc lfc24
+fc6e   c6 25                dec $25	; Vertical Cursor Position (0 - 23)
+fc70   a5 22                lda $22	; Top Margin (0 - 23, 0 is default, 20 in graphics mode)
+fc72   48                   pha
+fc73   20 24 fc             jsr lfc24
+fc76   a5 28      lfc76     lda $28	; Base Address of Text Cursor's Position low byte
+fc78   85 2a                sta $2a	; Used as scratch during scrolling; DOS scratch
+fc7a   a5 29                lda $29	; Base Address of Text Cursor's Position high byte
+fc7c   85 2b                sta $2b	; Boot slot X 16 (after boot)
+fc7e   a4 21                ldy $21	; Width (1 - 40/80, 40 is default, 0 crashes Applesoft)
+fc80   88                   dey
+fc81   68                   pla
+fc82   69 01                adc #$01
+fc84   c5 23                cmp $23	; Bottom Margin (0 - 23, 23 is default)
+fc86   b0 0d                bcs lfc95
+fc88   48                   pha
+fc89   20 24 fc             jsr lfc24
+fc8c   b1 28      lfc8c     lda ($28),y	; get char at cursor
+fc8e   91 2a                sta ($2a),y	; Used as scratch during scrolling; DOS scratch
+fc90   88                   dey
+fc91   10 f9                bpl lfc8c
+fc93   30 e1                bmi lfc76
+fc95   a0 00      lfc95     ldy #$00
+fc97   20 9e fc             jsr lfc9e
+fc9a   b0 86                bcs lfc22	; upate cursor position variables
+
+; ### blank from cursor to end of line
+fc9c   a4 24      lfc9c     ldy $24	; Horizontal Cursor Position (0 - 39/79)
+
+; ### blank line from y to end
+fc9e   a9 a0      lfc9e     lda #$a0	; ' '
+fca0   91 28      lfca0     sta ($28),y	; store char at cursor
+fca2   c8                   iny
+fca3   c4 21                cpy $21	; Width (1 - 40/80, 40 is default, 0 crashes Applesoft)
+fca5   90 f9                bcc lfca0	; fill line with blanks
+fca7   60                   rts
+
+; ### WAIT delay triangular number sequence of a. 13 + 12*A + 5*A*A
+fca8   38         lfca8     sec
+fca9   48         lfca9     pha		; save outer loop value in a
+fcaa   e9 01      lfcaa     sbc #$01	; this gets executed a times while a is decremented in outer loop
+fcac   d0 fc                bne lfcaa	; iterate from outer loop value to 0
+fcae   68                   pla
+fcaf   e9 01                sbc #$01
+fcb1   d0 f6                bne lfca9	; iterate outer loop to 0
+fcb3   60                   rts
+
+fcb4   e6 42      lfcb4     inc $42
+fcb6   d0 02                bne lfcba
+fcb8   e6 43                inc $43
+fcba   a5 3c      lfcba     lda $3c
+fcbc   c5 3e                cmp $3e
+fcbe   a5 3d                lda $3d
+fcc0   e5 3f                sbc $3f
+fcc2   e6 3c                inc $3c
+fcc4   d0 02                bne lfcc8
+fcc6   e6 3d                inc $3d
+fcc8   60         lfcc8     rts
+fcc9   a0 4b      lfcc9     ldy #$4b
+fccb   20 db fc             jsr lfcdb
+fcce   d0 f9                bne lfcc9
+fcd0   69 fe                adc #$fe
+fcd2   b0 f5                bcs lfcc9
+fcd4   a0 21                ldy #$21
+fcd6   20 db fc   lfcd6     jsr lfcdb
+fcd9   c8                   iny
+fcda   c8                   iny
+fcdb   88         lfcdb     dey
+fcdc   d0 fd                bne lfcdb
+fcde   90 05                bcc lfce5
+fce0   a0 32                ldy #$32
+fce2   88         lfce2     dey
+fce3   d0 fd                bne lfce2
+fce5   ac 20 c0   lfce5     ldy $c020	; Toggle Cassette Tape Output (not on IIe PDS Card)
+fce8   a0 2c                ldy #$2c
+fcea   ca                   dex
+fceb   60                   rts
+fcec   a2 08      lfcec     ldx #$08
+fcee   48         lfcee     pha
+fcef   20 fa fc             jsr lfcfa
+fcf2   68                   pla
+fcf3   2a                   rol a
+fcf4   a0 3a                ldy #$3a
+fcf6   ca                   dex
+fcf7   d0 f5                bne lfcee
+fcf9   60                   rts
+
+
+fcfa   20 fd fc   lfcfa     jsr lfcfd	; do the below twice
+
+
+fcfd   88         lfcfd     dey
+fcfe   ad 60 c0             lda $c060	; read Read Cassette Input (not on IIe PDS Card); Status of 80/40 Column Switch (not IIc Plus) http://apple2.guidero.us/doku.php/mg_notes/general/io_page
+fd01   45 2f                eor $2f	; eor once to update flags
+fd03   10 f8                bpl lfcfd	; wait for bit 7 to go high
+fd05   45 2f                eor $2f	; eor again to return to original value
+fd07   85 2f                sta $2f	; store new value
+fd09   c0 80                cpy #$80	; update flags N Z C
+fd0b   60                   rts
+
+; ### RDKEY convert control char to letter at offset 36?
+fd0c   a4 24      lfd0c     ldy $24	; 36th char of current line
+fd0e   b1 28                lda ($28),y	; Pointer to current text line, get current value
+fd10   48                   pha
+fd11   29 3f                and #$3f	; strip high bit
+fd13   09 40                ora #$40	; letters start @$40: @ABCD...
+fd15   91 28                sta ($28),y	; Pointer to current text line, store updated value
+fd17   68                   pla		; get what was there originally
+
+; ### KEYIN
+fd18   6c 38 00             jmp ($0038)	; Character input routine pointer
+
+; ### Character input routine
+fd1b   e6 4e      lfd1b     inc $4e	; Random number field (seeded by RDKEY)
+fd1d   d0 02                bne lfd21
+fd1f   e6 4f                inc $4f	; Random number field (seeded by RDKEY)
+fd21   2c 00 c0   lfd21     bit $c000	; Last Key Pressed (+ 128 if strobe not cleared)
+fd24   10 f5                bpl lfd1b
+fd26   91 28                sta ($28),y	; Pointer to current text line
+fd28   ad 00 c0             lda $c000	; Last Key Pressed (+ 128 if strobe not cleared)
+fd2b   2c 10 c0             bit $c010	; Keyboard Strobe
+fd2e   60                   rts
+
+
+fd2f   20 0c fd   lfd2f     jsr lfd0c	; convert control char to letter at offset 36?
+fd32   20 a5 fb             jsr lfba5
+
+; ### RDCHAR
+fd35   20 0c fd   lfd35     jsr lfd0c
+fd38   c9 9b      lfd38     cmp #$9b
+fd3a   f0 f3                beq lfd2f
+fd3c   60                   rts
+fd3d   a5 32      lfd3d     lda $32
+fd3f   48                   pha
+fd40   a9 ff                lda #$ff
+fd42   85 32                sta $32
+fd44   bd 00 02             lda $0200,x
+fd47   20 ed fd             jsr lfded
+fd4a   68                   pla
+fd4b   85 32                sta $32
+fd4d   bd 00 02             lda $0200,x
+fd50   c9 88                cmp #$88
+fd52   f0 1d                beq lfd71
+fd54   c9 98                cmp #$98
+fd56   f0 0a                beq lfd62
+fd58   e0 f8                cpx #$f8
+fd5a   90 03                bcc lfd5f
+fd5c   20 3a ff             jsr lff3a
+fd5f   e8         lfd5f     inx
+fd60   d0 13                bne lfd75
+fd62   a9 dc      lfd62     lda #$dc
+fd64   20 ed fd             jsr lfded
+
+; ### GETLNZ
+fd67   20 8e fd   lfd67     jsr lfd8e	; print CR
+
+; ### GETLN
+fd6a   a5 33                lda $33
+fd6c   20 ed fd             jsr lfded	; print $33 -> '3' ? why msb not set?
+
+; ### GETLN1
+fd6f   a2 01                ldx #$01
+fd71   8a         lfd71     txa
+fd72   f0 f3                beq lfd67	; when x reaches 0, print CR
+fd74   ca                   dex
+fd75   20 35 fd   lfd75     jsr lfd35
+fd78   c9 95                cmp #$95
+fd7a   d0 02                bne lfd7e
+fd7c   b1 28                lda ($28),y
+fd7e   c9 e0      lfd7e     cmp #$e0
+fd80   90 02                bcc lfd84
+fd82   29 df                and #$df
+fd84   9d 00 02   lfd84     sta $0200,x
+fd87   c9 8d                cmp #$8d
+fd89   d0 b2                bne lfd3d
+fd8b   20 9c fc             jsr lfc9c
+
+; ### CROUT print CR
+fd8e   a9 8d      lfd8e     lda #$8d
+fd90   d0 5b                bne lfded	; Character output routine - print CR
+
+fd92   a4 3d      lfd92     ldy $3d
+fd94   a6 3c                ldx $3c
+fd96   20 8e fd   lfd96     jsr lfd8e
+fd99   20 40 f9             jsr lf940
+fd9c   a0 00                ldy #$00
+fd9e   a9 ad                lda #$ad
+fda0   4c ed fd             jmp lfded
+fda3   a5 3c      lfda3     lda $3c
+fda5   09 07                ora #$07
+fda7   85 3e                sta $3e
+fda9   a5 3d                lda $3d
+fdab   85 3f                sta $3f
+fdad   a5 3c      lfdad     lda $3c
+fdaf   29 07                and #$07
+fdb1   d0 03                bne lfdb6
+fdb3   20 92 fd   lfdb3     jsr lfd92
+fdb6   a9 a0      lfdb6     lda #$a0
+fdb8   20 ed fd             jsr lfded
+fdbb   b1 3c                lda ($3c),y
+fdbd   20 da fd             jsr lfdda
+fdc0   20 ba fc             jsr lfcba
+fdc3   90 e8                bcc lfdad
+fdc5   60                   rts
+fdc6   4a         lfdc6     lsr a
+fdc7   90 ea                bcc lfdb3
+fdc9   4a                   lsr a
+fdca   4a                   lsr a
+fdcb   a5 3e                lda $3e
+fdcd   90 02                bcc lfdd1
+fdcf   49 ff                eor #$ff
+fdd1   65 3c      lfdd1     adc $3c
+fdd3   48                   pha
+fdd4   a9 bd                lda #$bd
+fdd6   20 ed fd             jsr lfded
+fdd9   68                   pla
+
+; ### PRBYTE
+fdda   48         lfdda     pha
+fddb   4a                   lsr a
+fddc   4a                   lsr a
+fddd   4a                   lsr a
+fdde   4a                   lsr a
+fddf   20 e5 fd             jsr lfde5
+fde2   68                   pla
+
+; ### PRHEX
+fde3   29 0f                and #$0f
+fde5   09 b0      lfde5     ora #$b0
+fde7   c9 ba                cmp #$ba
+fde9   90 02                bcc lfded
+fdeb   69 06                adc #$06
+
+; ### COUT
+fded   6c 36 00   lfded     jmp ($0036)	; Character output routine
+
+; ### COUT1
+fdf0   c9 a0                cmp #$a0
+fdf2   90 02                bcc lfdf6
+fdf4   25 32                and $32
+fdf6   84 35      lfdf6     sty $35
+fdf8   48                   pha
+fdf9   20 78 fb             jsr lfb78
+fdfc   68                   pla
+fdfd   a4 35                ldy $35
+fdff   60                   rts
+fe00   c6 34      lfe00     dec $34
+fe02   f0 9f                beq lfda3
+fe04   ca                   dex
+fe05   d0 16                bne lfe1d
+fe07   c9 ba                cmp #$ba
+fe09   d0 bb                bne lfdc6
+fe0b   85 31                sta $31
+fe0d   a5 3e                lda $3e
+fe0f   91 40                sta ($40),y
+fe11   e6 40                inc $40
+fe13   d0 02                bne lfe17
+fe15   e6 41                inc $41
+fe17   60         lfe17     rts
+fe18   a4 34                ldy $34
+fe1a   b9 ff 01             lda $01ff,y
+fe1d   85 31      lfe1d     sta $31
+fe1f   60                   rts
+fe20   a2 01                ldx #$01
+fe22   b5 3e      lfe22     lda $3e,x
+fe24   95 42                sta $42,x
+fe26   95 44                sta $44,x
+fe28   ca                   dex
+fe29   10 f7                bpl lfe22
+fe2b   60                   rts
+fe2c   b1 3c      lfe2c     lda ($3c),y
+fe2e   91 42                sta ($42),y
+fe30   20 b4 fc             jsr lfcb4
+fe33   90 f7                bcc lfe2c
+fe35   60                   rts
+fe36   b1 3c      lfe36     lda ($3c),y
+fe38   d1 42                cmp ($42),y
+fe3a   f0 1c                beq lfe58
+fe3c   20 92 fd             jsr lfd92
+fe3f   b1 3c                lda ($3c),y
+fe41   20 da fd             jsr lfdda
+fe44   a9 a0                lda #$a0
+fe46   20 ed fd             jsr lfded
+fe49   a9 a8                lda #$a8
+fe4b   20 ed fd             jsr lfded
+fe4e   b1 42                lda ($42),y
+fe50   20 da fd             jsr lfdda
+fe53   a9 a9                lda #$a9
+fe55   20 ed fd             jsr lfded
+fe58   20 b4 fc   lfe58     jsr lfcb4
+fe5b   90 d9                bcc lfe36
+fe5d   60                   rts
+
+
+fe5e   20 75 fe             jsr lfe75
+fe61   a9 14                lda #$14
+fe63   48         lfe63     pha
+fe64   20 d0 f8             jsr lf8d0
+fe67   20 53 f9             jsr lf953
+fe6a   85 3a                sta $3a
+fe6c   84 3b                sty $3b
+fe6e   68                   pla
+fe6f   38                   sec
+fe70   e9 01                sbc #$01
+fe72   d0 ef                bne lfe63
+fe74   60                   rts
+
+
+fe75   8a         lfe75     txa
+fe76   f0 07                beq lfe7f		; exit if x=0
+
+fe78   b5 3c      lfe78     lda $3c,x
+fe7a   95 3a                sta $3a,x
+fe7c   ca                   dex
+fe7d   10 f9                bpl lfe78
+fe7f   60         lfe7f     rts
+
+; ### SETINV
+fe80   a0 3f                ldy #$3f
+fe82   d0 02                bne lfe86
+
+; ### SETNORM set Text Mask $FF = Normal
+fe84   a0 ff      lfe84     ldy #$ff
+
+fe86   84 32      lfe86     sty $32	; Text Mask ($FF = Normal, $7F = Inverse, $3F = Flashing)
+fe88   60                   rts
+
+; set Character input handler pointer to $fd1b
+fe89   a9 00      lfe89     lda #$00
+fe8b   85 3e      lfe8b     sta $3e
+fe8d   a2 38                ldx #$38	; point to Character input pointer
+fe8f   a0 1b                ldy #$1b
+fe91   d0 08                bne lfe9b
+
+; set Character output handler pointer to $fdf0
+fe93   a9 00      lfe93     lda #$00
+fe95   85 3e      lfe95     sta $3e
+fe97   a2 36                ldx #$36	; point to Character output pointer
+fe99   a0 f0                ldy #$f0
+
+; initialize pointer
+fe9b   a5 3e      lfe9b     lda $3e
+fe9d   29 0f                and #$0f
+fe9f   f0 06                beq lfea7
+fea1   09 c0                ora #$c0
+fea3   a0 00                ldy #$00
+fea5   f0 02                beq lfea9
+fea7   a9 fd      lfea7     lda #$fd
+
+fea9   94 00      lfea9     sty $00,x
+feab   95 01                sta $01,x
+fead   60                   rts
+
+feae   ea                   nop
+feaf   ea                   nop
+feb0   4c 00 e0             jmp le000	; jump to basic
+feb3   4c 03 e0             jmp le003
+feb6   20 75 fe             jsr lfe75
+feb9   20 3f ff             jsr lff3f
+febc   6c 3a 00             jmp ($003a)
+febf   4c d7 fa             jmp lfad7
+fec2   60                   rts
+fec3   ea                   nop
+fec4   60                   rts
+fec5   ea                   nop
+fec6   ea                   nop
+fec7   ea                   nop
+fec8   ea                   nop
+fec9   ea                   nop
+feca   4c f8 03             jmp $03f8
+fecd   a9 40      lfecd     lda #$40
+fecf   20 c9 fc             jsr lfcc9
+fed2   a0 27                ldy #$27
+fed4   a2 00      lfed4     ldx #$00
+fed6   41 3c                eor ($3c,x)
+fed8   48                   pha
+fed9   a1 3c                lda ($3c,x)
+fedb   20 ed fe             jsr lfeed
+fede   20 ba fc             jsr lfcba
+fee1   a0 1d      lfee1     ldy #$1d
+fee3   68         lfee3     pla
+fee4   90 ee                bcc lfed4
+fee6   a0 22      lfee6     ldy #$22
+fee8   20 ed fe             jsr lfeed
+feeb   f0 4d                beq lff3a
+feed   a2 10      lfeed     ldx #$10
+feef   0a         lfeef     asl a
+fef0   20 d6 fc             jsr lfcd6
+fef3   d0 fa                bne lfeef
+fef5   60                   rts
+fef6   20 00 fe             jsr lfe00
+fef9   68                   pla
+fefa   68                   pla
+fefb   d0 6c                bne lff69
+fefd   20 fa fc   lfefd     jsr lfcfa
+ff00   a9 16                lda #$16
+ff02   20 c9 fc             jsr lfcc9
+ff05   85 2e                sta $2e
+ff07   20 fa fc             jsr lfcfa
+ff0a   a0 24      lff0a     ldy #$24
+ff0c   20 fd fc             jsr lfcfd
+ff0f   b0 f9                bcs lff0a
+ff11   20 fd fc             jsr lfcfd
+ff14   a0 3b                ldy #$3b
+ff16   20 ec fc   lff16     jsr lfcec
+ff19   81 3c                sta ($3c,x)
+ff1b   45 2e                eor $2e
+ff1d   85 2e                sta $2e
+ff1f   20 ba fc             jsr lfcba
+ff22   a0 35                ldy #$35
+ff24   90 f0                bcc lff16
+ff26   20 ec fc             jsr lfcec
+ff29   c5 2e                cmp $2e
+ff2b   f0 0d                beq lff3a
+ff2d   a9 c5                lda #$c5	; 'E'
+ff2f   20 ed fd             jsr lfded	; Character output routine
+ff32   a9 d2                lda #$d2	; 'R'
+ff34   20 ed fd             jsr lfded	; Character output routine
+ff37   20 ed fd             jsr lfded	; Character output routine
+
+; ### BELL ring bell
+ff3a   a9 87      lff3a     lda #$87	; bell
+ff3c   4c ed fd             jmp lfded	; Character output routine
+
+; ### RESTORE restore processor registers
+ff3f   a5 48      lff3f     lda $48
+ff41   48                   pha
+ff42   a5 45                lda $45
+ff44   a6 46                ldx $46
+ff46   a4 47                ldy $47
+ff48   28                   plp
+ff49   60                   rts
+
+; ### SAVE save processor register A and...
+ff4a   85 45                sta $45
+
+; ### save processor registers X, Y, P, S
+ff4c   86 46      lff4c     stx $46
+ff4e   84 47                sty $47
+ff50   08                   php
+ff51   68                   pla
+ff52   85 48                sta $48
+ff54   ba                   tsx
+ff55   86 49                stx $49
+ff57   d8                   cld
+ff58   60                   rts
+ff59   20 84 fe             jsr lfe84
+ff5c   20 2f fb             jsr lfb2f	; set up screen mode, margins and cursor
+ff5f   20 93 fe             jsr lfe93	; set up Character output pointer to $fdf0
+ff62   20 89 fe             jsr lfe89	; set up Character input pointer to $fd1b
+
+ff65   d8         lff65     cld
+ff66   20 3a ff             jsr lff3a	; ring bell
+
+MONITOR:
+ff69   a9 aa      lff69     lda #$aa	; '*'
+ff6b   85 33                sta $33	; Prompt character for input line
+ff6d   20 67 fd             jsr lfd67
+ff70   20 c7 ff             jsr lffc7	; initialize $31 to 0
+ff73   20 a7 ff   lff73     jsr lffa7	; get char from buffer?
+ff76   84 34                sty $34	; save y temporarily
+ff78   a0 17                ldy #$17
+ff7a   88         lff7a     dey
+ff7b   30 e8                bmi lff65	; ring bell and present prompt if reached end of lookup table
+ff7d   d9 cc ff             cmp $ffcc,y	; lookup in table
+ff80   d0 f8                bne lff7a	; continue iterating through table
+ff82   20 be ff             jsr lffbe	; found match
+ff85   a4 34                ldy $34	; restore y
+ff87   4c 73 ff             jmp lff73
+
+ff8a   a2 03      lff8a     ldx #$03
+ff8c   0a                   asl a	; shift in lower nybble
+ff8d   0a                   asl a
+ff8e   0a                   asl a
+ff8f   0a                   asl a
+ff90   0a         lff90     asl a	; move msb from a to $3e
+ff91   26 3e                rol $3e	; and msb of $3e to $3f
+ff93   26 3f                rol $3f
+ff95   ca                   dex
+ff96   10 f8                bpl lff90	; repeat 4 times
+ff98   a5 31      lff98     lda $31	; Used by monitor command processing
+ff9a   d0 06                bne lffa2	; jump if $31 does not comtain zero
+ff9c   b5 3f                lda $3f,x	; first time through x=$ff -> 3e, 3f
+ff9e   95 3d                sta $3d,x	; results in $3c, $3d
+ffa0   95 41                sta $41,x	; results in $40, $41
+ffa2   e8         lffa2     inx
+ffa3   f0 f3                beq lff98
+ffa5   d0 06                bne lffad	; x=1 here
+
+ffa7   a2 00      lffa7     ldx #$00	; start of buffer
+ffa9   86 3e                stx $3e	; init vars
+ffab   86 3f                stx $3f
+
+ffad   b9 00 02   lffad     lda $0200,y	; get char from buffer
+ffb0   c8                   iny		; point to next char
+ffb1   49 b0                eor #$b0	; flip bits 7 and 5
+ffb3   c9 0a                cmp #$0a	; end of line?
+ffb5   90 d3                bcc lff8a	; a was >= $0a
+ffb7   69 88                adc #$88
+ffb9   c9 fa                cmp #$fa	; is char > 'z'?
+ffbb   b0 cd                bcs lff8a	; yes, 
+ffbd   60                   rts
+
+ffbe   a9 fe      lffbe     lda #$fe
+ffc0   48                   pha
+ffc1   b9 e3 ff             lda $ffe3,y
+ffc4   48                   pha
+ffc5   a5 31                lda $31	; Used by monitor command processing
+
+; ### initialize $31 to 0
+ffc7   a0 00      lffc7     ldy #$00
+ffc9   84 31                sty $31	; reset to 0
+ffcb   60                   rts
+
+; table used at $ff7d to look up received char and build jump
+ffcc   bc b2 be             db $bc,$b2,$be	; <2>
+ffcf   b2                   db $b2	; 2
+ffd0   ef                   db $ef	; o
+ffd1   c4 b2                db $c4,$b2	; D2
+ffd3   a9 bb                db $a9,$bb	; );
+ffd5   a6 a4                db $a6,$a4
+ffd7   06 95                db $06,$95
+ffd9   07                   db $07
+ffda   02                   db $02
+ffdb   05 f0                db $05,$f0
+ffdd   00                   db $00
+ffde   eb                   db $eb
+ffdf   93                   db $93
+ffe0   a7                   db $a7
+ffe1   c6 99                db $c6,$99
+
+; second byte of jump address. first is $fe
+ffe3   b2                   db $b2
+ffe4   c9 be                db $c8,$be
+ffe6   c1 35                db $c1,$35
+ffe8   8c c4 96             db $8c,$c4,$96
+ffeb   af                   db $af
+ffec   17                   db $17
+ffed   17                   db $17
+ffee   2b                   db $2b
+ffef   1f                   db $1f
+fff0   83                   db $83
+fff1   7f                   db $7f
+fff2   5d cc b5             db $5d,$cc,$b5
+fff5   fc                   db $fc
+fff6   17                   db $17
+fff7   17                   db $17
+fff8   f5                   db $f5
+fff9   03                   db $03
+
+fffa   fb                   db $fb
+fffb   03                   db $03
+
+fffc		db 62 fa
+fffe		db 40 fa
+                            .end
+
+
+cpm floppy boot sector
