@@ -2604,6 +2604,8 @@ f38d   4c f2 d4             jmp $d4f2
 f390   ad 56 c0             lda $c056	; LORES switch Display LoRes Graphics
 f393   ad 53 c0             lda $c053	; MIXSET switch Display Split Screen
 f396   4c 40 fb             jmp lfb40
+
+; ### text
 f399   ad 54 c0             lda $c054	; TXTPAGE1 switch Display Page 1
 f39c   4c 39 fb             jmp lfb39
 f39f   20 d9 f7             jsr lf7d9
@@ -2632,6 +2634,8 @@ f3cd   b0 03                bcs lf3d2
 f3cf   4c 10 d4             jmp $d410
 f3d2   20 bc f7   lf3d2     jsr lf7bc
 f3d5   4c fd fe             jmp lfefd
+
+; ### hgr2
 f3d8   2c 55 c0             bit $c055	; If 80STORE Off: Display Page 2; If 80STORE On: Read/Write Aux Display Mem
 f3db   2c 52 c0             bit $c052	; Display Full Screen
 f3de   a9 40                lda #$40
@@ -2658,6 +2662,7 @@ f40a   a5 1b                lda $1b
 f40c   29 1f                and #$1f
 f40e   d0 ee                bne lf3fe
 f410   60                   rts
+
 f411   85 e2      lf411     sta $e2
 f413   86 e0                stx $e0
 f415   84 e1                sty $e1
@@ -2700,6 +2705,8 @@ f450   a5 e4                lda $e4
 f452   85 1c                sta $1c
 f454   b0 28                bcs lf47e
 f456   60                   rts
+
+; ### plot
 f457   20 11 f4   lf457     jsr lf411
 f45a   a5 1c                lda $1c
 f45c   51 26                eor ($26),y
@@ -2821,6 +2828,8 @@ f533   85 e0                sta $e0
 f535   85 e1                sta $e1
 f537   85 e2                sta $e2
 f539   68                   pla
+
+; ### plotto
 f53a   48         lf53a     pha
 f53b   38                   sec
 f53c   e5 e0                sbc $e0
@@ -2938,6 +2947,8 @@ f5fe   85 e0      lf5fe     sta $e0
 f600   60         lf600     rts
 f601   86 1a                stx $1a
 f603   84 1b                sty $1b
+
+; ### draw 
 f605   aa         lf605     tax
 f606   4a                   lsr a
 f607   4a                   lsr a
@@ -2990,6 +3001,8 @@ f65a   d0 ca                bne lf626
 f65c   60                   rts
 f65d   86 1a                stx $1a
 f65f   84 1b                sty $1b
+
+; ### xdraw
 f661   aa         lf661     tax
 f662   4a                   lsr a
 f663   4a                   lsr a
@@ -3069,6 +3082,8 @@ f6e6   4c 06 f2   lf6e6     jmp lf206
 f6e9   20 f8 e6             jsr le6f8
 f6ec   e0 08                cpx #$08
 f6ee   b0 f6                bcs lf6e6
+
+; ### color
 f6f0   bd f6 f6             lda $f6f6,x
 f6f3   85 e4                sta $e4
 f6f5   60         lf6f5     rts

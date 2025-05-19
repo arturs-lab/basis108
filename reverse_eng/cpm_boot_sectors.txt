@@ -1673,6 +1673,10 @@
 11bd   00                   brk
 11be   00                   brk
 11bf   00                   brk
+;
+; this code gets copied to and executed from 6502 memory area
+; in $3c0 range as seen in code near $827
+;
 11c0   2c 81 c0             bit $c081	; Read ROM; write RAM bank 2
 11c3   4c 65 ff             jmp $ff65
 
@@ -1680,12 +1684,18 @@
 11c8   8d f9 ff             sta $fff9
 11cb   ea                   nop
 11cc   8d 00 c1             sta $c100	; turn on Z80 ( manual page 98 ) at this point $fff9=$04 and $3d0=00 00
-11cf   20 00 00             jsr $0000	; so this jump really does go to $0000 which contains 00, so brk Instruction and vector at $ffef=$afc9 but that location is filled with $ff
-					; replacing this jump with jump to monitor resulted with cp/m booting normally
-					; actually, previous instruction started Z80 and suspended 6502.
-					; so to call a 6502 routine, Z80 replaces $0000 with address of routine to be called,
-					; suspends itself, which unsuspends 6502 and it jumps to taht subroutine, then returns and 
+;
+; once the above instruction gets executed, z80 takes over and 6502 is suspended
+; when z80 writes to $c100 ($e100 in z80 address space), it gets suspended and
+; 6502 resumes and executes next instruction below which Z80 alters based on its needs
+; before resuming 6502
+;
+11cf   20 00 00             jsr $0000	; previous instruction started Z80 and suspended 6502.
+					; to call a 6502 routine, Z80 replaces $0000 with address of routine to be called,
+					; suspends itself, which unsuspends 6502 and it jumps to that subroutine, then returns and 
 					; executes instruction below, which closes the loop.
+					; or the code in this area gets altered by z80 alltogether as seen in example below
+					; 
 11d2   4c cc 03             jmp $03cc
 
 ; after cpm started, the above code got replaced by the below
@@ -1693,15 +1703,18 @@
 ; during boot process. Each altering various lengths of this code
 ; this code was gleaned by inspecting Z80 memory $f3c0 which
 ; translates to 6502 memory $03c0. 
+; it is possible that code around `sta $c100	; turn on/off Z80`
+; gets altered by Z80 before returning control to 6502
+; as needed depending on what 6502 is to do
 ;
-;03c0   ad 83 c0   l03c0     lda $c083
+;03c0   ad 83 c0   l03c0     lda $c083	; Read/write RAM bank 2
 ;03c3   ad 83 c0             lda $c083
-;03c6   8d 00 c1             sta $c100
-;03c9   ad 81 c0             lda $c081
-;03cc   20 3f ff             jsr $ff3f
-;03cf   20 06 0b             jsr $0b06
+;03c6   8d 00 c1             sta $c100	; turn on/off Z80
+;03c9   ad 81 c0             lda $c081	; Read ROM; write RAM bank 2 but should be executed twice to work
+;03cc   20 3f ff             jsr $ff3f	; restore processor registers
+;03cf   20 06 0b             jsr $0b06	; this is modified by z80 before giving control to 6502
 ;03d2   8d 81 c0             sta $c081
-;03d5   20 4a ff             jsr $ff4a
+;03d5   20 4a ff             jsr $ff4a	; save processor registers
 ;03d8   4c c0 03             jmp l03c0
 ;
 ;03db   3e 1a c9             rol $c91a,x
@@ -1709,6 +1722,56 @@
 ;03df   e1 c3                sbc ($c3,x)
 ;03e1   dd f3 c3             cmp $c3f3,x
 ;03e4   fe f3 c3             inc $c3f3,x
+;
+; for example, here's a code which allows calling 6502 from 
+; Turbo Pascal program. As can be seen here, various addresses
+; near $3d0 (6502) / $f3d0 (z80) get modified
+; Pascal inline routine updates this line with new jump address
+; ;03cf   20 06 0b             jsr $0b06
+; it also stores values to be used by registers in $f045..7($0045..7)
+; which are locations used by routine at $ff3f(6502) (restore processor registers)
+; which 6502 jumps to after being resumed before jumping to 
+; routine Z80 asked for by executing this code
+;      (* ld  hl,(addr)*) $2a/addr/
+;      (* ld  (f3d0),hl*) $22/$d0/$f3/
+; finally, executing this bit causes 6502 to take over
+;      (* ld  hl,(f3de)*) $2a/$de/$f3/
+;      (* ld  (hl),a   *) $77)
+; this is because $f3de(z80, $3de 6502) contains $00 $e1 -> $e100
+; which in z80 memory space is equivalent to 6502 $c100 - switchover trigger
+; I am not sure why a known value $e100 is stored in memory and fetched from it
+; rather than being used as a literal like so
+;      (* ld  (e100),a   *)
+;
+;PROCEDURE call6502 (addr,a,x,y:integer);
+;(* call the 6502 micoprocessor *)
+;begin
+;   inline
+;      (* ld  hl,#f045 *)( $21/$45/$f0/
+;      (* ld  a,(a)    *) $3a/a/
+;      (* ld  (hl),a   *) $77/
+;      (* inc hl       *) $23/
+;      (* ld  a,(x)    *) $3a/x/
+;      (* ld  (hl),a   *) $77/
+;      (* inc hl       *) $23/
+;      (* ld  a,(y)    *) $3a/y/
+;      (* ld  (hl),a   *) $77/
+;      (* ld  hl,(addr)*) $2a/addr/
+;      (* ld  (f3d0),hl*) $22/$d0/$f3/
+;      (* ld  hl,(f3de)*) $2a/$de/$f3/
+;      (* ld  (hl),a   *) $77)
+;end;
+;
+; here's a code which uses procedure above to switch to HGR2 mode
+; to do so, it has 6502 run code starting at $f3d8
+;
+;PROCEDURE hgr2;
+;
+;begin
+;    call6502 ($f3d8,0,0,0);
+;end;
+;
+; advantage of using 6502 routines is that they execute faster
 ;
 ; END
 ;
