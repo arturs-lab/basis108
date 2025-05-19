@@ -5,7 +5,7 @@
 0807   e0 60                cpx #$60	; check if x=$60 indicating booting from slot 6
 0809   f0 03                beq l080e
 080b   4c 7b 08             jmp l087b	; write message 'Must boot from slot 6!'
-080e   a5 3d      l080e     lda $3d	; General use by monitor; source pointer for memory move	; General use by monitor; source pointer for memory move
+080e   a5 3d      l080e     lda $3d	; General use by monitor; source pointer for memory move
 0810   c9 10                cmp #$10
 0812   f0 13                beq l0827
 0814   c9 0f                cmp #$0f
@@ -1678,9 +1678,9 @@
 11c6   a9 ff                lda #$ff
 11c8   8d f9 ff             sta $fff9
 11cb   ea                   nop
-11cc   8d 00 c1             sta $c100 ; at this point $fff9=$04 and $3d0=00 00
-11cf   20 00 00             jsr $0000 ; so this jump really does go to $0000 which contains 00, so brk Instruction and vector at $ffef=$afc9 but that location is filled with $ff
-; replacing this jump with jump to monitor resulted with cp/m booting normally
+11cc   8d 00 c1             sta $c100	; turn on/off Z80 ( manual page 98 ) at this point $fff9=$04 and $3d0=00 00
+11cf   20 00 00             jsr $0000	; so this jump really does go to $0000 which contains 00, so brk Instruction and vector at $ffef=$afc9 but that location is filled with $ff
+					; replacing this jump with jump to monitor resulted with cp/m booting normally
 11d2   4c cc 03             jmp $03cc
 11d5   00                   brk
 11d6   00                   brk
