@@ -1687,6 +1687,32 @@
 					; suspends itself, which unsuspends 6502 and it jumps to taht subroutine, then returns and 
 					; executes instruction below, which closes the loop.
 11d2   4c cc 03             jmp $03cc
+
+; after cpm started, the above code got replaced by the below
+; it is possible that this is result of multiple calls to 6502
+; during boot process. Each altering various lengths of this code
+; this code was gleaned by inspecting Z80 memory $f3c0 which
+; translates to 6502 memory $03c0. 
+;
+;03c0   ad 83 c0   l03c0     lda $c083
+;03c3   ad 83 c0             lda $c083
+;03c6   8d 00 c1             sta $c100
+;03c9   ad 81 c0             lda $c081
+;03cc   20 3f ff             jsr $ff3f
+;03cf   20 06 0b             jsr $0b06
+;03d2   8d 81 c0             sta $c081
+;03d5   20 4a ff             jsr $ff4a
+;03d8   4c c0 03             jmp l03c0
+;
+;03db   3e 1a c9             rol $c91a,x
+;03de   00                   brk
+;03df   e1 c3                sbc ($c3,x)
+;03e1   dd f3 c3             cmp $c3f3,x
+;03e4   fe f3 c3             inc $c3f3,x
+;
+; END
+;
+
 11d5   00                   brk
 11d6   00                   brk
 11d7   00                   brk

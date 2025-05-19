@@ -139,3 +139,6 @@ the Z-80 is shut down. The memory addresses for controlling the Z-80 are:
 | SC100 |  | Z80 On/Off | 
 | SC1C1 | Printer Acknowledge |  | 
 
+## helpful references
+[softswitches](http://apple2.guidero.us/doku.php/mg_notes/general/io_page)
+[page 0](https://www.kreativekorp.com/miscpages/a2info/zeropage.shtml)and(https://fadden.com/apple2/dl/zero-page.txt)
