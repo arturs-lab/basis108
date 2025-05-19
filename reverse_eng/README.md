@@ -3,14 +3,14 @@ Reverse engineering code from Basis 108 ROMs and CPM floppies to understand CPM 
 
 Boot sectors from CP/M disk tracks 0 - 2 get loaded into memory starting at $800, then code gets executed starting from $801
 
-# Notes
+## Notes
 * 6502 reset/NMI vectors
 ```
-$fffa faaa	; NMI
+$fffa	faaa	; NMI
 $fffc	fa62	; reset
 $fffe	fa40	; IRQ/BRK
 ```
-* manual page 56
+## manual page 56
 ```
 3f0,3f1	BRK handler vector
 3f2,3f2	warm start vector ( monitor Q uses this vector)
@@ -18,10 +18,10 @@ $fffe	fa40	; IRQ/BRK
 3f5,6,7	jump command for fpbasic subroutine. normally 4c 58 ff
 3f8,9,a	jump command for USER (U) call
 3fb,c,d	jump to NMI handler
-3fe,f		INT handler vector
+3fe,3ff	INT handler vector
 4f9	     0=40 char !=0 = 80 char
 ```
-* memory banks page 58
+## memory banks page 58
 |  Bank 0 |  Bank 1 |    Adress    |
 |  active |  active |    space     |
 |---------|---------|--------------|
@@ -34,14 +34,14 @@ $fffe	fa40	; IRQ/BRK
 |  $C06Cw |  $C06Dw |  $D000 $DFFF |
 |  $CO6Ew |  $CO6Fw |  $E000 $FFFF |
 
-* The static RAM for the 80 column display
+## The static RAM for the 80 column display
 ```
 $C00Dw Additional RAM switched on, normal RAM switched off
 $C00Cw Additional RAM switched off, Normal RAM switched on
 ```
 * io ports page 97
 
-* z80 part page 99
+## z80 part page 99
 Controlling the Z-80 Section
 The Z-80 section is controlled by write commands to the memory space, which normally contains
 peripheral ROMs. It is very important to work with write commands to ensure that the 6502 
@@ -58,7 +58,7 @@ Upon receipt of another write command in the same memory area (this time from th
 the Z-80 is shut down. The memory addresses for controlling the Z-80 are:
 `$C100 - $C1FF`
 
-* Mapping of Z80 address space to 6502 address space
+## Mapping of Z80 address space to 6502 address space
 | Z-80 Adresses	| 6502 Adresses |
 |---------------|---------------|
 |  $0000-$0FFF  |  $1000-$1FFF  |
@@ -71,9 +71,9 @@ the Z-80 is shut down. The memory addresses for controlling the Z-80 are:
 |  $E000-$EFFF  |  $C000-$CFFF  |
 |  $F000-$FFFF  |  $0000-$0FFF  |
 
-* Summary of Input/Output Addresses
+## Summary of Input/Output Addresses
 | Address | Read | Write |
-|---------|------|-------|
+|---|---|---|
 | $C000 | Keyboard | Inverse |
 | $C001 |  | Flash | 
 | $C002 |  | SW1 off | 
