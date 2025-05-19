@@ -39,10 +39,10 @@ $fffe	fa40	; IRQ/BRK
 $C00Dw Additional RAM switched on, normal RAM switched off
 $C00Cw Additional RAM switched off, Normal RAM switched on
 ```
-* io ports page 97
+## io ports page 97
 
 ## z80 part page 99
-Controlling the Z-80 Section
+### Controlling the Z-80 Section
 The Z-80 section is controlled by write commands to the memory space, which normally contains
 peripheral ROMs. It is very important to work with write commands to ensure that the 6502 
 does not perform two accesses in a row (this would prevent switching back to the 6502).
