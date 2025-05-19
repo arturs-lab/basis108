@@ -11,7 +11,7 @@ Also code on page 133 and on is similar to that at EPROM offset $0800 and $1800
 
 g14 - printer driver According to the manual only 256 bytes of this chip is being used in address space of $C100-$C1FF (Apple addressing, $E100 in CP/M). 
 But there is more code within this chip. Perhaps some trickery is done to use other parts of it to bank-switch code. 
-Data visible to computer start at this location in EPROM: 0040: 00 20 62 C1 90. Driver listed on page 169 in commercial version's manual available at /commercial_version/documents/BASIS108_300pdi.pdf matches the code starting at that location.
+Data visible to computer start at this location in EPROM: `0040: 00 20 62 C1 90`. Driver listed on page 169 in commercial version's manual available at /commercial_version/documents/BASIS108_300pdi.pdf matches the code starting at that location.
 
 h4 - Character generator
 
@@ -34,8 +34,8 @@ Files with extension of .hex and .asc were the first dump of ROMS I have. It is 
 Files in directory 1995 are, I believe, dumps of ZX Spectrum tape binary files. They contain 19 byte header in ZX Spectrum format followed by contents of EPROM.
 
 Simple way to compare two bin files:
-diff -W 40 --side-by-side -a <(xxd -ps -c 8 d5_label_2024.bin) <(xxd -ps -c 8 d5_label_2025.bin) | less
-
+`diff -W 40 --side-by-side -a <(xxd -ps -c 8 d5_label_2024.bin) <(xxd -ps -c 8 d5_label_2025.bin) | less`
+```
 1576a94d6cb334dd126cb1c27f19e0f2  c14_kbd_rom_AL.bin
 dd5eed3d100baf9d3edb9eb0ba70071f  c14_kbord_orig.bin
 54eeec8ae5980d63f1eb5b0c484399d6  d4.bin
@@ -61,3 +61,4 @@ dd5eed3d100baf9d3edb9eb0ba70071f  1995/romkbd1.bin - this is keyboard mapping ro
 cfe2c4aa8eed8fe9955d166b73957061  1995/romlabel.bin
 efe58797f3d49fb3b34048ff378cb270  1995/romprntr.bin
 98ab68f29770cf18be918f73b6e5ad8c  1995/romstar.bin
+```
