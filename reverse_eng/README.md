@@ -22,8 +22,8 @@ $fffe	fa40	; IRQ/BRK
 4f9	     0=40 char !=0 = 80 char
 ```
 ## memory banks page 58
-|  Bank 0 |  Bank 1 |    Adress    |
-|  active |  active |    space     |
+
+| Bank 0 active | Bank 1 active | Adress space |
 |---------|---------|--------------|
 |  $C060w |  $C061w |  $0000 $1FFF |
 |  $C062w |  $C063w |  $2000 $3FFF |
