@@ -3,6 +3,34 @@ Reverse engineering code from Basis 108 ROMs and CPM floppies to understand CPM 
 
 Boot sectors from CP/M disk tracks 0 - 2 get loaded into memory starting at $800, then code gets executed starting from $801
 
+# Data corruption analysis
+
+I shared my thoughts on possible EPROM data corruption in my comments in README.md file in main_board/rom directory.
+
+Focusing on d5 chip:
+As seen in MD5 checksums, images of d5 EPROM differ across the three copies available
+```
+bcaa84a76a547e1f8acba9525073f068  d5.bin
+cfe2c4aa8eed8fe9955d166b73957061  d5_label_2024.bin
+45e97c54fc85d5095fced5f40a284ec6  d5_label_2025.bin
+```
+* The values that differ between the three copies are the smallest in d5.bin and bigger
+ in one or both the other two copies which are more recent. This is true for both halves of EPROMs.
+* The value in "middle" d5_label_2024.bin sometimes equals to that in d5.bin, sometimes
+ to d5_label_2025.bin. But values in more recent file are never smaller than in an older file.
+* Initially I thught that the content of two halves of d5 EPROM contain two different
+ versions of the code. However both halves showing the same kind of differences as described
+ above leads me to believe that the code is the same, it just aged differently.
+
+To try to restore this chip to original values I did the following:
+* I created a script make_single_byte_hex.bash which splits each available file in two halves and generates a file with one hex value per line.
+* Then I wrote a python script which takes various combinations of these files and compares values in them. This allowed me to observe that values in the files only grow with time, never shrank.
+* Using the same python file I can compare the two halves of the oldest file I have and use the smaller value of the two in the output. This hopefully restores the correct value for the given location. Unless they both got corrupted differently and neither is correct.
+* This script also can output data in Intel hex format which will fill one half of 2764 EPROM. I saved this output to file d5_restore.hex. I then used Xgecu software to load this file twice to fill entire chip and output resulting file as d5_restore_x2.hex.
+Sadly none of this work was of much use. I ended up with a, EPROM which didn't work. Meanwhile the original EPROM with all of its discrepancies, when put back in machine - works fine. Perhaps all the past readings of it are incorrect. Still, I'm documenting all this work in case it becomes handy in the future.
+
+What puzzles me is that the machine seems to still be operating correctly despite this seemingly deep corruption. Either the EPROM is fine or I'm not hitting the locations that are corrupted or the corruption is not enough to result in crash. Although it may be enough to lead to data corruption on disks for example. I wonder if corruption only affects the EPROM memory locations that are never accessed because I'm not using this part of code. And the locations that are accessed get sort of "refreshed" enough to keep them alive.
+
 ## Notes
 * 6502 reset/NMI vectors
 ```

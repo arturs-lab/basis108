@@ -4,3 +4,7 @@ Thumbs.db
 # ignore original Hi-rez TIFF images
 *.tif
 *.mp4
+/reverse_eng/*_hi*.hex
+/reverse_eng/*_lo*.hex
+/reverse_eng/*_high.txt
+/reverse_eng/*_low.txt

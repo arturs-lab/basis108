@@ -27,6 +27,16 @@ TBP28L22.HEX - 256Bx8 PROM on FD controller. Datasheet available in /resources/d
 
 Some of the MD5 sums for the bin files differ for the same file across its versions. It is possible that the EPROM chips are losing their data and getting corrupted. Or they were read incorrectly in the past using the primitive methods I had available at the time. For this reason I am keeping multiple versions of these files in case another version needs to be tried once corruption is detected.
 
+For c14_kbd_rom_AL.bin it is expected that it differs from two other copies as this version I generated myself to mtch the wires that replaced original part
+
+For d4 it seems that only the first file - d4.bin differs from others. Is it possible that only that first copy was correct, the the EPROM got corrupted but corruption stopped and all subsequent copies read the same across years? Maybe. Or perhaps that first read was flawed, the chip is solid and all following readings contain correct data. Time will show
+
+For d5 is it possible that the first reading of it was correct, then the chip corrupted, the two following readings 1995/romlabel.bin and d5_label_2024.bin read the same despite being 29 years apart and then the chip got corrupted even more before last reading? Seems unlikely. More likely is that the files marked 2024 were created much closer to 1995 but their date stamps based on which they got renamed to 2024 got affected during some copy process. The saving grace is that this chip seems to have the same data saved in it which aged differently. Picking the smaller value from one half of the chip or the other might let us reconstruct the data for the most part. Why the smaller? Erased state of the EPROM is $FF. When programmed, 0s get stored wherever needed in the chip and 1s remain 1s. As chips get corrupted over time, some 0s revert to 1s. But no 1 turns into 0. Exactly the behavior seen when comparing the three versions of the chip. The oldest value is the lowest, then over time it gets bigger and perhaps bigger again. But never smaller. So a reasonable presumprion is that the smallest found value for a given location is the correct one. Or the least sorrupt.
+
+g14 is the strangest. The first and last readings match. So do the two in-between readings. Did the chip get corrupted for the two middle readings but bounced back to health for the last reading to match original? Or was the first reading flawed like suspected for original d4.bin and the chip corrupted over time to match the first flawed reading? Seems equally unlikely.
+
+At least h4 chip matches across the board.
+
 Files mentioning 2025 were dumped in 2025 by pulling chips and reading them with Xgecu TL866II-Plus programmer.
 Files mentioning 2024 I believe were dumped the same way as 2025. Yet, the MD5 sums for some of them differ from 2025 versions.
 Files just indicating location (e.g. g14.bin) were created from original *.hex files which were created back in the 90s. The hex file was read into Xgecu software and re-saved as bin. 
