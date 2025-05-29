@@ -8,3 +8,4 @@ Thumbs.db
 /reverse_eng/*_lo*.hex
 /reverse_eng/*_high.txt
 /reverse_eng/*_low.txt
+histfile
